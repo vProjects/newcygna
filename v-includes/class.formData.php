@@ -44,7 +44,7 @@
 			$last_sign_in_ip = $this->manageUtility->getIpAddress();
 			//inserting values to database
 			$column_name = array('user_id','email_id','username','password','category','sign_in_count','last_sign_in_ip');
-			$column_value = array($user_id,$userData['email_id'],$userData['username'],$userData['password'],$userData['category'],1,$last_sign_in_ip);
+			$column_value = array($user_id,$userData['email_id'],$userData['username'],md5($userData['password']),$userData['category'],1,$last_sign_in_ip);
 			//calling DAL methode
 			$insertValue = $this->manageContent->insertValue('user_credentials',$column_name,$column_value);
 			if($insertValue == 1)
@@ -77,7 +77,7 @@
 			if(!empty($userCreden[0]))
 			{
 				//checking for password field
-				if($userCreden[0]['password'] == $userData['password'])
+				if($userCreden[0]['password'] == md5($userData['password']))
 				{
 					//setting cookie expiry time
 					if($userData['loggedin_time'] == 'on')
@@ -90,6 +90,13 @@
 					}
 					//creating the cookie
 					$set_cookie = $this->createCookie('uid',$userCreden[0]['user_id'],$cookie_exp_time);
+					//calculating total number of sign in
+					$sign_in = $userCreden[0]['sign_in_count'] + 1;
+					//getting last sign in ip
+					$last_sign_in_ip = $this->manageUtility->getIpAddress();
+					//updatin the values
+					$update1 = $this->manageContent->updateValueWhere("user_credentials","sign_in_count",$sign_in,"user_id",$userCreden[0]['user_id']);
+					$update2 = $this->manageContent->updateValueWhere("user_credentials","last_sign_in_ip",$last_sign_in_ip,"user_id",$userCreden[0]['user_id']);
 					return array(1,'Login Successfull!!',$userCreden[0]['user_id'],$userCreden[0]['category']);
 				}
 				else

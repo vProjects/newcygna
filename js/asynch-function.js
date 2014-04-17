@@ -41,6 +41,7 @@ $(document).ready(function(e) {
 				if(result == 1)
 				{
 					$('#err_signup_email_id').html('**Email Id Already Exists');
+					$('#signup_email_id').val('');
 					$('#signup_email_id').focus(function() { 
 						$('#err_signup_email_id').fadeOut(500);
 					});
@@ -67,6 +68,7 @@ $(document).ready(function(e) {
 				if(result == 1)
 				{
 					$('#err_signup_username').html('**Username Already Exists');
+					$('#signup_username').val('');
 					$('#signup_username').focus(function() { 
 						$('#err_signup_username').fadeOut(500);
 					});
@@ -74,4 +76,19 @@ $(document).ready(function(e) {
 				return false;
 		}});
 	});
+	
+	//checking for password character lenght
+	$('#signup_password').change(function(e) {
+        var pasLen = $(this).val().length;
+		//alert(pasLen);
+		if(pasLen < 6)
+		{
+			$('#err_signup_password').html('**Password Must Have Minimum 6 Characters');
+			$('#signup_password').val('');
+			$('#signup_password').focus(function(e) {
+                $('#err_signup_password').fadeOut(500);
+            });
+			return false;
+		}
+    });
 });

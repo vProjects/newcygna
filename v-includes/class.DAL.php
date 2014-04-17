@@ -196,6 +196,36 @@
 		}
 		
 		/*
+		- method for updating the values using where clause with multiple conditions
+		- auth: Dipanjan
+		*/
+		function updateMultipleValueOneCondition($table_name,$column_name,$column_values,$condition_column,$condition_value)
+		{
+			//declaring variables for preparing the query
+			$column = "";
+			$value = "";
+			
+			for($i=0;$i<count($column_name);$i++)
+			{
+				/*if(is_string($column_values[$i]))
+				{
+					$column = $column." AND `".$column_name[$i]."` = '".$column_values[$i]."'";
+				}
+				else
+				{
+					$column = $column." AND `".$column_name[$i]."` = ".$column_values[$i]."";
+				}*/
+				$column = $column." AND ".$column_name[$i]." = '".$column_values[$i]."'";
+			}
+			$column = substr($column,5);
+			$query = $this->link->prepare("UPDATE `$table_name` SET ". $column ." WHERE $condition_column = $condition_value");
+			echo "UPDATE `$table_name` SET ". $column ." WHERE $condition_column = '$condition_value'";
+			$query->execute();
+			$count = $query->rowCount();
+			echo $count;
+		}
+		
+		/*
 		- method for getting no of rows using multiple conditions
 		- auth: Dipanjan
 		*/

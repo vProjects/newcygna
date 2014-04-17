@@ -13,10 +13,6 @@
 		echo 'jjj';
 	}*/
 	
-	$a = strpos('abc','o');
-	if(empty($a))
-	{
-		echo 'abc';
-	}
+	echo md5(123456);
 
 ?>

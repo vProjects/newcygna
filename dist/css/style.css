@@ -26,6 +26,7 @@ body{
 }
 #home_body{
 	background-color:#FFF;
+	background-color:#F29F4D
 }
 img{
 	max-width:100%;
@@ -318,8 +319,9 @@ a:hover{
 	padding:0.5em 0.2em;
 }
 .profile_header_nav_outline{
-	background-color: #76bd55;
+	background-color: #ffa600;
 	margin:0.5em 0 0;
+	border-bottom: 3px solid #df7229;
 }
 .header_nav_outline{
 	margin-top:0;
@@ -332,12 +334,11 @@ a:hover{
 }
 .header_nav a{
 	color:#fff;
-	font-size:1.2em;
-	font-family:Arial, Helvetica, sans-serif;
+	font-size:1.4em;
+	font-family:PTSans;
 	padding:12px 15px !important;
-	background-color:#76bd55;
+	background-color:#ffa600;
 	transition:all 0.5s ease-in 0s;
-	font-weight:bold;
 	/*box-shadow: 0 3px 0 #569738;*/
 	/*box-shadow: 0 3px 0 #5b9c3d;*/
 }
@@ -346,7 +347,7 @@ a:hover{
 	text-shadow:none;
 }
 .header_nav a:hover{
-	background-color:#474e5d !important;
+	background-color:#df7229 !important;
 	color:#F2F2F2;
 	/*box-shadow:0 3px 0 #50596b;*/
 	transition:all 0.5s ease-in 0s;
@@ -358,14 +359,16 @@ a:hover{
 	min-height: 737px;
 }
 #success_msg{
-	font-size:1.2em;
+	font-size:1.0em;
 	display:none;
 	margin-bottom:5px;
+	padding:8px 15px;
 }
 #warning_msg{
-	font-size:1.2em;
+	font-size:1.0em;
 	display:none;
 	margin-bottom:5px;
+	padding:8px 15px;
 }
 .profile_body_row{
 	margin:0.8em 0;

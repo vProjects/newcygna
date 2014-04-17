@@ -1,18 +1,3 @@
-<?php
-	//including the bll get data class
-	include 'v-includes/BLL.getData.php';
-	$manageContent = new BLL_manageData();
-	
-	if(isset($GLOBALS['_COOKIE']['uid']) && !isset($_SESSION['user_id']))
-	{
-		$_SESSION['user_id'] = $GLOBALS['_COOKIE']['uid'];
-	}
-	else if(!isset($GLOBALS['_COOKIE']['uid']) && isset($_SESSION['user_id']))
-	{
-		//setting cookie value
-		$manageContent->createUserCookie($_SESSION['user_id']);
-	}
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -25,9 +10,7 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="dist/js/bootstrap.js"></script>
-<script src="js/validiation.js"></script>
-<script src="js/asynch-function.js"></script>
-<title>CYGNATECH | <?php echo $pageTitle; ?></title>
+<title>CYGNATECH | YOUR FACILITITES</title>
 </head>
 
 <body>
@@ -42,16 +25,15 @@
                         <span class="sr-only">Toggle navigation</span>
                         <span class="glyphicon glyphicon-align-justify"></span>
                     </button>
-                    <a class="navbar-brand profile_header_brand" href="index.php"><img src="img/page_logo.png" alt="logo"/></a>
+                    <a class="navbar-brand profile_header_brand" href="index.html"><img src="img/page_logo.png" alt="logo"/></a>
                 </div>
                 
                 <!-- Collect the nav links, forms, and other content for toggling -->
-                <?php //include("nav.php") ?>
+                <?php
+				include("post-nav.php")
+				?>
             </div>
         </div>
     </div>
-    <?php include("post-nav.php") ?>
 </div>
 <!-- header ends here -->
-
-

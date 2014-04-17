@@ -1,11 +1,22 @@
 <?php
 	session_start();
 	$pageTitle = 'Message';
+	if(!isset($GLOBALS['_COOKIE']['uid']) && !isset($_SESSION['user_id']))
+	{
+		header("Location: log_in.php");
+	}
 	include ("v-templates/header.php");
 ?>
 
 <!-- body starts here -->
 <div id="profile_body_outline">
+	
+    <!-- div for showing success message--->
+	<div class="alert alert-success" id="success_msg"></div>
+	<!-- div for showing warning message--->
+	<div class="alert alert-danger" id="warning_msg"></div>
+    
+
 	<div class="container">
     	<div class="row profile_body_row">
         	<!-- body left section starts here -->

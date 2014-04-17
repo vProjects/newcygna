@@ -7,7 +7,12 @@
 <!-- body starts here -->
 
 <div id="profile_body_outline">
-
+	
+    <!-- div for showing success message--->
+	<div class="alert alert-success" id="success_msg"></div>
+	<!-- div for showing warning message--->
+	<div class="alert alert-danger" id="warning_msg"></div>
+    
 	<div class="container">
 
 	<!-- sign up box starts here -->
