@@ -5,7 +5,7 @@
 	{
 		header("Location: log_in.php");
 	}
-	include ("v-templates/post-header.php");
+	include ("v-templates/header.php");
 ?>
 <!-- body starts here -->
 <div id="profile_body_outline">

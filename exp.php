@@ -14,5 +14,6 @@
 	}*/
 	
 	echo md5(123456);
-
 ?>
+
+<div style="background-color:#02B7DD></div>
