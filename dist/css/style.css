@@ -914,7 +914,7 @@ a:hover{
 .pp_form_textbox, .pp_form_textarea, .pp_form_selectbox, .pp_form_multiple_selectbox{
 	background-color:#FFF;
 	border:1px solid #A4A4A4;
-	border-radius:0px;
+	border-radius:4px;
 }
 .pp_form_textarea{
 	resize:none;

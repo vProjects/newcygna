@@ -170,3 +170,41 @@ function alertSuccess(msg){
 	body.animate({scrollTop:0}, '500');
 	setInterval('$( "#success_msg" ).hide()', 3000);
 }
+
+/*
+	method for preview profile pic and cover pic
+	Auth: Dipanjan
+*/
+
+$(document).ready(function(e) {
+    $('#pro_pic').change(function() {
+		var file = $(this).get(0).files[0];
+		var img = document.createElement('img');
+		img.src = window.URL.createObjectURL(file);
+		$('#pro_pic_preview').html(img);
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			window.URL.revokeObjectURL(this.src);
+		}
+		//reader.readAsDataURL(file);
+		//$('#pro_pic_preview img').css({'width':'200px'});
+		
+		var data = new FormData($('#image_info')[0]);
+	});
+	
+	$('#cov_pic').change(function() {
+		var file = $(this).get(0).files[0];
+		var img = document.createElement('img');
+		img.src = window.URL.createObjectURL(file);
+		$('#cov_pic_preview').html(img);
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			window.URL.revokeObjectURL(this.src);
+		}
+		//reader.readAsDataURL(file);
+		//$('#pro_pic_preview img').css({'width':'200px'});
+		
+		var data = new FormData($('#image_info')[0]);
+	});
+});
+	

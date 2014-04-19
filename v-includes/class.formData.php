@@ -112,6 +112,68 @@
 		}
 		
 		/*
+		- method for insert personal info
+		- Auth: Dipanjan
+		*/
+		function insertPersonalInfo($user_id,$userData)
+		{
+			//setting user full name
+			$name = $userData['f_name']." ".$userData['l_name'];
+			//profile creation date
+			$profile_creation_date = $this->getCurrentDate();
+			//last updation date
+			$last_updation_date = $this->getCurrentDate();
+			//column name for insertion
+			$column_name = array("user_id","name","gender","dob","contact_no","addr_line1","addr_line2","pincode","city","state","country","profile_creation_date","last_upgradation_date");
+			//column value for insertion
+			$column_value = array($user_id,$name,$userData['gender'],$userData['dob'],$userData['contact'],$userData['add1'],$userData['add2'],$userData['pin'],$userData['city'],$userData['state'],$userData['country'],$profile_creation_date,$last_updation_date);
+			//insert the values to user info table
+			$insert = $this->manageContent->insertValue("user_info",$column_name,$column_value);
+		}
+		
+		/*
+		- method for insert user image info
+		- Auth: Dipanjan
+		*/
+		function insertUserImage($user_id,$userData,$userFile)
+		{
+			//image desired name
+			$pro_desired_name = md5('pro'.$user_id);
+			$cov_desired_name = md5('cov'.$user_id);
+			//uploading profile pic
+			if(!empty($userFile['pro_pic']))
+			{
+				$pro_pic = $this->manageFileUploader->upload_file($pro_desired_name,$userFile['pro_pic'],'../files/pro-image/');
+				$pro_pic_file = 'files/pro-image/'.$pro_pic;
+			}
+			else
+			{
+				$pro_pic_file = '';
+			}
+			
+			print_r($userFile['cov_pic']);
+			//uploading cover pic
+			if(!empty($userFile['cov_pic']))
+			{
+				echo 'abc';
+				$cov_pic = $this->manageFileUploader->upload_file($cov_desired_name,$userFile['cov_pic'],'../files/cov-image/');
+				$cov_pic_file = 'files/cov-image/'.$cov_pic;
+			}
+			else
+			{
+				$cov_pic_file = '';
+			}
+			
+			//updating the value in database
+			$update_pro_image = $this->manageContent->updateValueWhere("user_info","profile_image",$pro_pic_file,"user_id",$user_id);
+			
+			//updating the value in database
+			$update_cov_image = $this->manageContent->updateValueWhere("user_info","cover_image",$cov_pic_file,"user_id",$user_id);
+			return array($update_pro_image,$update_cov_image);
+			
+		}
+		
+		/*
 		- method for setting cookie
 		- Auth: Dipanjan
 		*/
@@ -207,6 +269,31 @@
 				$_SESSION['warning'] = 'Username or Password Field Is Empty!!';
 				header("Location: ../log_in.php");
 			}
+			break;
+		}
+		//for insert personal info
+		case md5('personal_info'):
+		{
+			//calling the insert function
+			$insertPersInfo = $formData->insertPersonalInfo($_SESSION['user_id'],$GLOBALS['_POST']);
+			//returning to edit profile page
+			$_SESSION['success'] = 'Your Personal Info Inserted Successfully!!';
+			header("Location: ../edit_profile.php");
+			break;
+		}
+		//for uploading image info
+		case md5('image_info'):
+		{
+			$insertUserImage = $formData->insertUserImage($_SESSION['user_id'],$GLOBALS['_POST'],$GLOBALS['_FILES']);
+			if($insertUserImage[0] == 1 && $insertUserImage[1] == 1)
+			{
+				$_SESSION['success'] = 'Update Successfull!!';
+			}
+			else
+			{
+				$_SESSION['warning'] = 'Update Unsuccessfull!!';
+			}
+			header("Location: ../edit_profile.php");
 			break;
 		}
 		default:
