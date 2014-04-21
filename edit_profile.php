@@ -35,7 +35,7 @@
                                     PERSONAL INFORMATION
                               </h4>
                             </div>
-                            <div id="collapseOne" class="panel-collapse collapse in">
+                            <div id="collapseOne" class="panel-collapse collapse">
                               <div class="panel-body">    
                                 <form action="v-includes/class.formData.php" class="form-horizontal" role="form" method="post">
                                       <div class="form-group">
@@ -118,7 +118,7 @@
                                         IMAGES
                               </h4>
                             </div>
-                            <div id="collapseTwo" class="panel-collapse collapse in">
+                            <div id="collapseTwo" class="panel-collapse collapse">
                               <div class="panel-body">
                                 
                                 <form action="v-includes/class.formData.php" class="form-horizontal" id="image_info" role="form" method="post" enctype="multipart/form-data">
@@ -126,6 +126,7 @@
                                     <label class="col-md-3 pp_form_label control-label">Profile Image</label>
                                     <div class="col-md-8">
                                       <input type="file" name="pro_pic" id="pro_pic" class="form-control pp_form_file_upload">
+                                      <p class="text-notific">**Maximum filesize is 4mb.</p>
                                     </div>
                                   </div>
                                   <div class="form-group">
@@ -137,6 +138,7 @@
                                     <label class="col-md-3 pp_form_label control-label">Cover Image</label>
                                     <div class="col-md-8">
                                       <input type="file" name="cov_pic" id="cov_pic" class="form-control pp_form_file_upload">
+                                      <p class="text-notific">**Maximum filesize is 4mb.</p>
                                     </div>
                                   </div>
                                   <div class="form-group">
@@ -147,7 +149,7 @@
                                   <div class="form-group">
                                     <div class="col-md-offset-3 col-md-8">
                                     	<input type="hidden" name="fn" value="<?php echo md5('image_info'); ?>" />
-                                      <button type="submit" class="btn btn-success ">SAVE</button>
+                                      <input type="submit" class="btn btn-success" value="SAVE">
                                     </div>
                                   </div>
                                 </form>
@@ -161,159 +163,97 @@
                                     PROFILE INFO
                               </h4>
                             </div>
-                            <div id="collapseThree" class="panel-collapse collapse">
+                            <div id="collapseThree" class="panel-collapse collapse in">
                               <div class="panel-body">
                                     
-                                <form class="form-horizontal" role="form">
-                                          <div class="form-group">
-                                            <label class="col-md-3 pp_form_label control-label">Skills</label>
-                                            <div class="col-md-8">
-                                              <input type="text" class="form-control pp_form_textbox" readonly>
-                                            </div>
-                                          </div>
-                                          <div class="form-group">
-                                            <div class="col-md-offset-3 col-md-8">
-                                                    <div class="form-control pp_form_textbox col-md-4 scrollable-content">
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill1"> Skill1
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill2"> Skill2
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill3"> Skill3
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill1"> Skill1
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill2"> Skill2
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill3"> Skill3
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill1"> Skill1
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill2"> Skill2
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill3"> Skill3
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill1"> Skill1
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill2"> Skill2
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill3"> Skill3
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill1"> Skill1
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill2"> Skill2
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill3"> Skill3
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill1"> Skill1
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill2"> Skill2
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill3"> Skill3
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill1"> Skill1
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill2"> Skill2
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill3"> Skill3
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill1"> Skill1
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill2"> Skill2
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill3"> Skill3
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill1"> Skill1
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill2"> Skill2
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill3"> Skill3
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill1"> Skill1
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill2"> Skill2
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill3"> Skill3
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill1"> Skill1
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill2"> Skill2
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill3"> Skill3
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill1"> Skill1
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill2"> Skill2
-                                                        </label>
-                                                        <label class="checkbox col-md-4">
-                                                          <input type="checkbox"  value="Skill3"> Skill3
-                                                        </label>
-                                                    </div>
-                                            </div>
-                                          </div>
-                                          <div class="form-group">
-                                            <label class="col-md-3 pp_form_label control-label">Terms</label>
-                                            <div class="col-md-8">
-                                              <input type="text" class="form-control pp_form_textbox">
-                                            </div>
-                                          </div>
-                                          <div class="form-group">
-                                            <label class="col-md-3 pp_form_label control-label">Availability</label>
-                                            <div class="col-md-8">
-                                              <input type="text" class="form-control pp_form_textbox">
-                                            </div>
-                                          </div>
-                                          <div class="form-group">
-                                            <label class="col-md-3 pp_form_label control-label">Interested Topics</label>
-                                            <div class="col-md-8">
-                                              <input type="text" class="form-control pp_form_textbox">
-                                            </div>
-                                          </div>
-                                          <div class="form-group">
-                                            <label class="col-md-3 pp_form_label control-label">Profile Description</label>
-                                            <div class="col-md-8">
-                                              <input type="text" class="form-control pp_form_textbox">
-                                            </div>
-                                          </div>
-                                          <div class="form-group">
-                                            <div class="col-md-offset-3 col-md-8">
-                                              <button type="submit" class="btn btn-success ">SAVE</button>
-                                            </div>
-                                          </div>
+                                <form action="v-includes/class.formData.php" class="form-horizontal" role="form" method="post">
+                                  <div class="form-group">
+                                    <label class="col-md-3 pp_form_label control-label">Skills</label>
+                                    <div class="col-md-8">
+                                      <div class="myskills_details ep_skills_list col-md-12" id="skills_list_value">
+                                        
+                                    </div>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <div class="col-md-offset-3 col-md-8">
+                                        <div class="form-control pp_form_textbox scrollable-content">
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill1"> Skill1
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill2"> Skill2
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[1]" class="skills_checkbox" value="Skill3"> Skill3
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill4"> Skill4
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[2]" class="skills_checkbox" value="Skill5"> Skill5
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill6"> Skill6
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill7"> Skill7
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill8"> Skill8
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill9"> Skill9
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill10"> Skill10
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill11"> Skill11
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill12"> Skill12
+                                            </label>
+                                        </div>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="col-md-3 pp_form_label control-label">Hourly Rate</label>
+                                    <div class="col-md-3">
+                                      <input type="text" class="form-control pp_form_textbox" name="hourly_rate">
+                                    </div>
+                                    <label class="col-md-3">in $/hr</label>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="col-md-3 pp_form_label control-label">Your Terms</label>
+                                    <div class="col-md-8">
+                                      <textarea rows="3" class="form-control pp_form_textarea" name="terms"></textarea>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="col-md-3 pp_form_label control-label">Availability</label>
+                                    <div class="col-md-8">
+                                      <input type="text" class="form-control pp_form_textbox" name="availability">
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="col-md-3 pp_form_label control-label">Interested Topics</label>
+                                    <div class="col-md-8">
+                                      <input type="text" class="form-control pp_form_textbox" name="int_topic">
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="col-md-3 pp_form_label control-label">Profile Description</label>
+                                    <div class="col-md-8">
+                                      <textarea rows="6" class="form-control pp_form_textarea" name="description"></textarea>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <div class="col-md-offset-3 col-md-8">
+                                    	<input type="hidden" name="fn" value="<?php echo md5('profile_info'); ?>" />
+                                      <input type="submit" class="btn btn-success" value="SAVE" />
+                                    </div>
+                                  </div>
                                 </form>
                                     
                               </div>

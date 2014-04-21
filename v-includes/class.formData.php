@@ -137,39 +137,123 @@
 		*/
 		function insertUserImage($user_id,$userData,$userFile)
 		{
-			//image desired name
-			$pro_desired_name = md5('pro'.$user_id);
-			$cov_desired_name = md5('cov'.$user_id);
+			
 			//uploading profile pic
-			if(!empty($userFile['pro_pic']))
+			if(!empty($userFile['pro_pic']['name']))
 			{
-				$pro_pic = $this->manageFileUploader->upload_file($pro_desired_name,$userFile['pro_pic'],'../files/pro-image/');
-				$pro_pic_file = 'files/pro-image/'.$pro_pic;
-			}
-			else
-			{
-				$pro_pic_file = '';
+				if(empty($userFile['pro_pic']['size']))
+				{
+					$upload_error1 = 'Profile Image Size Exceeds Limit';
+				}
+				else
+				{
+					//image desired name
+					$pro_desired_name = md5('pro'.$user_id);
+					$pro_pic = $this->manageFileUploader->upload_file($pro_desired_name,$userFile['pro_pic'],'../files/pro-image/');
+					$pro_pic_file = 'files/pro-image/'.$pro_pic;
+					//updating the value in database
+					$update_pro_image = $this->manageContent->updateValueWhere("user_info","profile_image",$pro_pic_file,"user_id",$user_id);
+				}	
 			}
 			
-			print_r($userFile['cov_pic']);
+			
 			//uploading cover pic
-			if(!empty($userFile['cov_pic']))
+			if(!empty($userFile['cov_pic']['name']))
 			{
-				echo 'abc';
-				$cov_pic = $this->manageFileUploader->upload_file($cov_desired_name,$userFile['cov_pic'],'../files/cov-image/');
-				$cov_pic_file = 'files/cov-image/'.$cov_pic;
+				if(empty($userFile['cov_pic']['size']))
+				{
+					$upload_error2 = 'Cover Image Size Exceeds Limit';
+				}
+				else
+				{
+					//image desired name
+					$cov_desired_name = md5('cov'.$user_id);
+					$cov_pic = $this->manageFileUploader->upload_file($cov_desired_name,$userFile['cov_pic'],'../files/cov-image/');
+					$cov_pic_file = 'files/cov-image/'.$cov_pic;
+					//updating the value in database
+					$update_cov_image = $this->manageContent->updateValueWhere("user_info","cover_image",$cov_pic_file,"user_id",$user_id);
+				}	
+			}
+			
+			if(isset($upload_error1) && isset($upload_error2))
+			{
+				return array(0,$upload_error1." & ".$upload_error2);
+			}
+			elseif(isset($upload_error1) && !isset($upload_error2))
+			{
+				return array(0,$upload_error1." & Cover image Uploaded");
+			}
+			elseif(!isset($upload_error1) && isset($upload_error2))
+			{
+				return array(0,$upload_error2." & Profile image Uploaded");
+			}
+			elseif(!isset($upload_error1) && !isset($upload_error2))
+			{
+				return array(1,"Profile image & Cover image Uploaded");
+			}
+		}
+		
+		/*
+		- method for inserting profile info
+		- Auth: Dipanjan
+		*/
+		function insertUserProfileInfo($user_id,$userData)
+		{
+			//getting the skills that user have
+			//varriable which will contain the category in string format
+			$skills_string = ""; 
+			
+			if(!empty($userData['skills']))
+			{
+				$skills = $userData['skills'];
+				//convert array to string seperated by commas
+				foreach($skills as $skill)
+				{
+					$skills_string = $skills_string.",".$skill;
+				}
+				/*
+				- remove the first word from the $category_string sa it
+				- it contains a comma
+				*/
+				
+				$skills_string = substr($skills_string,1);
+				//update skills section
+				$update_skills = $this->manageContent->updateValueWhere("user_info","skills",$skills_string,"user_id",$user_id);
+			}
+			
+			if(isset($userData['hourly_rate']))
+			{
+				$update_hour_rate = $this->manageContent->updateValueWhere("user_info","hourly_rate",$userData['hourly_rate'],"user_id",$user_id);
+			}
+			
+			if(isset($userData['terms']))
+			{
+				$update_terms = $this->manageContent->updateValueWhere("user_info","terms",$userData['terms'],"user_id",$user_id);
+			}
+			
+			if(isset($userData['availability']))
+			{
+				$update_aval = $this->manageContent->updateValueWhere("user_info","availability",$userData['availability'],"user_id",$user_id);
+			}
+			
+			if(isset($userData['int_topic']))
+			{
+				$update_topic = $this->manageContent->updateValueWhere("user_info","interested_topic",$userData['int_topic'],"user_id",$user_id);
+			}
+			
+			if(isset($userData['description']))
+			{
+				$update_des = $this->manageContent->updateValueWhere("user_info","description",$userData['description'],"user_id",$user_id);
+			}
+			
+			if($update_skills == 1 || $update_hour_rate == 1 || $update_terms == 1 || $update_aval == 1 || $update_topic == 1 || $update_des == 1)
+			{
+				return array(1,'Update Successfull!!');
 			}
 			else
 			{
-				$cov_pic_file = '';
+				return array(0,'Update Unsuccessfull!!');
 			}
-			
-			//updating the value in database
-			$update_pro_image = $this->manageContent->updateValueWhere("user_info","profile_image",$pro_pic_file,"user_id",$user_id);
-			
-			//updating the value in database
-			$update_cov_image = $this->manageContent->updateValueWhere("user_info","cover_image",$cov_pic_file,"user_id",$user_id);
-			return array($update_pro_image,$update_cov_image);
 			
 		}
 		
@@ -285,13 +369,28 @@
 		case md5('image_info'):
 		{
 			$insertUserImage = $formData->insertUserImage($_SESSION['user_id'],$GLOBALS['_POST'],$GLOBALS['_FILES']);
-			if($insertUserImage[0] == 1 && $insertUserImage[1] == 1)
+			if($insertUserImage[0] == 1)
 			{
-				$_SESSION['success'] = 'Update Successfull!!';
+				$_SESSION['success'] = $insertUserImage[1];
 			}
 			else
 			{
-				$_SESSION['warning'] = 'Update Unsuccessfull!!';
+				$_SESSION['warning'] = $insertUserImage[1];
+			}
+			header("Location: ../edit_profile.php");
+			break;
+		}
+		//for inserting profile info
+		case md5('profile_info'):
+		{
+			$insertUserProInfo = $formData->insertUserProfileInfo($_SESSION['user_id'],$GLOBALS['_POST']);
+			if($insertUserProInfo[0] == 1)
+			{
+				$_SESSION['success'] = $insertUserProInfo[1];
+			}
+			else
+			{
+				$_SESSION['warning'] = $insertUserProInfo[1];
 			}
 			header("Location: ../edit_profile.php");
 			break;

@@ -171,13 +171,12 @@ function alertSuccess(msg){
 	setInterval('$( "#success_msg" ).hide()', 3000);
 }
 
-/*
-	method for preview profile pic and cover pic
-	Auth: Dipanjan
-*/
-
 $(document).ready(function(e) {
-    $('#pro_pic').change(function() {
+    /*
+		method for preview profile pic and cover pic
+		Auth: Dipanjan
+	*/
+	$('#pro_pic').change(function() {
 		var file = $(this).get(0).files[0];
 		var img = document.createElement('img');
 		img.src = window.URL.createObjectURL(file);
@@ -206,5 +205,58 @@ $(document).ready(function(e) {
 		
 		var data = new FormData($('#image_info')[0]);
 	});
+	
+	/*
+		method for showing select skills on textbox
+		Auth: Dipanjan
+	*/
+	$('.skills_checkbox').click(function(e) {
+		var skillName = $(this).val();
+		//getting the skills textbox value
+		//var skillsValue = $('#skills_value').val();
+		var skillsValue = $('#skills_list_value').html();
+		//checking for checkbox is checked or not
+		var checkingStatus = $(this).is(':checked');
+		if(checkingStatus == true)
+		{
+			//checking for skills textbox is empty or not
+			/*if(skillsValue.length == 0)
+			{
+				//adding the value to the textbox
+				$('#skills_value').val(skillName);
+			}
+			else
+			{
+				//adding the value to the textbox
+				$('#skills_value').val(skillsValue+','+skillName);
+			}*/
+			//the html which will added
+			var addingHtml = '<div class="myskills_box pull-left">'+skillName+'</div>';
+			$('#skills_list_value').append(addingHtml);
+		}
+		else if(checkingStatus == false)
+		{
+			//checking for there is ',' in the value or not
+			/*if(skillsValue.indexOf(',') == -1)
+			{
+				//removing the value of textbox
+				$('#skills_value').val('');
+			}
+			else
+			{
+				//removing checkbox value of textbox
+				var newSkillValue = skillsValue.replace(skillName+',','');
+				$('#skills_value').val(newSkillValue);
+			}*/
+			//the html which will deleted
+			var addingHtml = '<div class="myskills_box pull-left">'+skillName+'</div>';
+			var newSkillValue = skillsValue.replace(addingHtml,'');
+			$('#skills_list_value').html(newSkillValue);
+		}
+    });
+	
 });
+
+
+
 	

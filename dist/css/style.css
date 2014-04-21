@@ -1432,6 +1432,15 @@ border-top-right-radius: 5px;
 .text-head-link:hover{
 	text-decoration: none;
 }
+.text-notific{
+	font-size:0.8em;
+	color:#F00;
+}
+.ep_skills_list{
+	border:1px solid #cdcdcd;
+	border-radius:4px;
+	float:left;
+}
 
 
 
