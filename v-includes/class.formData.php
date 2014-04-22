@@ -258,6 +258,106 @@
 		}
 		
 		/*
+		- method for inserting user portfolio
+		- Auth: Dipanjan
+		*/
+		function insertUserPortfolio($user_id,$userData,$userFile)
+		{
+			//storing total no of portfolio
+			$total_port = $userData['total_elem'];
+			//getting date
+			$curdate = $this->getCurrentDate();
+			//using for loop inserting each data
+			for($i=1;$i<=$total_port;$i++)
+			{
+				//checking for empty value
+				if(!empty($userFile['file'.$i]['name']) || !empty($userData['skills'.$i]) || !empty($userData['des'.$i]))
+				{
+					//uploading the image
+					if(!empty($userFile['file'.$i]['name']) && !empty($userFile['file'.$i]['size']))
+					{
+						//image desired name
+						$port_desired_name = $user_id.'port'.$i;
+						$port_pic = $this->manageFileUploader->upload_file($port_desired_name,$userFile['file'.$i],'../files/portfolio/');
+						$port_pic_file = 'files/portfolio/'.$port_pic;
+					}
+					else
+					{
+						$port_pic_file = '';
+					}
+					
+					//setting status
+					$status = 1;
+					//creating column name and column array
+					$column_name = array("user_id","file","skills","description","upload_date","status");
+					$column_value = array($user_id,$port_pic_file,$userData['skills'.$i],$userData['des'.$i],$curdate,$status);
+					
+					//inserting the values to database
+					$insert = $this->manageContent->insertValue("user_portfolio",$column_name,$column_value);
+				}
+			}
+			return $insert;
+		}
+		
+		/*
+		- method for inserting user employment
+		- Auth: Dipanjan
+		*/
+		function insertUserEmployment($user_id,$userData)
+		{
+			//storing total no of portfolio
+			$total_port = $userData['total_elem'];
+			//getting date
+			$curdate = $this->getCurrentDate();
+			//using for loop inserting each data
+			for($i=1;$i<=$total_port;$i++)
+			{
+				//checking for empty value
+				if(!empty($userData['comp'.$i]) || !empty($userData['pos'.$i]) || !empty($userData['start'.$i]) || !empty($userData['end'.$i]) || !empty($userData['des'.$i]))
+				{
+					//setting status
+					$status = 1;
+					//creating column name and column array
+					$column_name = array("user_id","com_name","position","start_date","end_date","description","last_update","status");
+					$column_value = array($user_id,$userData['comp'.$i],$userData['pos'.$i],$userData['start'.$i],$userData['end'.$i],$userData['des'.$i],$curdate,$status);
+					
+					//inserting the values to database
+					$insert = $this->manageContent->insertValue("user_employment",$column_name,$column_value);
+				}
+			}
+			return $insert;
+		}
+		
+		/*
+		- method for inserting user education
+		- Auth: Dipanjan
+		*/
+		function insertUserEducation($user_id,$userData)
+		{
+			//storing total no of portfolio
+			$total_port = $userData['total_elem'];
+			//getting date
+			$curdate = $this->getCurrentDate();
+			//using for loop inserting each data
+			for($i=1;$i<=$total_port;$i++)
+			{
+				//checking for empty value
+				if(!empty($userData['inst'.$i]) || !empty($userData['deg'.$i]) || !empty($userData['start'.$i]) || !empty($userData['end'.$i]) || !empty($userData['des'.$i]))
+				{
+					//setting status
+					$status = 1;
+					//creating column name and column array
+					$column_name = array("user_id","inst_name","degree","start_date","end_date","description","last_update","status");
+					$column_value = array($user_id,$userData['inst'.$i],$userData['deg'.$i],$userData['start'.$i],$userData['end'.$i],$userData['des'.$i],$curdate,$status);
+					
+					//inserting the values to database
+					$insert = $this->manageContent->insertValue("user_education",$column_name,$column_value);
+				}
+			}
+			return $insert;
+		}
+		
+		/*
 		- method for setting cookie
 		- Auth: Dipanjan
 		*/
@@ -391,6 +491,51 @@
 			else
 			{
 				$_SESSION['warning'] = $insertUserProInfo[1];
+			}
+			header("Location: ../edit_profile.php");
+			break;
+		}
+		//for inserting user portfolio
+		case md5('user_portfolio'):
+		{
+			$insertUserPortfolio = $formData->insertUserPortfolio($_SESSION['user_id'],$GLOBALS['_POST'],$GLOBALS['_FILES']);
+			if($insertUserPortfolio == 1)
+			{
+				$_SESSION['success'] = 'Portfolio Saves Successfully!!';
+			}
+			else
+			{
+				$_SESSION['warning'] = 'Saving Portfolio Unsuccessfull!';
+			}
+			header("Location: ../edit_profile.php");
+			break;
+		}
+		//for inserting user employment
+		case md5('user_employment'):
+		{
+			$insertUserEmp = $formData->insertUserEmployment($_SESSION['user_id'],$GLOBALS['_POST']);
+			if($insertUserEmp == 1)
+			{
+				$_SESSION['success'] = 'Employment Saves Successfully!!';
+			}
+			else
+			{
+				$_SESSION['warning'] = 'Saving Employment Unsuccessfull!';
+			}
+			header("Location: ../edit_profile.php");
+			break;
+		}
+		//for inserting user education
+		case md5('user_education'):
+		{
+			$insertUserEdu = $formData->insertUserEducation($_SESSION['user_id'],$GLOBALS['_POST']);
+			if($insertUserEdu == 1)
+			{
+				$_SESSION['success'] = 'Education Saves Successfully!!';
+			}
+			else
+			{
+				$_SESSION['warning'] = 'Saving Education Unsuccessfull!';
 			}
 			header("Location: ../edit_profile.php");
 			break;

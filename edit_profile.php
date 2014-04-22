@@ -35,7 +35,7 @@
                                     PERSONAL INFORMATION
                               </h4>
                             </div>
-                            <div id="collapseOne" class="panel-collapse collapse">
+                            <div id="collapseOne" class="panel-collapse collapse in">
                               <div class="panel-body">    
                                 <form action="v-includes/class.formData.php" class="form-horizontal" role="form" method="post">
                                       <div class="form-group">
@@ -60,7 +60,7 @@
                                       <div class="form-group">
                                         <label class="col-md-3 pp_form_label control-label">Date of Birth</label>
                                         <div class="col-md-4">
-                                          <input type="text" class="form-control pp_form_textbox" name="dob" placeholder="Date of Birth in yyyy-mm-dd">
+                                          <input type="date" class="form-control pp_form_textbox" name="dob" placeholder="Date of Birth in yyyy-mm-dd">
                                         </div>
                                       </div>
                                       <div class="form-group">
@@ -163,7 +163,7 @@
                                     PROFILE INFO
                               </h4>
                             </div>
-                            <div id="collapseThree" class="panel-collapse collapse in">
+                            <div id="collapseThree" class="panel-collapse collapse">
                               <div class="panel-body">
                                     
                                 <form action="v-includes/class.formData.php" class="form-horizontal" role="form" method="post">
@@ -185,13 +185,13 @@
                                               <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill2"> Skill2
                                             </label>
                                             <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[1]" class="skills_checkbox" value="Skill3"> Skill3
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill3"> Skill3
                                             </label>
                                             <label class="checkbox col-md-4">
                                               <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill4"> Skill4
                                             </label>
                                             <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[2]" class="skills_checkbox" value="Skill5"> Skill5
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill5"> Skill5
                                             </label>
                                             <label class="checkbox col-md-4">
                                               <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill6"> Skill6
@@ -267,32 +267,36 @@
                             </div>
                             <div id="collapsefour" class="panel-collapse collapse">
                               <div class="panel-body">
-                                    <form class="form-horizontal" role="form">
-                                        <div class="form-group">
-                                                <label class="col-md-3 pp_form_label control-label">File</label>
-                                                <div class="col-md-8">
-                                                  <input type="file" class="form-control pp_form_textbox pp_form_file_upload">
-                                                </div>
+                                <form action="v-includes/class.formData.php" method="post" id="user_port" class="form-horizontal" role="form" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label class="col-md-3 pp_form_label control-label">File</label>
+                                        <div class="col-md-8">
+                                          <input type="file" name="file1" class="form-control pp_form_textbox pp_form_file_upload">
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 pp_form_label control-label">Skills Required</label>
-                                            <div class="col-md-8">
-                                              <input type="text" class="form-control pp_form_textbox">
-                                            </div>
-                                          </div>
-                                        <div class="form-group">
-                                                <label class="col-md-3 pp_form_label control-label">Description</label>
-                                                <div class="col-md-8">
-                                                  <textarea class="form-control pp_form_textbox pp_text_area"></textarea>
-                                                </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 pp_form_label control-label">Skills Required</label>
+                                        <div class="col-md-8">
+                                          <input type="text" name="skills1" class="form-control pp_form_textbox">
                                         </div>
-                                        <div class="form-group">
-                                            <div class="col-md-offset-3 col-md-8">
-                                              <button type="submit" class="btn btn-success ">SAVE</button>
-                                              <button type="button" class="btn btn-primary">+ADD ANOTHER</button>
-                                            </div>
-                                          </div>
-                                    </form>
+                                      </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 pp_form_label control-label">Description</label>
+                                        <div class="col-md-8">
+                                          <textarea class="form-control pp_form_textbox pp_text_area" name="des1"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="add_another_port"></div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-md-offset-3 col-md-8">
+                                        	<input type="hidden" name="fn" value="<?php echo md5('user_portfolio'); ?>" />
+                                          <input type="button" id="port_submit" class="btn btn-success" value="SAVE" />
+                                          <button type="button" class="btn btn-primary" id="adding_port">+ADD ANOTHER</button>
+                                        </div>
+                                   </div>
+                                </form>
                               </div>
                             </div>
                           </div>
@@ -304,44 +308,48 @@
                             </div>
                             <div id="collapsefive" class="panel-collapse collapse">
                               <div class="panel-body">
-                                    <form class="form-horizontal" role="form">
-                                        <div class="form-group">
-                                                <label class="col-md-3 pp_form_label control-label">Company Name</label>
-                                                <div class="col-md-8">
-                                                  <input type="text" class="form-control pp_form_textbox">
-                                                </div>
+                                <form action="v-includes/class.formData.php" method="post" id="user_emp" class="form-horizontal" role="form" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label class="col-md-3 pp_form_label control-label">Company Name</label>
+                                        <div class="col-md-8">
+                                          <input type="text" class="form-control pp_form_textbox" name="comp1">
                                         </div>
-                                        <div class="form-group">
-                                                <label class="col-md-3 pp_form_label control-label">Position</label>
-                                                <div class="col-md-8">
-                                                  <input type="text" class="form-control pp_form_textbox">
-                                                </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 pp_form_label control-label">Position</label>
+                                        <div class="col-md-8">
+                                          <input type="text" class="form-control pp_form_textbox" name="pos1">
                                         </div>
-                                        <div class="form-group">
-                                                <label class="col-md-3 pp_form_label control-label">Start Date</label>
-                                                <div class="col-md-4">
-                                                    <input type="date" class="form-control pp_form_textbox">
-                                                </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 pp_form_label control-label">Start Date</label>
+                                        <div class="col-md-4">
+                                            <input type="date" class="form-control pp_form_textbox" name="start1">
                                         </div>
-                                        <div class="form-group">
-                                               <label class="col-md-3 pp_form_label control-label">End Date</label>
-                                                <div class="col-md-4">
-                                                    <input type="date" class="form-control pp_form_textbox">
-                                                </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <label class="col-md-3 pp_form_label control-label">End Date</label>
+                                        <div class="col-md-4">
+                                            <input type="date" class="form-control pp_form_textbox" name="end1">
                                         </div>
-                                        <div class="form-group">
-                                                <label class="col-md-3 pp_form_label control-label">Descrition</label>
-                                                <div class="col-md-8">
-                                                  <textarea class="form-control pp_form_textbox pp_text_area"></textarea>
-                                                </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 pp_form_label control-label">Descrition</label>
+                                        <div class="col-md-8">
+                                          <textarea class="form-control pp_form_textbox pp_text_area" name="des1"></textarea>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="col-md-offset-3 col-md-8">
-                                              <button type="submit" class="btn btn-success">SAVE</button>
-                                              <button type="button" class="btn btn-primary">+ADD ANOTHER</button>
-                                            </div>
-                                          </div>
-                                    </form>
+                                    </div>
+                                    
+                                    <div id="add_another_emp"></div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-md-offset-3 col-md-8">
+                                            <input type="hidden" name="fn" value="<?php echo md5('user_employment'); ?>" />
+                                          <input type="button" id="emp_submit" class="btn btn-success" value="SAVE" />
+                                          <button type="button" class="btn btn-primary" id="adding_emp">+ADD ANOTHER</button>
+                                        </div>
+                                   </div>
+                                </form>
                               </div>
                             </div>
                           </div>
@@ -354,44 +362,48 @@
                             </div>
                             <div id="collapseseven" class="panel-collapse collapse">
                               <div class="panel-body">
-                                    <form class="form-horizontal" role="form">
-                                        <div class="form-group">
-                                                <label class="col-md-3 pp_form_label control-label">Institution Name</label>
-                                                <div class="col-md-8">
-                                                  <input type="text" class="form-control pp_form_textbox">
-                                                </div>
+                                <form action="v-includes/class.formData.php" method="post" id="user_edu" class="form-horizontal" role="form" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label class="col-md-3 pp_form_label control-label">Institution Name</label>
+                                        <div class="col-md-8">
+                                          <input type="text" class="form-control pp_form_textbox" name="inst1">
                                         </div>
-                                        <div class="form-group">
-                                                <label class="col-md-3 pp_form_label control-label">Degree</label>
-                                                <div class="col-md-8">
-                                                  <input type="text" class="form-control pp_form_textbox">
-                                                </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 pp_form_label control-label">Degree</label>
+                                        <div class="col-md-8">
+                                          <input type="text" class="form-control pp_form_textbox" name="deg1">
                                         </div>
-                                        <div class="form-group">
-                                                <label class="col-md-3 pp_form_label control-label">Start Date</label>
-                                                <div class="col-md-4">
-                                                    <input type="date" class="form-control pp_form_textbox">
-                                                </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 pp_form_label control-label">Start Date</label>
+                                        <div class="col-md-4">
+                                            <input type="date" class="form-control pp_form_textbox" name="start1">
                                         </div>
-                                        <div class="form-group">
-                                               <label class="col-md-3 pp_form_label control-label">End Date</label>
-                                                <div class="col-md-4">
-                                                    <input type="date" class="form-control pp_form_textbox">
-                                                </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <label class="col-md-3 pp_form_label control-label">End Date</label>
+                                        <div class="col-md-4">
+                                            <input type="date" class="form-control pp_form_textbox" name="end1">
                                         </div>
-                                        <div class="form-group">
-                                                <label class="col-md-3 pp_form_label control-label">Descrition</label>
-                                                <div class="col-md-8">
-                                                  <textarea class="form-control pp_form_textbox pp_text_area"></textarea>
-                                                </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 pp_form_label control-label">Descrition</label>
+                                        <div class="col-md-8">
+                                          <textarea class="form-control pp_form_textbox pp_text_area" name="des1"></textarea>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="col-md-offset-3 col-md-8">
-                                              <button type="submit" class="btn btn-success">SAVE</button>
-                                              <button type="button" class="btn btn-primary">+ADD ANOTHER</button>
-                                            </div>
-                                          </div>
-                                    </form>
+                                    </div>
+                                    
+                                    <div id="add_another_edu"></div>
+                                    
+                                    <div class="form-group">
+                                    <div class="col-md-offset-3 col-md-8">
+                                    	<input type="hidden" name="fn" value="<?php echo md5('user_education'); ?>" />
+                                      <input type="button" id="edu_submit" class="btn btn-success" value="SAVE" />
+                                      <button type="button" class="btn btn-primary" id="adding_edu">+ADD ANOTHER</button>
+                                    </div>
+                                  </div>
+                                </form>
                               </div>
                             </div>
                           </div>

@@ -1441,6 +1441,11 @@ border-top-right-radius: 5px;
 	border-radius:4px;
 	float:left;
 }
+.remove_portfolio_text{
+	color:#F00;
+	text-align:right;
+	cursor: pointer;
+}
 
 
 
