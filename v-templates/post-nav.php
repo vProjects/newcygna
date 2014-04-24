@@ -11,8 +11,8 @@
                     <ul class="nav navbar-nav header_nav_outline">
                         <li class="header_nav"><a href="cygna.php">Cygna</a></li>
                         <li class="header_nav"><a href="profile.php">Profile</a></li>
-                        <li class="header_nav"><a href="project_list.php">Projects</a></li>
-                        <li class="header_nav"><a href="post_bid.php">Bid</a></li>
+                        <li class="header_nav"><a href="post_project.php">Post a Job</a></li>
+                        <li class="header_nav"><a href="project_list.php">Find Job</a></li>
                         <li class="header_nav"><a href="survey.php">Survey</a></li>
                         <li class="header_nav"><a href="ticket.php">Submit Ticket</a></li>
                         <li class="header_nav"><a href="v-modules/logout.php">Log Out</a></li>

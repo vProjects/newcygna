@@ -92,4 +92,75 @@ $(document).ready(function(e) {
 		}
     });
 	
+	//getting project sub category
+	$('#pro_category').change(function(e) {
+        var cat = $(this).val();
+		sendingData = 'category='+cat+'&refData=gettingSubCategory';
+		
+		//calling ajax function
+		$.ajax({
+			type: "POST",
+			url:"v-includes/class.fetchData.php",
+			data: sendingData,
+			beforeSend:function(){
+				// this is where we append a loading image
+				$('').html('');
+			  },
+			success:function(result){
+				$('#pro_sub_category').fadeIn(500);
+				$('#pro_sub_category').html(result);
+				return false;
+		}});
+    });
+	
+	//setting work type for post project
+	$('#pp_work_type').change(function(e) {
+        var work_type = $(this).val();
+		//checking for not null value
+		if(work_type != null)
+		{
+			sendingData = 'work_type='+work_type+'&refData=gettingWorkTypeDetails';
+			//calling ajax function
+			$.ajax({
+				type: "POST",
+				url:"v-includes/class.fetchData.php",
+				data: sendingData,
+				beforeSend:function(){
+					// this is where we append a loading image
+					$('').html('');
+				  },
+				success:function(result){
+					$('#pp_form_work_type').html(result);
+					return false;
+			}});
+		}
+    });
+	
+	/*
+		method for showing the custom price range in post project form 
+		Auth: Dipanjan
+	*/
+	
+	$(document).on("change", "#hourly_rate_list", function(){
+		if($(this).val() == 'custom_price_hourly')
+		{
+			$('#pp_hourly_manual_rate').css('display','block');
+		}
+		else
+		{
+			$('#pp_hourly_manual_rate').css('display','none');
+		}
+	});
+	
+	$(document).on("change", "#fixed_rate_list", function(){
+		if($(this).val() == 'custom_price_fixed')
+		{
+			$('#pp_fixed_manual_rate').css('display','block');
+		}
+		else
+		{
+			$('#pp_fixed_manual_rate').css('display','none');
+		}
+	});
+	
 });

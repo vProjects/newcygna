@@ -27,6 +27,7 @@
 <script src="dist/js/bootstrap.js"></script>
 <script src="js/validiation.js"></script>
 <script src="js/asynch-function.js"></script>
+<script src="js/element-effect.js"></script>
 <title>CYGNATECH | <?php echo $pageTitle; ?></title>
 </head>
 

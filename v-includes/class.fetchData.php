@@ -72,6 +72,90 @@
 			}
 			echo $userCounter;
 		}
+		
+		/*
+		- method for getting sub category of a category
+		- Auth: Dipanjan
+		*/
+		function getSubCategory($category)
+		{
+			/* Initially we set sub categories are same */
+			echo '<option value="Sub Category 1">Sub Category 1</option>
+					<option value="Sub Category 2">Sub Category 2</option>
+					<option value="Sub Category 3">Sub Category 3</option>
+					<option value="Sub Category 4">Sub Category 4</option>
+					<option value="Sub Category 5">Sub Category 5</option>';
+		}
+		
+		/*
+		- method for getting post project wok type details
+		- Auth: Dipanjan
+		*/
+		function getWorkTypeDetails($work_type)
+		{
+			//checking for work type
+			if($work_type == 'Hourly')
+			{
+				echo '<div class="rate_optional_text">
+						<div class="pull-left">
+							<select class="form-control pp_hourly_selectbox pull-left" name="hourly_rate" id="hourly_rate_list">
+								<option value="">-- select hourly rate --</option>
+								<option value="Less Than $10/hr">Less Than $10/hr</option>
+								<option value="$10/hr to $15/hr">$10/hr to $15/hr</option>
+								<option value="$15/hr to $20/hr">$15/hr to $20/hr</option>
+								<option value="$20/hr to $30/hr">$20/hr to $30/hr</option>
+								<option value="$30/hr to $40/hr">$30/hr to $40/hr</option>
+								<option value="$40/hr to $50/hr">$40/hr to $50/hr</option>
+								<option value="Above $50/hr">Above $50/hr</option>
+								<option value="custom_price_hourly">Enter Custom Price Range</option>
+							</select>
+						</div>
+						<div class="pull-left" id="pp_hourly_manual_rate">
+							<input type="text" class="col-md-2 pull-left pp_form_textbox pp_form_pr_textbox" placeholder="min" name="hourly_custom_min" />
+							<p class="pull-left"> To </p>
+							<input type="text" class="col-md-2 pull-left pp_form_textbox pp_form_pr_textbox" placeholder="max" name="hourly_custom_max" />
+							<div class="clearfix"></div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="rate_optional_text" id="pp_hourly_info">
+						<input type="text" class="col-md-2 pull-left pp_form_textbox pp_form_mini_textbox" name="hours_of_week"/>
+						<p class="pull-left">hrs/week </p>
+						<select class="form-control pp_total_week_selectbox pull-left" name="hourly_time_range">
+							<option>-- select duration --</option>
+							<option value="1-2 weeeks">1-2 weeks</option>
+							<option value="3-4 weeks">3-4 weeks</option>
+							<option value="1-2 months">1-2 months</option>
+							<option value="3-4 months">3-4 months</option>
+						</select>
+						<div class="clearfix"></div>
+					</div>
+					<div class="clearfix"></div>';
+			}
+			else if($work_type == 'Fixed')
+			{
+				echo '<div class="rate_optional_text">
+						<div class="pull-left" id="pp_fixed_rate">
+							<select class="form-control pp_hourly_selectbox pull-left" name="fixed_rate" id="fixed_rate_list">
+								<option value="">-- select fixed rate --</option>
+								<option value="Less than $500">Less than $500</option>
+								<option value="$500 to $1000">$500 to $1000</option>
+								<option value="$1000 to $5000">$1000 to $5000</option>
+								<option value="$5000 to $10000">$5000 to $10000</option>
+								<option value="Above $10000">Above $10000</option>
+								<option value="custom_price_fixed">Enter Custom Price Range</option>
+							</select>
+						</div>
+						<div class="pull-left" id="pp_fixed_manual_rate">
+							<input type="text" class="col-md-2 pull-left pp_form_textbox pp_form_pr_textbox" placeholder="min" name="fixed_custom_min" />
+							<p class="pull-left"> To </p>
+							<input type="text" class="col-md-2 pull-left pp_form_textbox pp_form_pr_textbox" placeholder="max" name="fixed_custom_max" />
+							</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="clearfix"></div>';
+			}
+		}
 			
 	}
 	
@@ -91,6 +175,18 @@
 		case 'usernameChecking':
 		{
 			$usernameChecking = $fetchData->getUniqueUsername($GLOBALS['_POST']['username']);
+			break;
+		}
+		//for getting sub category in post project
+		case 'gettingSubCategory':
+		{
+			$getSubCat = $fetchData->getSubCategory($GLOBALS['_POST']['category']);
+			break;
+		}
+		//for getting post project work type details
+		case 'gettingWorkTypeDetails':
+		{
+			$getWorkType = $fetchData->getWorkTypeDetails($GLOBALS['_POST']['work_type']);
 			break;
 		}
 		default:

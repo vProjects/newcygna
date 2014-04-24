@@ -12,8 +12,9 @@
 	{
 		echo 'jjj';
 	}*/
-	
-	echo md5(123456);
+	$date = '2014-04-25';
+	$time = '30 Days';
+	echo date('Y-m-d', strtotime($date." + ".$time));
 ?>
 
 <div style="background-color:#02B7DD></div>

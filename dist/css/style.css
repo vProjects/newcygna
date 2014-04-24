@@ -926,6 +926,36 @@ a:hover{
 .pp_form_multiple_selectbox{
 	width:70%;
 }
+#pro_sub_category{
+	display:none;
+}
+.rate_optional_text{
+	margin:20px 0 10px;
+}
+.pp_form_mini_textbox{
+	margin-right:15px;
+	padding: 6px 0;
+}
+.pp_form_pr_textbox{
+	margin:0 15px;
+	padding: 4px 5px;
+}
+.pp_total_week_selectbox{
+	width:30%;
+	margin:0 15px;
+}
+.pp_hourly_selectbox{
+	width:100%;
+	margin-right:15px;
+}
+#pp_hourly_manual_rate{
+	display:none;
+	width:60%;
+}
+#pp_fixed_manual_rate{
+	display:none;
+	width:60%;
+}
 
 /* advertisement page css */
 .advertisement_body_outline{

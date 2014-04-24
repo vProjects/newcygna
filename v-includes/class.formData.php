@@ -200,7 +200,7 @@
 		function insertUserProfileInfo($user_id,$userData)
 		{
 			//getting the skills that user have
-			//varriable which will contain the category in string format
+			//varriable which will contain the skills in string format
 			$skills_string = ""; 
 			
 			if(!empty($userData['skills']))
@@ -212,7 +212,7 @@
 					$skills_string = $skills_string.",".$skill;
 				}
 				/*
-				- remove the first word from the $category_string sa it
+				- remove the first word from the $skills_string sa it
 				- it contains a comma
 				*/
 				
@@ -356,6 +356,125 @@
 			}
 			return $insert;
 		}
+		
+		/*
+		- method for inserting project details value
+		- Auth: Dipanjan
+		*/
+		function insertProjectInfo($user_id,$userData,$userFile)
+		{
+			//creating project id
+			$project_id = uniqid('pro');
+			//varriable which will contain the skills in string format
+			$skills_string = ""; 
+			
+			if(!empty($userData['skills']))
+			{
+				$skills = $userData['skills'];
+				//convert array to string seperated by commas
+				foreach($skills as $skill)
+				{
+					$skills_string = $skills_string.",".$skill;
+				}
+				/*
+				- remove the first word from the $skills_string sa it
+				- it contains a comma
+				*/
+				
+				$skills_string = substr($skills_string,1);
+			}
+			
+			//uploading profile pic
+			if(!empty($userFile['file']['name']) && !empty($userFile['file']['size']))
+			{
+				//get unix timestamp
+				$unixTimeStamp = time();
+				//image desired name
+				$project_file_name = md5($project_id.$unixTimeStamp);
+				$pro_pic = $this->manageFileUploader->upload_document_file($project_file_name,$userFile['file'],'../files/project/');
+				$project_file = 'files/project/'.$pro_pic;	
+			}
+			else
+			{
+				$project_file = '';
+			}
+			//getting current date and time
+			$curDate = $this->getCurrentDate();
+			$curTime = $this->getCurrentTime();
+			//getting work type
+			$work_type = $userData['pp_work_type'];
+			//getting price range
+			if($work_type == 'Hourly')
+			{
+				if($userData['hourly_rate'] != 'custom_price_hourly')
+				{
+					$price_range = $userData['hourly_rate'];
+				}
+				else
+				{
+					if(!empty($userData['hourly_custom_min']) && !empty($userData['hourly_custom_max']))
+					{
+						$price_range = '$'.$userData['hourly_custom_min'].'/hr to $'.$userData['hourly_custom_max'].'/hr';
+					}
+					else
+					{
+						$price_range = '';
+					}
+				}
+				//getting hours work type other values
+				if(!empty($userData['hours_of_week']))
+				{
+					$hours_of_week = $userData['hours_of_week'];
+				}
+				else
+				{
+					$hours_of_week = '';
+				}
+				
+				if(!empty($userData['hourly_time_range']))
+				{
+					$hourly_time_range = $userData['hourly_time_range'];
+				}
+				else
+				{
+					$hours_of_week = '';
+				}
+			}
+			else if($work_type == 'Fixed')
+			{
+				if($userData['fixed_rate'] != 'custom_price_fixed')
+				{
+					$price_range = $userData['fixed_rate'];
+				}
+				else
+				{
+					if(!empty($userData['fixed_custom_min']) && !empty($userData['fixed_custom_max']))
+					{
+						$price_range = '$'.$userData['fixed_custom_min'].' to '.$userData['fixed_custom_max'];
+					}
+					else
+					{
+						$price_range = '';
+					}
+				}
+			}
+			
+			//getting ip of job posted
+			$ip = $this->manageUtility->getIpAddress();
+			//job ending date
+			$project_valid_time = $userData['pp_project_validity'];
+			$job_ending_date = date('Y-m-d', strtotime($curDate." + ".$project_valid_time));
+			
+			//inserting the values to database
+			$column_name = array("project_id","description","user_id","category","sub_category","skills","file","date","time","work_type","price_range","hour_per_week","hourly_time_frame","job_post_ip","ending_date","preferred_locations");
+			
+			$column_value = arra($project_id,$userData['pp_des'],$user_id,$userData['pro_category'],$userData['pro_sub_category'],$skills_string,$project_file,$curDate,$curTime,$work_type,$price_range,$hours_of_week,$hourly_time_range,$ip,$job_ending_date,$userData['pp_prefer_loc']);
+			
+			$insertProjectValue = $this->manageContent->insertValue("project_info",$column_name,$column_value);
+			return $insertProjectValue;
+			
+		}
+		
 		
 		/*
 		- method for setting cookie
@@ -538,6 +657,21 @@
 				$_SESSION['warning'] = 'Saving Education Unsuccessfull!';
 			}
 			header("Location: ../edit_profile.php");
+			break;
+		}
+		//for inserting values of project post
+		case md5('project_post'):
+		{
+			$insertProjectInfo = $formData->insertProjectInfo($_SESSION['user_id'],$GLOBALS['_POST'],$GLOBALS['_FILES']);
+			if($insertProjectInfo == 1)
+			{
+				$_SESSION['success'] = 'Project Post Successfully!!';
+			}
+			else
+			{
+				$_SESSION['warning'] = 'Project Posting unsuccessfull!!';
+			}
+			header("Location: ../post_project.php");
 			break;
 		}
 		default:
