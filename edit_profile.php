@@ -233,7 +233,10 @@
                                   <div class="form-group">
                                     <label class="col-md-3 pp_form_label control-label">Availability</label>
                                     <div class="col-md-8">
-                                      <input type="text" class="form-control pp_form_textbox" name="availability">
+                                      <select class="form-control pp_form_selectbox" name="availability">
+                                        <option value="Full Time">Full Time</option>
+                                        <option value="Part Time">Part Time</option>
+                                    </select>
                                     </div>
                                   </div>
                                   <div class="form-group">

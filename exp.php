@@ -12,9 +12,15 @@
 	{
 		echo 'jjj';
 	}*/
-	$date = '2014-04-25';
-	$time = '30 Days';
-	echo date('Y-m-d', strtotime($date." + ".$time));
+	$skill = (explode(',','Skill1,Skill2,Skill3,Skill5,Skill6,Skill7,Skill8,Skill10,Skill55'));
+	
+	echo end(array_keys($skill));
+	foreach($skill as $skills)
+	{
+		
+		/*if($i == count($skill))
+		{
+			echo count($skill);
+		}*/
+	}
 ?>
-
-<div style="background-color:#02B7DD></div>

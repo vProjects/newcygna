@@ -55,11 +55,11 @@
         </div>
         <div class="form-group pp_form_group">
             <label class="pp_form_label">Set work arrangement</label>
-                <select class="form-control pp_form_selectbox" id="pp_work_type" name="pp_work_type">
-                    <option value="">-- select work type --</option>
-                    <option value="Hourly">Hourly</option>
-                    <option value="Fixed">Fixed</option>
-                </select>
+            <select class="form-control pp_form_selectbox" id="pp_work_type" name="pp_work_type">
+                <option value="">-- select work type --</option>
+                <option value="Hourly">Hourly</option>
+                <option value="Fixed">Fixed</option>
+            </select>
            	<div id="pp_form_work_type"></div>
         </div>
         <div class="form-group pp_form_group">
