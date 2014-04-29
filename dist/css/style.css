@@ -1357,8 +1357,12 @@ padding-right: 10px;
 
 	padding-left: 30px;
 
-	
-
+}
+.survey_form{
+	margin-bottom:20px;
+}
+.survey_feedback_resize{
+	resize:vertical;
 }
 
 .ans-font{

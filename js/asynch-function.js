@@ -163,4 +163,56 @@ $(document).ready(function(e) {
 		}
 	});
 	
+	//getting the crop image details for profile image
+	$('#pro_pic_crop').click(function(e) {
+        var img_src = $('#pro_pic_preview img').attr('src');
+		var pro_x = $('#pro_x').val();
+		var pro_y = $('#pro_y').val();
+		var pro_w = $('#pro_w').val();
+		var pro_h = $('#pro_h').val();
+		var pro_x2 = $('#pro_x2').val();
+		var pro_y2 = $('#pro_y2').val();
+		
+		sendingData = 'src='+img_src+'&pro_x='+pro_x+'&pro_y='+pro_y+'&pro_w='+pro_w+'&pro_h='+pro_h+'&pro_x2='+pro_x2+'&pro_y2='+pro_y2+'&refData=gettingProfileCrop';
+		
+		//calling ajax function
+		$.ajax({
+			type: "POST",
+			url:"v-includes/class.fetchData.php",
+			data: sendingData,
+			beforeSend:function(){
+				// this is where we append a loading image
+				$('').html('');
+			  },
+			success:function(result){
+				console.log(result);
+				return false;
+		}});
+    });
+	
+	
+	//inserting survey feddback report
+	$('#survey_feddback').click(function(e) {
+        //get feedback value
+		var feedback = $('#survey_report').val();
+		if(feedback != null)
+		{
+			sendingData = 'feedback='+feedback+'&refData=insertFeedbackReport';
+			//calling ajax function
+			$.ajax({
+				type: "POST",
+				url:"v-includes/class.fetchData.php",
+				data: sendingData,
+				beforeSend:function(){
+					// this is where we append a loading image
+					$('').html('');
+				  },
+				success:function(result){
+					location.reload();
+					return false;
+			}});
+		}
+		
+    });
+	
 });

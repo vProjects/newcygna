@@ -477,6 +477,39 @@
 		
 		
 		/*
+		- method for survey report submit
+		- Auth: Dipanjan
+		*/
+		function submitSurveyReport($user_id,$userData)
+		{
+			//getting the active survey set no
+			$active_set = $this->manageContent->getValue_where("survey_info","*","status",1);
+			$survey_set_no = $active_set[0]['set_no'];
+			//getting the questions which are answered
+			foreach($userData as $key=>$value)
+			{
+				if(substr($key,0,1) == 'q')
+				{
+					$question_no = substr($key,1);
+					//getting values of user id of that answer
+					$ans_user = $this->manageContent->getValueMultipleCondtn("survey_info","*",array("set_no","question_no","answer_no"),array($survey_set_no,$question_no,$value));
+					$user_field = $ans_user[0]['user_id'];
+					if(empty($user_field))
+					{
+						$new_user_field = $user_id;
+					}
+					else
+					{
+						$new_user_field = ','.$user_id;
+					}
+					//updating the value
+					$update = $this->manageContent->updateValueWhere("survey_info","user_id",$new_user_field,"id",$ans_user[0]['id']);
+				}
+			}
+			return $update;
+		}
+		
+		/*
 		- method for setting cookie
 		- Auth: Dipanjan
 		*/
@@ -672,6 +705,21 @@
 				$_SESSION['warning'] = 'Project Posting unsuccessfull!!';
 			}
 			header("Location: ../post_project.php");
+			break;
+		}
+		//for inserting survey report
+		case md5('survey_report'):
+		{
+			$submitSurveyReport = $formData->submitSurveyReport($_SESSION['user_id'],$GLOBALS['_POST']);
+			if($submitSurveyReport == 1)
+			{
+				$_SESSION['success'] = 'Survey Report Submitted Successfully!!';
+			}
+			else
+			{
+				$_SESSION['warning'] = 'Survey Report Submission Unsuccessfully!!';
+			}
+			header("Location: ../survey.php");
 			break;
 		}
 		default:

@@ -21,6 +21,7 @@
 
 <link rel="stylesheet" type="text/css" href="dist/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="dist/css/bootstrap-theme.css" />
+<link rel="stylesheet" type="text/css" href="dist/css/jquery.Jcrop.min.css" />
 <link rel="stylesheet" type="text/css" href="dist/css/style.css" />
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -28,6 +29,7 @@
 <script src="js/validiation.js"></script>
 <script src="js/asynch-function.js"></script>
 <script src="js/element-effect.js"></script>
+<script src="js/jquery.Jcrop.min.js"></script>
 <title>CYGNATECH | <?php echo $pageTitle; ?></title>
 </head>
 

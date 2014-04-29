@@ -35,7 +35,7 @@
                                     PERSONAL INFORMATION
                               </h4>
                             </div>
-                            <div id="collapseOne" class="panel-collapse collapse in">
+                            <div id="collapseOne" class="panel-collapse collapse">
                               <div class="panel-body">    
                                 <form action="v-includes/class.formData.php" class="form-horizontal" role="form" method="post">
                                       <div class="form-group">
@@ -118,10 +118,10 @@
                                         IMAGES
                               </h4>
                             </div>
-                            <div id="collapseTwo" class="panel-collapse collapse">
+                            <div id="collapseTwo" class="panel-collapse collapse in">
                               <div class="panel-body">
                                 
-                                <form action="v-includes/class.formData.php" class="form-horizontal" id="image_info" role="form" method="post" enctype="multipart/form-data">
+                                <form action="#" class="form-horizontal" id="image_info" role="form" method="post" enctype="multipart/form-data">
                                   <div class="form-group">
                                     <label class="col-md-3 pp_form_label control-label">Profile Image</label>
                                     <div class="col-md-8">
@@ -130,10 +130,23 @@
                                     </div>
                                   </div>
                                   <div class="form-group">
-                                    <div class="col-md-offset-3 col-md-4" id="pro_pic_preview">
+                                    <div class="col-md-offset-3 col-md-8" id="pro_pic_preview">
                                       
                                     </div>
                                   </div>
+                                  <div class="form-group">
+                                    <div class="col-md-offset-3 col-md-8">
+                                    <input type="hidden" id="pro_x" name="x" /></label>
+                                    <input type="hidden" id="pro_y" name="y" /></label>
+                                    <input type="hidden" id="pro_x2" name="x2" /></label>
+                                    <input type="hidden" id="pro_y2" name="y2" /></label>
+                                    <input type="hidden" id="pro_w" name="w" /></label>
+                                    <input type="hidden" id="pro_h" name="h" /></label>
+                                      <input type="button" class="btn btn-success" value="CROP & SAVE" id="pro_pic_crop">
+                                    </div>
+                                  </div>
+                                </form>
+                                <form action="v-includes/class.formData.php" class="form-horizontal" id="image_info" role="form" method="post" enctype="multipart/form-data">
                                   <div class="form-group">
                                     <label class="col-md-3 pp_form_label control-label">Cover Image</label>
                                     <div class="col-md-8">

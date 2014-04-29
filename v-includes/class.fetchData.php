@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	//include the DAL library to use the model layer methods
 	include 'class.DAL.php';
 	
@@ -156,6 +157,30 @@
 					<div class="clearfix"></div>';
 			}
 		}
+		
+		/*
+		- method for inserting profile crop image
+		- Auth: Dipanjan
+		*/
+		function insertProfileImage($user_id,$cropData)
+		{
+			
+		}
+		
+		/*
+		- method for inserting survey feedback
+		- Auth: Dipanjan
+		*/
+		function insertSurveyFeedback($user_id,$userData)
+		{
+			//checking for active survey set
+			$active_survey_set = $this->manageContent->getValue_where("survey_info","*","status",1);
+			$survey_set = $active_survey_set[0]['set_no'];
+			//insert the value to survey feedback table
+			$column_name = array("user_id","set_no","feedback");
+			$column_value = array($user_id,$survey_set,$userData['feedback']);
+			$insert = $this->manageContent->insertValue("survey_feedback",$column_name,$column_value);
+		}
 			
 	}
 	
@@ -187,6 +212,19 @@
 		case 'gettingWorkTypeDetails':
 		{
 			$getWorkType = $fetchData->getWorkTypeDetails($GLOBALS['_POST']['work_type']);
+			break;
+		}
+		//for inserting the crop image of profile image
+		case 'gettingProfileCrop':
+		{
+			print_r($GLOBALS['_FILES']);
+			//$getWorkType = $fetchData->getWorkTypeDetails($GLOBALS['_POST']['work_type']);
+			break;
+		}
+		//for inserting the survey feedback
+		case 'insertFeedbackReport':
+		{
+			$insertFeedback = $fetchData->insertSurveyFeedback($_SESSION['user_id'],$GLOBALS['_POST']);
 			break;
 		}
 		default:

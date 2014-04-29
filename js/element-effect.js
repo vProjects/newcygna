@@ -260,6 +260,28 @@ $(document).ready(function(e) {
 		//submitting the form
 		$('#user_edu').submit();
     });
+	
+	//to crop the profile pic
+	$(document).on("click","#pro_pic_preview img",function(){
+
+		$('#pro_pic_preview img').Jcrop({
+			onSelect: updateCoordsPro,
+			setSelect: [ 50, 50, 50, 50 ],
+			maxSize: [ 270, 200 ],
+			minSize: [ 270, 200 ],
+			
+		});
+	});
+
+	function updateCoordsPro(c)
+	{
+		$('#pro_x').val(c.x);
+		$('#pro_y').val(c.y);
+		$('#pro_w').val(c.w);
+		$('#pro_h').val(c.h);
+		$('#pro_x2').val(c.x2);
+		$('#pro_y2').val(c.y2);		
+	};
 
 	
 });

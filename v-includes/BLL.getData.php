@@ -210,6 +210,120 @@
 			}
 		}
 		
+		/*
+		- method for getting survey set active
+		- Auth: Dipanjan
+		*/
+		function getSurveySet($user_id)
+		{
+			//checking for active survey set
+			$active_survey_set = $this->manage_content->getValue_where("survey_info","*","status",1);
+			$survey_set = $active_survey_set[0]['set_no'];
+			//initialize the parameter
+			$user_survey_status = 0;
+			foreach($active_survey_set as $set_no)
+			{
+				//checking that user id gave the answers or not
+				if(strpos($set_no['user_id'],$user_id) !== false)
+				{
+					$user_survey_status = 1;
+					break;
+				}
+			}
+			return array($user_survey_status,$survey_set);
+		}
+		
+		/*
+		- method for getting survey questions
+		- Auth: Dipanjan
+		*/
+		function getSurveyQusetions($user_id,$survey_set_no,$action)
+		{
+			//getting the set which are active
+			$active_set = $this->manage_content->getValueMultipleCondtn("survey_info","question_no",array("set_no"),array($survey_set_no));
+			if(!empty($active_set[0]['question_no']))
+			{
+				//initialize an empty array
+				$question_set = array();
+				//seperating the identical questions in an array
+				foreach($active_set as $set_question)
+				{
+					//checking that qestion number is present oin array or not
+					if(!in_array($set_question['question_no'],$question_set))
+					{
+						//pushing the question number in array
+						array_push($question_set,$set_question['question_no']);
+					}
+				}
+				//getting the answers for each question
+				if(!empty($question_set[0]))
+				{
+					foreach($question_set as $questions)
+					{
+						//getting the value from database
+						$question_details = $this->manage_content->getValueMultipleCondtn("survey_info","*",array("question_no","set_no"),array($questions,$survey_set_no));
+						//printing the question and the answers
+						echo '<div class="col-md-12">
+								<p class="question-font">'.$questions.'. '.$question_details[0]['question'].'</p>
+								<div class="col-xs-12">';
+						
+						foreach($question_details as $question_detail)
+						{
+							
+							echo '<div class="col-sm-6">
+									<div class="col-sm-9">
+										<div class="radio ans-font">';
+										//this is for insert value
+										if($action == 'insert')
+										{
+											echo '<label><input type="radio" name="q'.$questions.'" value="'.$question_detail['answer_no'].'">'.$question_detail['answer'].'</label>';
+										}
+										//this is after inserting value
+										else if($action == 'update')
+										{
+											//checking that user id is present or not
+											if(strpos($question_detail['user_id'],$user_id) !== false)
+											{
+												echo '<label><input type="radio" name="q'.$questions.'" value="'.$question_detail['answer_no'].'" checked="checked">'.$question_detail['answer'].'</label>';
+											}
+											else
+											{
+												echo '<label><input type="radio" name="q'.$questions.'" value="'.$question_detail['answer_no'].'">'.$question_detail['answer'].'</label>';
+											}
+										}
+											
+							echo		'</div>
+									</div>
+								</div>';
+						}
+						
+						echo '</div>
+							</div>';
+					}
+				}
+			}
+			
+		}
+		
+		/*
+		- method for getting survey feedback
+		- Auth: Dipanjan
+		*/
+		function getSurveyFeedback($user_id,$survey_set_no)
+		{
+			//checking for user submitted the feedback or not
+			$user_feed = $this->manage_content->getValueMultipleCondtn("survey_feedback","*",array("user_id","set_no"),array($user_id,$survey_set_no));
+			if(empty($user_feed[0]))
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+			
+		}
+		
 	}
 	
 ?>

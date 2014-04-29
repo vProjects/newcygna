@@ -12,15 +12,8 @@
 	{
 		echo 'jjj';
 	}*/
-	$skill = (explode(',','Skill1,Skill2,Skill3,Skill5,Skill6,Skill7,Skill8,Skill10,Skill55'));
 	
-	echo end(array_keys($skill));
-	foreach($skill as $skills)
-	{
-		
-		/*if($i == count($skill))
-		{
-			echo count($skill);
-		}*/
-	}
+	$abc = 'abc';
+	$a = 'abc';
+	echo strpos($abc,$a);
 ?>
