@@ -181,6 +181,26 @@
 			$column_value = array($user_id,$survey_set,$userData['feedback']);
 			$insert = $this->manageContent->insertValue("survey_feedback",$column_name,$column_value);
 		}
+		
+		/*
+		- method for inserting polling answer
+		- Auth: Dipanjan
+		*/
+		function insertPollingAnswer($user_id,$userData)
+		{
+			//getting the user id fiels from database
+			$users = $this->manageContent->getValueMultipleCondtn("polling_info","*",array("set_no","answer_no"),array($userData['set_no'],$userData['answer']));
+			if(empty($users[0]['user_id']))
+			{
+				$new_user_id = $user_id;
+			}
+			else
+			{
+				$new_user_id = ','.$user_id;
+			}
+			//updating the user id field
+			$update = $this->manageContent->updateValueWhere("polling_info","user_id",$new_user_id,"id",$users[0]['id']);
+		}
 			
 	}
 	
@@ -225,6 +245,12 @@
 		case 'insertFeedbackReport':
 		{
 			$insertFeedback = $fetchData->insertSurveyFeedback($_SESSION['user_id'],$GLOBALS['_POST']);
+			break;
+		}
+		//for inserting the polling answer
+		case 'insertPollingAnswer':
+		{
+			$insertPollingAnswer = $fetchData->insertPollingAnswer($_SESSION['user_id'],$GLOBALS['_POST']);
 			break;
 		}
 		default:

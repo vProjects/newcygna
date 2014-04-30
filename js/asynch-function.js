@@ -215,4 +215,32 @@ $(document).ready(function(e) {
 		
     });
 	
+	//inserting polling value
+	$('#poll_report').click(function(e) {
+        //getting polling set no
+		var set_no = $('.poll-box').children('.col-md-12').children('p').attr('id');
+		//getting polling answer
+		var radio_name = $('.poll_radio_button').attr('name');
+		var ans = $('input[name='+radio_name+']:checked').val();
+		
+		if(ans != null)
+		{
+			sendingData = 'set_no='+set_no+'&answer='+ans+'&refData=insertPollingAnswer';
+			//calling ajax function
+			$.ajax({
+				type: "POST",
+				url:"v-includes/class.fetchData.php",
+				data: sendingData,
+				beforeSend:function(){
+					// this is where we append a loading image
+					$('').html('');
+				  },
+				success:function(result){
+					//fade out the poll part
+					$('#poll_outline').fadeOut(500);
+					return false;
+			}});
+		}
+    });
+	
 });

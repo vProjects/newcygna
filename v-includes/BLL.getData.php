@@ -324,6 +324,89 @@
 			
 		}
 		
+		/*
+		- method for getting poll set no of user id
+		- Auth: Dipanjan
+		*/
+		function getPollSet($user_id)
+		{
+			//checking for active poll set
+			$poll_set = $this->manage_content->getValue_where("polling_info","*","status",1);
+			if(!empty($poll_set[0]))
+			{
+				//initialize an empty array
+				$poll_set_array = array();
+				//getting the set no of all active items
+				foreach($poll_set as $poll_sets)
+				{
+					if(!in_array($poll_sets['set_no'],$poll_set_array))
+					{
+						array_push($poll_set_array,$poll_sets['set_no']);
+					}
+				}
+			}
+			if(!empty($poll_set_array[0]))
+			{
+				//getting the poll set no where user id not present
+				foreach($poll_set_array as $set_array)
+				{
+					//initialize the parameter
+					$poll_set_no = '';
+					//getting the answers of this set no
+					$answer = $this->manage_content->getValue_where("polling_info","*","set_no",$set_array);
+					foreach($answer as $answer_set)
+					{
+						if(strpos($answer_set['user_id'],$user_id) !== false)
+						{
+							$poll_set_no = $set_array;
+							break;
+						}
+					}
+					//checking that poll set no is set or not
+					if(empty($poll_set_no))
+					{
+						return $set_array;
+						break;
+					}
+				}
+			}
+		}
+		
+		/*
+		- method for getting polling questions
+		- Auth: Dipanjan
+		*/
+		function getPollingDetails($set_no)
+		{
+			//getting the info from database
+			$poll_details = $this->manage_content->getValue_where("polling_info","*","set_no",$set_no);
+			//showing them in page
+			echo '<div class="profile_box_outline" id="poll_outline">
+					<div class="profile_box_heading">POLL</div>
+					<div class="poll-box">
+						<div class="col-md-12">
+							<p class="pole-question-font" id="'.$set_no.'">'.$poll_details[0]['question'].'</p>';
+							
+			foreach($poll_details as $poll_detail)
+			{
+				echo '<div class="col-sm-12">
+						<div class="radio pole-ans">
+							<label>
+								<input type="radio" class="poll_radio_button" name="option" value="'.$poll_detail['answer_no'].'">'.$poll_detail['answer'].'</p>
+							</label>
+						</div>
+					</div>';
+			}
+					
+							echo '<div class="col-sm-12">				
+								<button class="btn btn-primary btn-lg" id="poll_report">Submit</button>				
+							</div>
+							</div>
+						<div class="clearfix"></div>
+					</div>				
+				</div>';
+		}
+		
 	}
 	
 ?>

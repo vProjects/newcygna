@@ -41,7 +41,7 @@
                     </ul>
                 </div>
 			<?php
-				include ("v-templates/poll.php");
+				include ("v-modules/polling.php");
 			?>	
 			</div>	
 			
