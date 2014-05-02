@@ -8,12 +8,7 @@
 	
 	//$hghg = $obj->getRowValueMultipleCondition("chat_info",array("chat_id"),array("CHAT5305dc3c0b021"));
 	
-	/*if($_POST['fn'] == md5('login'))
-	{
-		echo 'jjj';
-	}*/
+	$abc = $obj->getValue_likely_multiple("project_info","*",array("user_id","category"),array("user","Cate"));
+	print_r($abc);
 	
-	$abc = 'abc';
-	$a = 'abc';
-	echo strpos($abc,$a);
 ?>

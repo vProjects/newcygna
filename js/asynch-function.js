@@ -243,4 +243,57 @@ $(document).ready(function(e) {
 		}
     });
 	
+	//getting project according to category selected
+	$(document).on('click', '.pro_cat', function(e) {
+        //getting the category value
+		var cate = $(this).children('a').html();
+		//getting the selected li section
+		var selected_part = $(this);
+		sendingData = 'category='+cate+'&refData=projectCategory';
+		
+		//calling ajax function
+		$.ajax({
+			type: "POST",
+			url:"v-includes/class.fetchData.php",
+			data: sendingData,
+			beforeSend:function(){
+				// this is where we append a loading image
+				$('').html('');
+			  },
+			success:function(result){
+				//replacing the li text with output
+				if(result != null)
+				{
+					if($('#select_category').children('ul').html() != null)
+					{
+						$('#select_category').children('ul').remove();
+					}
+					$(selected_part).replaceWith(result);
+				}
+				return false;
+		}});
+    });
+	
+	//getting project list according to category selected
+	$(document).on('click', '.pro_cat', function(e) {
+        //getting the category value
+		var cate = $(this).children('a').html();
+		sendingData = 'category='+cate+'&refData=getProjectOfCatgory';
+		
+		//calling ajax function
+		$.ajax({
+			type: "POST",
+			url:"v-includes/class.fetchData.php",
+			data: sendingData,
+			beforeSend:function(){
+				// this is where we append a loading image
+				$('').html('');
+			  },
+			success:function(result){
+				console.log(result);
+				$('#list_of_projects').html(result);
+				return false;
+		}});
+    });
+	
 });

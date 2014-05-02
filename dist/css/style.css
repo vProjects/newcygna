@@ -431,20 +431,46 @@ a:hover{
 	padding:0.5em 0.8em;
 	cursor:pointer;
 	background-color:#fff;
+	transition:all 0.5s ease-in 0s;
 }
 .profile_overview li a{
 	color:#6b4cf1;
 	font-size:1.2em;
 	font-family:PTSans;
+	transition:all 0.5s ease-in 0s;
 }
 .profile_overview li:hover{
 	background-color:#6b4cf1;
+	color:#fff;
+	transition:all 0.5s ease-in 0s;
 }
 .profile_overview li:hover a{
 	color:#FFF;
+	transition:all 0.5s ease-in 0s;
 }
 .profile_overview li a:hover{
 	text-decoration:none;
+	transition:all 0.5s ease-in 0s;
+}
+.profile_overview_active{
+	background-color:#6b4cf1 !important;
+}
+.profile_overview_active a{
+	color:#fff !important;
+}
+.profile_ovr_icon{
+	margin-right:10px;
+	color:#6b4cf1;
+	top:0;
+	transition:all 0.5s ease-in 0s;
+}
+.profile_overview li:hover .profile_ovr_icon{
+	color:#fff;
+	transition:all 0.5s ease-in 0s;
+}
+.profile_1st_child_nav{
+	padding-left:20px;
+	background-color:#fff;
 }
 .profile_details{
 	font-size:1.1em;

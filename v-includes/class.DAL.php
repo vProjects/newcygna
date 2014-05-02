@@ -42,6 +42,21 @@
 			}
 		}
 		
+		function getValue_descendingLimit($table_name,$value,$limit)
+		{
+			$query = $this->link->query("SELECT $value from $table_name ORDER BY `id` DESC LIMIT $limit");
+			$query->execute();
+			$rowcount = $query->rowCount();
+			if($rowcount > 0){
+				$result = $query->fetchAll(PDO::FETCH_ASSOC);
+				return $result;
+			}
+			else{
+				return $rowcount;
+			}
+		}
+		
+		
 		function getValue_distinct($table_name,$value)
 		{
 			$query = $this->link->query("SELECT DISTINCT $value from $table_name");
@@ -276,12 +291,42 @@
 		}
 		
 		/*
-		- function to get the likely values of keyword
+		- function to get the likely values of keyword with multiple condition
 		- auth: Dipanjan
 		*/
-		function getValue_likely($table_name,$value,$column_name,$keyword)
+		/*function getValue_likely_multiple($table_name,$value,$column_name,$column_value)
 		{
-			$query = $this->link->prepare("SELECT $value from $table_name WHERE $column_name LIKE '%$keyword%'");
+			//declaring variables for preparing the query
+			$column = "";
+			$value = "";
+			
+			for($i=0;$i<count($column_name);$i++)
+			{
+				$column = $column." OR ".$column_name[$i]." LIKE '%".$column_value[$i]."%'";
+			}
+			$column = substr($column,4);
+			echo $column;
+			
+			$query = $this->link->prepare("SELECT $value from $table_name WHERE ".$column."");
+			$query->execute();
+			$rowcount = $query->rowCount();
+			echo $rowcount;
+			if($rowcount > 0){
+				$result = $query->fetchAll(PDO::FETCH_ASSOC);
+				//return $result;
+			}
+			else{
+				//return $rowcount;
+			}
+		}*/
+		
+		/*
+		- function to get the likely values of keyword with descending
+		- auth: Dipanjan
+		*/
+		function getValue_likely_descendingLimit($table_name,$value,$column_name,$keyword,$limit)
+		{
+			$query = $this->link->prepare("SELECT $value from $table_name WHERE $column_name LIKE '%$keyword%' ORDER BY `id` DESC LIMIT $limit");
 			$query->execute();
 			$rowcount = $query->rowCount();
 			if($rowcount > 0){
@@ -297,9 +342,49 @@
 		- function to get the likely values of keyword with descending
 		- auth: Dipanjan
 		*/
-		function getValue_likely_descending($table_name,$value,$column_name,$keyword)
+		function getValue_likely_descending($table_name,$value,$column_name,$keyword,$limit)
 		{
 			$query = $this->link->prepare("SELECT $value from $table_name WHERE $column_name LIKE '%$keyword%' ORDER BY `id` DESC");
+			$query->execute();
+			$rowcount = $query->rowCount();
+			if($rowcount > 0){
+				$result = $query->fetchAll(PDO::FETCH_ASSOC);
+				return $result;
+			}
+			else{
+				return $rowcount;
+			}
+		}
+		
+		/*
+		- function to get the likely values of keyword
+		- auth: Dipanjan
+		*/
+		function getValue_likelyLimit($table_name,$value,$column_name,$keyword,$limit)
+		{
+			
+			$query = $this->link->prepare("SELECT $value from $table_name WHERE $column_name LIKE '%$keyword%' ORDER BY `id` ASC LIMIT $limit");
+			
+			$query->execute();
+			$rowcount = $query->rowCount();
+			if($rowcount > 0){
+				$result = $query->fetchAll(PDO::FETCH_ASSOC);
+				return $result;
+			}
+			else{
+				return $rowcount;
+			}
+		}
+		
+		/*
+		- function to get the likely values of keyword
+		- auth: Dipanjan
+		*/
+		function getValue_likely($table_name,$value,$column_name,$keyword)
+		{
+			
+			$query = $this->link->prepare("SELECT $value from $table_name WHERE $column_name LIKE '%$keyword%'");
+			
 			$query->execute();
 			$rowcount = $query->rowCount();
 			if($rowcount > 0){

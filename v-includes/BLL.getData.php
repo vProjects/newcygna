@@ -189,7 +189,7 @@
 						//sub string the project description
 						$sub_project_des = substr($projectDetail['description'],0,200);
 						
-						echo '<div class="portfolio_part_outline'; if($i++ == $last_key) {echo ' borderless_box'; } echo'">
+						echo '<div class="portfolio_part_outline'; if($i++ == $last_key || $i == 4) {echo ' borderless_box'; } echo'">
 								<div class="col-md-8 col-sm-8 col-xs-8">
 									<div class="portfolio_part_heading">'.$projectDetail['title'].'<span class="portfolio_part_share">Share</span></div>
 									<p>'.$sub_project_des.'</p>
@@ -404,6 +404,88 @@
 							</div>
 						<div class="clearfix"></div>
 					</div>				
+				</div>';
+		}
+		
+		/*
+		- method for getting latest project list
+		- Auth: Dipanjan
+		*/
+		function latestProjectList($user_id)
+		{
+			//getting the job list of this category
+			$jobs = $this->manage_content->getValue_descendingLimit("project_info","*",100);
+			//printing the div outline here
+			echo '<div class="project_list_heading_bar">
+					<span class="pull-left">Projects</span>
+					<span class="pull-right">
+						<ul class="pagination pagination-sm project_list_pagination_outline">
+							<li><a href="#" class="pagination_arrow"><img src="img/pagination_left_arrow.png" /></a></li>
+							<li><a href="#" class="pagination_active">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li><a href="#" class="pagination_arrow"><img src="img/pagination_right_arrow.png" /></a></li>
+						</ul>
+					</span>
+					<div class="clearfix"></div>
+				</div>';
+			
+			//showing the project list	
+			if(!empty($jobs))
+			{
+				foreach($jobs as $job)
+				{
+					//reject the jobs which have posted by this user
+					if($job['user_id'] != $user_id)
+					{
+						//sub string the project description
+						$project_des = substr($job['description'],0,1000);
+						
+						echo '<div class="project_details_outline">
+								<div class="project_title_outline">
+									<span class="pull-left project_title_text"><a href="post_bid.php">'.$job['title'].'</a></span>
+									<span class="pull-right project_bid_button"><img src="img/hammer.png" /><span class="project_bid_text">Bid</span></span>
+									<div class="clearfix"></div>
+								</div>
+								<div class="project_part_details_outline">
+									<p class="project_part_description">'.$project_des.'</p>
+									<div class="project_list_info_outline">
+										<span class="project_list_icon pull-left"><img src="img/time_icon.png" /></span>
+										<span class="project_list_icon_text pull-left">15 Days Left</span>
+										<span class="project_list_icon pull-left"><img src="img/skills_icon.png" /></span>
+										<span class="project_list_icon_text pull-left">PHP, Javascript</span>
+										<span class="project_list_icon pull-left"><img src="img/price_icon.png" /></span>
+										<span class="project_list_icon_text pull-left">$ 500</span>
+										<span class="project_list_icon pull-left"><img src="img/bids_icon.png" /></span>
+										<span class="project_list_icon_text pull-left">31 Bids</span>
+										<div class="clearfix"></div>
+									</div>
+									<div class="clearfix"></div>
+								</div>
+							</div>';
+					}
+				}
+			}
+			else
+			{
+				echo '<div class="portfolio_part_heading">No Project Found</div>';
+			}
+			
+			echo '<div class="project_list_heading_bar bottom_pagination">
+					<span class="pull-right">
+						<ul class="pagination pagination-sm project_list_pagination_outline">
+							<li><a href="#" class="pagination_arrow"><img src="img/pagination_left_arrow.png" /></a></li>
+							<li><a href="#" class="pagination_active">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li><a href="#" class="pagination_arrow"><img src="img/pagination_right_arrow.png" /></a></li>
+						</ul>
+					</span>
+					<div class="clearfix"></div>
 				</div>';
 		}
 		

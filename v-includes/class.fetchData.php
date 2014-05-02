@@ -201,6 +201,105 @@
 			//updating the user id field
 			$update = $this->manageContent->updateValueWhere("polling_info","user_id",$new_user_id,"id",$users[0]['id']);
 		}
+		
+		/*
+		- method for getting sub category
+		- Auth: Dipanjan
+		*/
+		function getProjectSubCategory($userData)
+		{
+			//get sub category from database
+			echo '<li class="pro_cat"><a>'.$userData['category'].'</a></li>
+					<ul class="profile_overview profile_1st_child_nav">
+						<li><i class="glyphicon glyphicon-chevron-right profile_ovr_icon"></i><a>Sub Category 1</a></li>
+						<li><i class="glyphicon glyphicon-chevron-right profile_ovr_icon"></i><a>Sub Category 2</a></li>
+						<li><i class="glyphicon glyphicon-chevron-right profile_ovr_icon"></i><a>Sub Category 3</a></li>
+						<li><i class="glyphicon glyphicon-chevron-right profile_ovr_icon"></i><a>Sub Category 4</a></li>
+						<li><i class="glyphicon glyphicon-chevron-right profile_ovr_icon"></i><a>Sub Category 5</a></li>
+					</ul>';
+		}
+		
+		/*
+		- method for getting project of given category
+		- Auth: Dipanjan
+		*/
+		function getProjectListOfCategory($user_id,$userData)
+		{
+			//getting the job list of this category
+			$jobs = $this->manageContent->getValue_likely_descendingLimit("project_info","*","category",$userData['category'],50);
+			//printing the div outline here
+			echo '<div class="project_list_heading_bar">
+					<span class="pull-left">Projects</span>
+					<span class="pull-right">
+						<ul class="pagination pagination-sm project_list_pagination_outline">
+							<li><a href="#" class="pagination_arrow"><img src="img/pagination_left_arrow.png" /></a></li>
+							<li><a href="#" class="pagination_active">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li><a href="#" class="pagination_arrow"><img src="img/pagination_right_arrow.png" /></a></li>
+						</ul>
+					</span>
+					<div class="clearfix"></div>
+				</div>';
+			
+			//showing the project list	
+			if(!empty($jobs))
+			{
+				foreach($jobs as $job)
+				{
+					//reject the jobs which have posted by this user
+					if($job['user_id'] != $user_id)
+					{
+						//sub string the project description
+						$project_des = substr($job['description'],0,1000);
+						
+						echo '<div class="project_details_outline">
+								<div class="project_title_outline">
+									<span class="pull-left project_title_text"><a href="post_bid.php">'.$job['title'].'</a></span>
+									<span class="pull-right project_bid_button"><img src="img/hammer.png" /><span class="project_bid_text">Bid</span></span>
+									<div class="clearfix"></div>
+								</div>
+								<div class="project_part_details_outline">
+									<p class="project_part_description">'.$project_des.'</p>
+									<div class="project_list_info_outline">
+										<span class="project_list_icon pull-left"><img src="img/time_icon.png" /></span>
+										<span class="project_list_icon_text pull-left">15 Days Left</span>
+										<span class="project_list_icon pull-left"><img src="img/skills_icon.png" /></span>
+										<span class="project_list_icon_text pull-left">PHP, Javascript</span>
+										<span class="project_list_icon pull-left"><img src="img/price_icon.png" /></span>
+										<span class="project_list_icon_text pull-left">$ 500</span>
+										<span class="project_list_icon pull-left"><img src="img/bids_icon.png" /></span>
+										<span class="project_list_icon_text pull-left">31 Bids</span>
+										<div class="clearfix"></div>
+									</div>
+									<div class="clearfix"></div>
+								</div>
+							</div>';
+					}
+				}
+			}
+			else
+			{
+				echo '<div class="portfolio_part_heading">No Project Found</div>';
+			}
+			
+			echo '<div class="project_list_heading_bar bottom_pagination">
+					<span class="pull-right">
+						<ul class="pagination pagination-sm project_list_pagination_outline">
+							<li><a href="#" class="pagination_arrow"><img src="img/pagination_left_arrow.png" /></a></li>
+							<li><a href="#" class="pagination_active">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li><a href="#" class="pagination_arrow"><img src="img/pagination_right_arrow.png" /></a></li>
+						</ul>
+					</span>
+					<div class="clearfix"></div>
+				</div>';
+		}
 			
 	}
 	
@@ -251,6 +350,18 @@
 		case 'insertPollingAnswer':
 		{
 			$insertPollingAnswer = $fetchData->insertPollingAnswer($_SESSION['user_id'],$GLOBALS['_POST']);
+			break;
+		}
+		//for getting subcategory of given category
+		case 'projectCategory':
+		{
+			$getProjectSubCategory = $fetchData->getProjectSubCategory($GLOBALS['_POST']);
+			break;
+		}
+		//for showing the job of given category
+		case 'getProjectOfCatgory':
+		{
+			$getProjectlistOfCategory = $fetchData->getProjectListOfCategory($_SESSION['user_id'],$GLOBALS['_POST']);
 			break;
 		}
 		default:

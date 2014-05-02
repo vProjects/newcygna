@@ -437,7 +437,7 @@
 				}
 				else
 				{
-					$hours_of_week = '';
+					$hourly_time_range = '';
 				}
 			}
 			else if($work_type == 'Fixed')
@@ -464,13 +464,23 @@
 			//job ending date
 			$project_valid_time = $userData['pp_project_validity'];
 			$job_ending_date = date('Y-m-d', strtotime($curDate." + ".$project_valid_time));
+			//setting preferred location
+			if(!empty($userData['pp_prefer_loc']))
+			{
+				$preffered_loc = $userData['pp_prefer_loc'];
+			}
+			else
+			{
+				$preffered_loc = 'Any Where';
+			}
 			
 			//inserting the values to database
 			$column_name = array("project_id","title","description","user_id","category","sub_category","skills","file","date","time","work_type","price_range","hour_per_week","hourly_time_frame","job_post_ip","ending_date","preferred_locations");
 			
-			$column_value = array($project_id,$userData['pp_title'],$userData['pp_des'],$user_id,$userData['pro_category'],$userData['pro_sub_category'],$skills_string,$project_file,$curDate,$curTime,$work_type,$price_range,$hours_of_week,$hourly_time_range,$ip,$job_ending_date,$userData['pp_prefer_loc']);
-			
+			$column_value = array($project_id,$userData['pp_title'],$userData['pp_des'],$user_id,$userData['pro_category'],$userData['pro_sub_category'],$skills_string,$project_file,$curDate,$curTime,$work_type,$price_range,$hours_of_week,$hourly_time_range,$ip,$job_ending_date,$preffered_loc);
+			print_r($column_value);
 			$insertProjectValue = $this->manageContent->insertValue("project_info",$column_name,$column_value);
+			
 			return $insertProjectValue;
 			
 		}
