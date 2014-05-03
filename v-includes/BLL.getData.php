@@ -411,10 +411,22 @@
 		- method for getting latest project list
 		- Auth: Dipanjan
 		*/
-		function latestProjectList($user_id)
+		function getProjectListOfCategory($user_id,$cat,$sub)
 		{
 			//getting the job list of this category
-			$jobs = $this->manage_content->getValue_descendingLimit("project_info","*",100);
+			if($cat == '' && $sub == '')
+			{
+				$jobs = $this->manage_content->getValue_descendingLimit("project_info","*",100);
+			}
+			else if($cat != '' && $sub == '')
+			{
+				$jobs = $this->manage_content->getValue_likely_descendingLimit("project_info","*","category",$cat,100);
+			}
+			else if($cat != '' && $sub != '')
+			{
+				$jobs = $this->manage_content->getValue_likely_descendingTwoLimit("project_info","*","category",$cat,"sub_category",$sub,100);
+			}
+						
 			//printing the div outline here
 			echo '<div class="project_list_heading_bar">
 					<span class="pull-left">Projects</span>
@@ -489,6 +501,72 @@
 				</div>';
 		}
 		
+		
+		/*
+		- method for getting category and sub category list
+		- Auth: Dipanjan
+		*/
+		function getProjectCategoryList($cat,$sub)
+		{
+			if(!empty($cat))
+			{
+				if(!empty($sub))
+				{
+					for($i=1;$i<=7;$i++)
+					{
+						if($cat == 'Category'.$i)
+						{
+							echo '<li class="pro_cat profile_overview_active"><a href="project_list.php?cat=Category'.$i.'">Category'.$i.'</a></li>';
+							echo '<ul class="profile_overview profile_1st_child_nav">';
+							for($j=1;$j<=5;$j++)
+							{
+								if($sub == 'Sub Category '.$j)
+								{
+									echo '<li><i class="glyphicon glyphicon-chevron-right profile_ovr_icon"></i><a href="project_list.php?cat=Category'.$i.'&sub=Sub Category '.$j.'">Sub Category '.$j.'</a></li>';
+								}
+								else
+								{
+									echo '<li><i class="glyphicon glyphicon-chevron-right profile_ovr_icon"></i><a href="project_list.php?cat=Category'.$i.'&sub=Sub Category '.$j.'">Sub Category '.$j.'</a></li>';
+								}
+								
+							}
+							echo '</ul>';
+						}
+						else
+						{
+							echo '<li class="pro_cat"><a href="project_list.php?cat=Category'.$i.'">Category'.$i.'</a></li>';
+						}
+					}
+				}
+				else
+				{
+					for($i=1;$i<=7;$i++)
+					{
+						if($cat == 'Category'.$i)
+						{
+							echo '<li class="pro_cat profile_overview_active"><a href="project_list.php?cat=Category'.$i.'">Category'.$i.'</a></li>';
+							echo '<ul class="profile_overview profile_1st_child_nav">';
+							for($j=1;$j<=5;$j++)
+							{
+								echo '<li><i class="glyphicon glyphicon-chevron-right profile_ovr_icon"></i><a href="project_list.php?cat=Category'.$i.'&sub=Sub Category '.$j.'">Sub Category '.$j.'</a></li>';
+							}
+							echo '</ul>';
+						}
+						else
+						{
+							echo '<li class="pro_cat"><a href="project_list.php?cat=Category'.$i.'">Category'.$i.'</a></li>';
+						}
+					}
+				}
+			}
+			else
+			{
+				for($i=1;$i<=7;$i++)
+				{
+					echo '<li class="pro_cat"><a href="project_list.php?cat=Category'.$i.'">Category'.$i.'</a></li>';
+				}
+			}
+		}
 	}
 	
 ?>

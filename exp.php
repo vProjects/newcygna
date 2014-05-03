@@ -8,7 +8,9 @@
 	
 	//$hghg = $obj->getRowValueMultipleCondition("chat_info",array("chat_id"),array("CHAT5305dc3c0b021"));
 	
-	$abc = $obj->getValue_likely_multiple("project_info","*",array("user_id","category"),array("user","Cate"));
+	$abc = $obj->getValue_likely_descendingTwoLimit("project_info","*","category","Category2","sub_category","Sub Category 3",50);
+	echo '<pre>';
 	print_r($abc);
+	echo '</pre>';
 	
 ?>

@@ -1,3 +1,5 @@
 <?php
-	$project_list = $manageContent->latestProjectList($_SESSION['user_id']);
+	//getting the project list
+	$project_list = $manageContent->getProjectListOfCategory($_SESSION['user_id'],$cat,$sub);
+
 ?>

@@ -247,38 +247,44 @@
 			//showing the project list	
 			if(!empty($jobs))
 			{
-				foreach($jobs as $job)
+				//for sub category search
+				if(isset($userData['sub_category']))
 				{
-					//reject the jobs which have posted by this user
-					if($job['user_id'] != $user_id)
+					//calling the function for sub category
+					$project_list_subcategory = $this->getProjectListOfSubCategory($jobs,$user_id,$userData['sub_category']);
+				}
+				else
+				{
+					foreach($jobs as $job)
 					{
-						//sub string the project description
-						$project_des = substr($job['description'],0,1000);
-						
-						echo '<div class="project_details_outline">
-								<div class="project_title_outline">
-									<span class="pull-left project_title_text"><a href="post_bid.php">'.$job['title'].'</a></span>
-									<span class="pull-right project_bid_button"><img src="img/hammer.png" /><span class="project_bid_text">Bid</span></span>
-									<div class="clearfix"></div>
-								</div>
-								<div class="project_part_details_outline">
-									<p class="project_part_description">'.$project_des.'</p>
-									<div class="project_list_info_outline">
-										<span class="project_list_icon pull-left"><img src="img/time_icon.png" /></span>
-										<span class="project_list_icon_text pull-left">15 Days Left</span>
-										<span class="project_list_icon pull-left"><img src="img/skills_icon.png" /></span>
-										<span class="project_list_icon_text pull-left">PHP, Javascript</span>
-										<span class="project_list_icon pull-left"><img src="img/price_icon.png" /></span>
-										<span class="project_list_icon_text pull-left">$ 500</span>
-										<span class="project_list_icon pull-left"><img src="img/bids_icon.png" /></span>
-										<span class="project_list_icon_text pull-left">31 Bids</span>
+						//reject the jobs which have posted by this user
+						if($job['user_id'] != $user_id)
+						{
+							echo '<div class="project_details_outline">
+									<div class="project_title_outline">
+										<span class="pull-left project_title_text"><a href="post_bid.php">'.$job['title'].'</a></span>
+										<span class="pull-right project_bid_button"><img src="img/hammer.png" /><span class="project_bid_text">Bid</span></span>
 										<div class="clearfix"></div>
 									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>';
+									<div class="project_part_details_outline">
+										<p class="project_part_description">'.$this->getSubStringText($job['description'],1000).'</p>
+										<div class="project_list_info_outline">
+											<span class="project_list_icon pull-left"><img src="img/time_icon.png" /></span>
+											<span class="project_list_icon_text pull-left">15 Days Left</span>
+											<span class="project_list_icon pull-left"><img src="img/skills_icon.png" /></span>
+											<span class="project_list_icon_text pull-left">PHP, Javascript</span>
+											<span class="project_list_icon pull-left"><img src="img/price_icon.png" /></span>
+											<span class="project_list_icon_text pull-left">$ 500</span>
+											<span class="project_list_icon pull-left"><img src="img/bids_icon.png" /></span>
+											<span class="project_list_icon_text pull-left">31 Bids</span>
+											<div class="clearfix"></div>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>';
+						}
 					}
-				}
+				}	
 			}
 			else
 			{
@@ -299,6 +305,64 @@
 					</span>
 					<div class="clearfix"></div>
 				</div>';
+		}
+		
+		/*
+		- method for getting project of given sub category
+		- Auth: Dipanjan
+		*/
+		function getProjectListOfSubCategory($jobs,$user_id,$sub_category)
+		{
+			//initialize the parameter
+			$job_count = 0;
+			foreach($jobs as $job)
+			{
+				//checking for user id and sub category
+				if($job['user_id'] != $user_id && strpos($job['sub_category'],$sub_category) !== false)
+				{
+					echo '<div class="project_details_outline">
+							<div class="project_title_outline">
+								<span class="pull-left project_title_text"><a href="post_bid.php">'.$job['title'].'</a></span>
+								<span class="pull-right project_bid_button"><img src="img/hammer.png" /><span class="project_bid_text">Bid</span></span>
+								<div class="clearfix"></div>
+							</div>
+							<div class="project_part_details_outline">
+								<p class="project_part_description">'.$this->getSubStringText($job['description'],1000).'</p>
+								<div class="project_list_info_outline">
+									<span class="project_list_icon pull-left"><img src="img/time_icon.png" /></span>
+									<span class="project_list_icon_text pull-left">15 Days Left</span>
+									<span class="project_list_icon pull-left"><img src="img/skills_icon.png" /></span>
+									<span class="project_list_icon_text pull-left">PHP, Javascript</span>
+									<span class="project_list_icon pull-left"><img src="img/price_icon.png" /></span>
+									<span class="project_list_icon_text pull-left">$ 500</span>
+									<span class="project_list_icon pull-left"><img src="img/bids_icon.png" /></span>
+									<span class="project_list_icon_text pull-left">31 Bids</span>
+									<div class="clearfix"></div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>';
+					
+					//increament the parameter
+					$job_count++;
+				}
+			}
+			
+			//checking that no of job available
+			if($job_count == 0)
+			{
+				echo '<div class="portfolio_part_heading">No Project Found</div>';
+			}
+		}
+		
+		/*
+		- method for getting sub string of text with given number of character
+		- Auth: Dipanjan
+		*/
+		function getSubStringText($text,$string_no)
+		{
+			$subString = substr($text,0,$string_no);
+			return $subString;
 		}
 			
 	}
@@ -362,6 +426,12 @@
 		case 'getProjectOfCatgory':
 		{
 			$getProjectlistOfCategory = $fetchData->getProjectListOfCategory($_SESSION['user_id'],$GLOBALS['_POST']);
+			break;
+		}
+		//for showing the job of given category
+		case 'getProjectOfSubCatgory':
+		{
+			$getProjectlistOfSubCategory = $fetchData->getProjectListOfCategory($_SESSION['user_id'],$GLOBALS['_POST']);
 			break;
 		}
 		default:

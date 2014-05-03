@@ -244,7 +244,7 @@ $(document).ready(function(e) {
     });
 	
 	//getting project according to category selected
-	$(document).on('click', '.pro_cat', function(e) {
+	/*$(document).on('click', '.pro_cat', function(e) {
         //getting the category value
 		var cate = $(this).children('a').html();
 		//getting the selected li section
@@ -272,10 +272,10 @@ $(document).ready(function(e) {
 				}
 				return false;
 		}});
-    });
+    });*/
 	
 	//getting project list according to category selected
-	$(document).on('click', '.pro_cat', function(e) {
+	/*$(document).on('click', '.pro_cat', function(e) {
         //getting the category value
 		var cate = $(this).children('a').html();
 		sendingData = 'category='+cate+'&refData=getProjectOfCatgory';
@@ -290,10 +290,34 @@ $(document).ready(function(e) {
 				$('').html('');
 			  },
 			success:function(result){
-				console.log(result);
+				//console.log(result);
 				$('#list_of_projects').html(result);
 				return false;
 		}});
-    });
+    });*/
+	
+	//getting project list of selected sub category
+	/*$(document).on('click', '.profile_1st_child_nav li', function() {
+		//getting the sub category value
+		var sub_cate = $(this).children('a').html();
+		//getting the category name
+		var cate = $('.profile_1st_child_nav').prev('.pro_cat').text();
+		sendingData = 'category='+cate+'&sub_category='+sub_cate+'&refData=getProjectOfSubCatgory';
+		
+		//calling ajax function
+		$.ajax({
+			type: "POST",
+			url:"v-includes/class.fetchData.php",
+			data: sendingData,
+			beforeSend:function(){
+				// this is where we append a loading image
+				$('').html('');
+			  },
+			success:function(result){
+				//console.log(result);
+				$('#list_of_projects').html(result);
+				return false;
+		}});
+	});*/
 	
 });

@@ -7,6 +7,32 @@
 	}
 	include ('v-templates/header.php');
 ?>
+<?php
+	if(isset($GLOBALS['_GET']['cat']))
+	{
+		if(isset($GLOBALS['_GET']['cat']))
+		{
+			$cat = $GLOBALS['_GET']['cat'];
+		}
+		else
+		{
+			$cat = '';
+		}
+		if(isset($GLOBALS['_GET']['sub']))
+		{
+			$sub = $GLOBALS['_GET']['sub'];
+		}
+		else
+		{
+			$sub = '';
+		}
+	}
+	else
+	{
+		$cat = '';
+		$sub = '';
+	}
+?>
 <!-- body starts here -->
 <div id="profile_body_outline">
 	
@@ -38,8 +64,9 @@
             <!-- body middle section ends here -->
             <!-- body right section starts here -->
             <div class="col-md-2 profile_right_part_outline">
-            	<div class="add_place_outline"></div>
-                <div class="add_place_outline"></div>
+            	<?php
+					include 'v-modules/ads.php';
+				?>
             </div>
             <!-- body right section ends here -->
         </div>
