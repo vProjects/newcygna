@@ -8,7 +8,7 @@
 	include ('v-templates/header.php');
 ?>
 <?php
-	if(isset($GLOBALS['_GET']['cat']))
+	if(isset($GLOBALS['_GET']))
 	{
 		if(isset($GLOBALS['_GET']['cat']))
 		{
@@ -26,11 +26,20 @@
 		{
 			$sub = '';
 		}
+		if(isset($GLOBALS['_GET']['p']))
+		{
+			$page = $GLOBALS['_GET']['p'];
+		}
+		else
+		{
+			$page = '';
+		}
 	}
 	else
 	{
 		$cat = '';
 		$sub = '';
+		$page = 0;
 	}
 ?>
 <!-- body starts here -->

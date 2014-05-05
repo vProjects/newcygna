@@ -411,72 +411,87 @@
 		- method for getting latest project list
 		- Auth: Dipanjan
 		*/
-		function getProjectListOfCategory($user_id,$cat,$sub)
+		function getProjectListOfCategory($user_id,$cat,$sub,$page)
 		{
 			//getting the job list of this category
 			if($cat == '' && $sub == '')
 			{
-				$jobs = $this->manage_content->getValue_descendingLimit("project_info","*",100);
+				$jobs = $this->manage_content->getValue_descendingLimit("project_info","*",500);
+				//creating page url for pagination
+				$pageUrl = 'project_list.php?';
 			}
 			else if($cat != '' && $sub == '')
 			{
 				$jobs = $this->manage_content->getValue_likely_descendingLimit("project_info","*","category",$cat,100);
+				//creating page url for pagination
+				$pageUrl = 'project_list.php?cat='.$cat.'&';
 			}
 			else if($cat != '' && $sub != '')
 			{
 				$jobs = $this->manage_content->getValue_likely_descendingTwoLimit("project_info","*","category",$cat,"sub_category",$sub,100);
+				//creating page url for pagination
+				$pageUrl = 'project_list.php?cat='.$cat.'&sub='.$sub.'&';
+				
 			}
+			
+			//setting max no of index
+			$max_index = 5;
+			$limit = 5;
 						
 			//printing the div outline here
 			echo '<div class="project_list_heading_bar">
-					<span class="pull-left">Projects</span>
-					<span class="pull-right">
-						<ul class="pagination pagination-sm project_list_pagination_outline">
-							<li><a href="#" class="pagination_arrow"><img src="img/pagination_left_arrow.png" /></a></li>
-							<li><a href="#" class="pagination_active">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#" class="pagination_arrow"><img src="img/pagination_right_arrow.png" /></a></li>
-						</ul>
-					</span>
-					<div class="clearfix"></div>
+					<span class="pull-left">Projects</span>';
+					
+					//getting the pageination
+					$pagination = $this->pagination($page,$jobs,$user_id,$pageUrl,$max_index,$limit);
+			
+			echo '<div class="clearfix"></div>
 				</div>';
 			
+			//calculate the rows number to be shown in this page
+			$startNo = $page*$limit;
+			$endNo = ($page + 1)*$limit;
 			//showing the project list	
 			if(!empty($jobs))
 			{
+				//initialize a parameter to show the result
+				$jobNo = 0;
 				foreach($jobs as $job)
 				{
 					//reject the jobs which have posted by this user
 					if($job['user_id'] != $user_id)
 					{
-						//sub string the project description
-						$project_des = substr($job['description'],0,1000);
-						
-						echo '<div class="project_details_outline">
-								<div class="project_title_outline">
-									<span class="pull-left project_title_text"><a href="post_bid.php">'.$job['title'].'</a></span>
-									<span class="pull-right project_bid_button"><img src="img/hammer.png" /><span class="project_bid_text">Bid</span></span>
-									<div class="clearfix"></div>
-								</div>
-								<div class="project_part_details_outline">
-									<p class="project_part_description">'.$project_des.'</p>
-									<div class="project_list_info_outline">
-										<span class="project_list_icon pull-left"><img src="img/time_icon.png" /></span>
-										<span class="project_list_icon_text pull-left">15 Days Left</span>
-										<span class="project_list_icon pull-left"><img src="img/skills_icon.png" /></span>
-										<span class="project_list_icon_text pull-left">PHP, Javascript</span>
-										<span class="project_list_icon pull-left"><img src="img/price_icon.png" /></span>
-										<span class="project_list_icon_text pull-left">$ 500</span>
-										<span class="project_list_icon pull-left"><img src="img/bids_icon.png" /></span>
-										<span class="project_list_icon_text pull-left">31 Bids</span>
+						//checking for job no is in between the start point and end point or not
+						if($jobNo >= $startNo && $jobNo < $endNo)
+						{
+							//sub string the project description
+							$project_des = substr($job['description'],0,1000);
+							
+							echo '<div class="project_details_outline">
+									<div class="project_title_outline">
+										<span class="pull-left project_title_text"><a href="post_bid.php">'.$job['title'].'</a></span>
+										<span class="pull-right project_bid_button"><img src="img/hammer.png" /><span class="project_bid_text">Bid</span></span>
 										<div class="clearfix"></div>
 									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>';
+									<div class="project_part_details_outline">
+										<p class="project_part_description">'.$project_des.'</p>
+										<div class="project_list_info_outline">
+											<span class="project_list_icon pull-left"><img src="img/time_icon.png" /></span>
+											<span class="project_list_icon_text pull-left">15 Days Left</span>
+											<span class="project_list_icon pull-left"><img src="img/skills_icon.png" /></span>
+											<span class="project_list_icon_text pull-left">PHP, Javascript</span>
+											<span class="project_list_icon pull-left"><img src="img/price_icon.png" /></span>
+											<span class="project_list_icon_text pull-left">$ 500</span>
+											<span class="project_list_icon pull-left"><img src="img/bids_icon.png" /></span>
+											<span class="project_list_icon_text pull-left">31 Bids</span>
+											<div class="clearfix"></div>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>';
+						}
+						//increment the parameter
+						$jobNo++;
 					}
 				}
 			}
@@ -485,20 +500,101 @@
 				echo '<div class="portfolio_part_heading">No Project Found</div>';
 			}
 			
-			echo '<div class="project_list_heading_bar bottom_pagination">
-					<span class="pull-right">
-						<ul class="pagination pagination-sm project_list_pagination_outline">
-							<li><a href="#" class="pagination_arrow"><img src="img/pagination_left_arrow.png" /></a></li>
-							<li><a href="#" class="pagination_active">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#" class="pagination_arrow"><img src="img/pagination_right_arrow.png" /></a></li>
-						</ul>
-					</span>
-					<div class="clearfix"></div>
+			echo '<div class="project_list_heading_bar bottom_pagination">';
+					
+					//getting the pageination
+					$pagination = $this->pagination($page,$jobs,$user_id,$pageUrl,$max_index,$limit);
+			
+			echo '<div class="clearfix"></div>
 				</div>';
+		}
+		
+		/*
+		- method for getting the value of the pagination
+		- Auth : Dipanjan
+		*/
+		function pagination($page,$jobList,$user_id,$pageUrl,$max_no_index,$limit)
+		{
+			//getting no of rows to be fetched
+			//initialize a parameter
+			$rows = 0;
+			if(!empty($jobList[0]))
+			{
+				foreach($jobList as $job)
+				{
+					if($job['user_id'] != $user_id)
+					{
+						//increment the counter
+						$rows++;
+					}
+				}
+			}
+			
+			//used in the db for getting o/p
+			$startPoint = $page*$limit ;
+			//no of page to be displayed
+			$no_page = $rows/$limit ;
+			//show pagination when there is more than one page is there
+			if($no_page > 1)
+			{
+				$no_page = intval($no_page) + 1;
+				//set no of index to be displayed
+				$no_index = 1 ;
+				
+				//generate the pagination UI
+				echo '<span class="pull-right">
+						<ul class="pagination pagination-sm project_list_pagination_outline">';
+				//logic for setting the prev button
+				//condition for escaping the -ve page index when $page = 0
+				
+				if( ($page-1) < 0 && $page != 0 )
+				{
+					echo '<li><a class="pagination_arrow" href="'.$pageUrl.'p=0"> <img src="img/pagination_left_arrow.png" /></a></li>';
+				}
+				elseif( $page != 0 )
+				{
+					echo '<li><a class="pagination_arrow" href="'.$pageUrl.'p='.($page-1).'"> <img src="img/pagination_left_arrow.png" /></a></li>';
+				}
+				/*for the indexes*/
+				//index initilization variable
+				if( ( $page + 1 ) >= ( $no_page - $max_no_index + 1))
+				{
+					$inti_i = $no_page - $max_no_index + 1 ;
+				}
+				else
+				{
+					$inti_i = $page + 1 ;
+				}
+				for( $i = $inti_i ; $i <= $no_page ; $i++ )
+				{
+					if( $i > 0 )
+					{
+						echo '<li><a ';
+						//codes for active class
+						if( $page == ( $i - 1 ) )
+						{
+							echo ' class="pagination_active" ';
+						}
+						echo 'href="'.$pageUrl.'p='.($i-1).'">'.$i.'</a></li>' ;
+						//increment the index no by 1
+						$no_index++ ;
+						if( $no_index > $max_no_index )
+						{
+							break ;
+						}
+					}
+				}
+				if( $page != ( $no_page - 1 ) )
+				{
+					//for the next button
+					echo '<li><a class="pagination_arrow" href="'.$pageUrl.'p='.($page + 1).'"><img src="img/pagination_right_arrow.png" /> </a></li>' ;
+				}
+				//for the last button
+				//echo '<li><a href="'.$PageUrl.'?p='.($no_page - 1).'&limit='.$limit.'">Last</a></li>' ;
+				echo	 '</ul>
+					</span>';
+			}
+			
 		}
 		
 		
