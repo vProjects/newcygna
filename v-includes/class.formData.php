@@ -42,9 +42,11 @@
 			$user_id = uniqid('user');
 			//getting last sign in ip
 			$last_sign_in_ip = $this->manageUtility->getIpAddress();
+			//setting the status value
+			$status = 1;
 			//inserting values to database
-			$column_name = array('user_id','email_id','username','password','category','sign_in_count','last_sign_in_ip');
-			$column_value = array($user_id,$userData['email_id'],$userData['username'],md5($userData['password']),$userData['category'],1,$last_sign_in_ip);
+			$column_name = array('user_id','email_id','username','password','category','sign_in_count','last_sign_in_ip','status');
+			$column_value = array($user_id,$userData['email_id'],$userData['username'],md5($userData['password']),$userData['category'],1,$last_sign_in_ip,$status);
 			//calling DAL methode
 			$insertValue = $this->manageContent->insertValue('user_credentials',$column_name,$column_value);
 			if($insertValue == 1)
@@ -53,6 +55,15 @@
 				$cookie_exp_time = time() + (24*3600);
 				$set_cookie = $this->createCookie('uid',$user_id,$cookie_exp_time);
 			}
+			//getting current date and time
+			$curDate = $this->getCurrentDate();
+			$curTime = $this->getCurrentTime();
+			$action_value = 'Activated';
+			$notes = 'User Registration';
+			//inserting values to user_activation_info table
+			$column_name2 = array("user_id","date_from","time_from","action","notes");
+			$column_value2 = array($user_id,$curDate,$curTime,$action_value,$notes);
+			$insertValue2 = $this->manageContent->insertValue('user_activation_info',$column_name2,$column_value2);
 			return array($insertValue,$user_id);
 		}
 		
@@ -79,25 +90,32 @@
 				//checking for password field
 				if($userCreden[0]['password'] == md5($userData['password']))
 				{
-					//setting cookie expiry time
-					if($userData['loggedin_time'] == 'on')
+					if($userCreden[0]['status'] == 1)
 					{
-						$cookie_exp_time = time() + (2*7*24*3600);
+						//setting cookie expiry time
+						if($userData['loggedin_time'] == 'on')
+						{
+							$cookie_exp_time = time() + (2*7*24*3600);
+						}
+						else
+						{
+							$cookie_exp_time = time() + (24*3600);
+						}
+						//creating the cookie
+						$set_cookie = $this->createCookie('uid',$userCreden[0]['user_id'],$cookie_exp_time);
+						//calculating total number of sign in
+						$sign_in = $userCreden[0]['sign_in_count'] + 1;
+						//getting last sign in ip
+						$last_sign_in_ip = $this->manageUtility->getIpAddress();
+						//updatin the values
+						$update1 = $this->manageContent->updateValueWhere("user_credentials","sign_in_count",$sign_in,"user_id",$userCreden[0]['user_id']);
+						$update2 = $this->manageContent->updateValueWhere("user_credentials","last_sign_in_ip",$last_sign_in_ip,"user_id",$userCreden[0]['user_id']);
+						return array(1,'Login Successfull!!',$userCreden[0]['user_id'],$userCreden[0]['category']);
 					}
 					else
 					{
-						$cookie_exp_time = time() + (24*3600);
+						return array(0,'You Have Been Deactivated By Admin.. Please Contact To The Admin!!');
 					}
-					//creating the cookie
-					$set_cookie = $this->createCookie('uid',$userCreden[0]['user_id'],$cookie_exp_time);
-					//calculating total number of sign in
-					$sign_in = $userCreden[0]['sign_in_count'] + 1;
-					//getting last sign in ip
-					$last_sign_in_ip = $this->manageUtility->getIpAddress();
-					//updatin the values
-					$update1 = $this->manageContent->updateValueWhere("user_credentials","sign_in_count",$sign_in,"user_id",$userCreden[0]['user_id']);
-					$update2 = $this->manageContent->updateValueWhere("user_credentials","last_sign_in_ip",$last_sign_in_ip,"user_id",$userCreden[0]['user_id']);
-					return array(1,'Login Successfull!!',$userCreden[0]['user_id'],$userCreden[0]['category']);
 				}
 				else
 				{

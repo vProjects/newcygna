@@ -459,7 +459,8 @@
 				foreach($jobs as $job)
 				{
 					//reject the jobs which have posted by this user
-					if($job['user_id'] != $user_id)
+					//checking for job ending date exceeds the current date or not
+					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date']))
 					{
 						//checking for job no is in between the start point and end point or not
 						if($jobNo >= $startNo && $jobNo < $endNo)
@@ -522,7 +523,9 @@
 			{
 				foreach($jobList as $job)
 				{
-					if($job['user_id'] != $user_id)
+					//reject the jobs which have posted by this user
+					//checking for job ending date exceeds the current date or not
+					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date']))
 					{
 						//increment the counter
 						$rows++;

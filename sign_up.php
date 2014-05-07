@@ -1,6 +1,10 @@
 <?php
 	session_start();
 	$pageTitle = 'SignUp';
+	if(isset($GLOBALS['_COOKIE']['uid']) || isset($_SESSION['user_id']))
+	{
+		header("Location: cygna.php");
+	}
 	include ('v-templates/header.php');
 ?>
 

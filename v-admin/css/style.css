@@ -319,3 +319,31 @@ table.dataTable thead .sorting:after {
 	font-size:26px;
 }
 
+/* member list page */
+.list_item{
+	margin-bottom:0px;
+}
+.table>thead>tr>th{
+	background-color:#F5F5F5;
+}
+
+/* member project list css */
+.project_list_item{
+	margin-bottom:10px;
+}
+.project_list_heading{
+	margin-top:5px;
+}
+.project_list_heading a{
+	color:#354ba8;
+	cursor:pointer;
+}
+.project_list_topic{
+	font-weight: bold;
+	color: #333;
+	text-transform: capitalize;
+}
+.project_list_des{
+	color: #696363;
+}
+
