@@ -347,3 +347,17 @@ table.dataTable thead .sorting:after {
 	color: #696363;
 }
 
+/* member profile details */
+.mem_info_outline{
+	margin:5px 0;
+	font-size:1.2em;
+	padding:0 10px;
+}
+.mem_info_topic{
+	color:#111;
+	font-weight:bold;
+	text-align:right;
+}
+.mem_info_text{
+	color:#333;
+}

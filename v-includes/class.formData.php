@@ -405,6 +405,7 @@
 			//uploading profile pic
 			if(!empty($userFile['file']['name']) && !empty($userFile['file']['size']))
 			{
+				$original_file = $userFile['file']['name'];
 				//get unix timestamp
 				$unixTimeStamp = time();
 				//image desired name
@@ -414,6 +415,7 @@
 			}
 			else
 			{
+				$original_file = '';
 				$project_file = '';
 			}
 			//getting current date and time
@@ -493,9 +495,9 @@
 			}
 			
 			//inserting the values to database
-			$column_name = array("project_id","title","description","user_id","category","sub_category","skills","file","date","time","work_type","price_range","hour_per_week","hourly_time_frame","job_post_ip","ending_date","preferred_locations");
+			$column_name = array("project_id","title","description","user_id","category","sub_category","skills","file_or","file","date","time","work_type","price_range","hour_per_week","hourly_time_frame","job_post_ip","ending_date","preferred_locations");
 			
-			$column_value = array($project_id,$userData['pp_title'],$userData['pp_des'],$user_id,$userData['pro_category'],$userData['pro_sub_category'],$skills_string,$project_file,$curDate,$curTime,$work_type,$price_range,$hours_of_week,$hourly_time_range,$ip,$job_ending_date,$preffered_loc);
+			$column_value = array($project_id,$userData['pp_title'],$userData['pp_des'],$user_id,$userData['pro_category'],$userData['pro_sub_category'],$skills_string,$original_file,$project_file,$curDate,$curTime,$work_type,$price_range,$hours_of_week,$hourly_time_range,$ip,$job_ending_date,$preffered_loc);
 			print_r($column_value);
 			$insertProjectValue = $this->manageContent->insertValue("project_info",$column_name,$column_value);
 			

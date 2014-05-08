@@ -183,7 +183,7 @@
 							<td>'.$email[0]['email_id'].'</td>
 							<td><a href="memberProjectList.php?uid='.$member['user_id'].'"><button class="btn btn-primary">Project Details</button></a></td>
 							<td><a><button class="btn btn-primary">Bid Details</button></a></td>
-							<td><a><button class="btn btn-warning">Profile Details</button></a></td>
+							<td><a href="memberProfileDetails.php?uid='.$member['user_id'].'"><button class="btn btn-warning">Profile Details</button></a></td>
 							<td>'.$action_button.'</td>
 						</tr>';
 				}
@@ -318,6 +318,360 @@
 			{
 				echo '<h3 class="project_list_heading">No Rresult Found</h3>';
 			}
+		}
+		
+		/*
+		- method for getting profile details of a member
+		- Auth : Dipanjan
+		*/
+		function getMemberProfileDetails($user_id)
+		{
+			echo ' <div class="panel-heading"><i class="fa fa-list fa-fw"></i> Member Profile Basic Info</div>
+                        <div class="panel-body">';
+			//get profile details
+			$profile_credentials = $this->manage_content->getValue_where("user_credentials","*","user_id",$user_id);
+			if(!empty($profile_credentials[0]))
+			{
+				echo '<div class="mem_info_outline">
+							<div class="mem_info_topic col-sm-4">Email Id:</div>
+							<div class="mem_info_text col-sm-8">'.$profile_credentials[0]['email_id'].'</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="mem_info_outline">
+							<div class="mem_info_topic col-sm-4">Username:</div>
+							<div class="mem_info_text col-sm-8">'.$profile_credentials[0]['username'].'</div>
+							<div class="clearfix"></div>
+						</div>';
+				//getting profile basic info
+				$profile_info = $this->manage_content->getValue_where("user_info","*","user_id",$user_id);
+				if(!empty($profile_info[0]))
+				{
+					echo '<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">Name:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['name'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">Gender:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['gender'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">Date Of Birth:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['dob'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">Contact Number:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['contact_no'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">Address:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['addr_line1'].'<br>'.$profile_info[0]['addr_line2'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">Pin Code:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['pincode'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">City:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['city'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">State:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['state'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">Country:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['country'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">Skills:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['skills'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">Terms:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['terms'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">Hourly Rate:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['hourly_rate'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">Availability:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['availability'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">Interested Topic:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['interested_topic'].'</div>
+                                <div class="clearfix"></div>
+                            </div>
+							<div class="mem_info_outline">
+                            	<div class="mem_info_topic col-sm-4">Description:</div>
+                                <div class="mem_info_text col-sm-8">'.$profile_info[0]['description'].'</div>
+                                <div class="clearfix"></div>
+                            </div>';
+				}
+				else
+				{
+					echo '<div class="mem_info_outline">
+                                <div class="mem_info_text col-sm-8">Other Details Are Not Filled Up By User</div>
+                                <div class="clearfix"></div>
+                            </div>';
+				}
+			}
+			else
+			{
+				echo '<h3 class="project_list_heading">No Rresult Found</h3>';
+			}
+			echo '</div>
+                 </div>';
+		}
+		
+		/*
+		- method for getting user account details
+		- Auth : Dipanjan
+		*/
+		function getUserAccountDetails($user_id)
+		{
+			echo ' <div class="panel-heading"><i class="fa fa-list fa-fw"></i> Member Account Info</div>
+                        <div class="panel-body">';
+			//get value from database
+			$profile_details = $this->manage_content->getValue_where("user_account_details","*","user_id",$user_id);
+			if(!empty($profile_details[0]))
+			{
+				
+			}
+			else
+			{
+				echo '<h3 class="project_list_heading">No Rresult Found</h3>';
+			}
+			echo '</div>
+                 </div>';
+		}
+		
+		/*
+		- method for getting user portfolio details (Relative Links)
+		- Auth : Dipanjan
+		*/
+		function getUserPortfolioinfo($user_id)
+		{
+			echo ' <div class="panel-heading"><i class="fa fa-list fa-fw"></i> Member Portfolio Info</div>
+                        <div class="panel-body">';
+			//get portfolio info from database
+			$portfolio_details = $this->manage_content->getValueMultipleCondtn("user_portfolio","*",array("user_id","status"),array($user_id,1));
+			if(!empty($portfolio_details[0]))
+			{
+				echo '<div class="list-group list_item">';
+				foreach($portfolio_details as $portfolio_detail)
+				{
+					echo '<div class="list-group-item">
+							<div class="col-sm-7">
+								<h4>'.$portfolio_detail['skills'].'</h4>
+								<p>'.$portfolio_detail['description'].'</p>
+							</div>
+							<div class="col-sm-5">
+								<img src="../'.$portfolio_detail['file'].'" class="img-responsive center-block"/>
+							</div>
+							<div class="clearfix"></div>
+						</div>';
+				}
+				echo '</div>';
+			}
+			else
+			{
+				echo '<h3 class="project_list_heading">No Rresult Found</h3>';
+			}
+			
+			echo '</div>
+                 </div>';
+		}
+		
+		/*
+		- method for getting user employment details
+		- Auth : Dipanjan
+		*/
+		function getUserEmployment($user_id)
+		{
+			echo ' <div class="panel-heading"><i class="fa fa-list fa-fw"></i> Member Employment Info</div>
+                        <div class="panel-body">';
+			
+			//get employment details from database
+			$emp_details = $this->manage_content->getValueMultipleCondtn("user_employment","*",array("user_id","status"),array($user_id,1));
+			if(!empty($emp_details[0]))
+			{
+				echo '<div class="list-group list_item">';
+				foreach($emp_details as $emp_detail)
+				{
+					echo '<div class="list-group-item">
+								<div class="mem_info_outline">
+									<div class="mem_info_topic col-sm-4">Company Name:</div>
+									<div class="mem_info_text col-sm-8">'.$emp_detail['com_name'].'</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="mem_info_outline">
+									<div class="mem_info_topic col-sm-4">Position:</div>
+									<div class="mem_info_text col-sm-8">'.$emp_detail['position'].'</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="mem_info_outline">
+									<div class="mem_info_topic col-sm-4">Start Date:</div>
+									<div class="mem_info_text col-sm-8">'.$emp_detail['start_date'].'</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="mem_info_outline">
+									<div class="mem_info_topic col-sm-4">End Date:</div>
+									<div class="mem_info_text col-sm-8">'.$emp_detail['end_date'].'</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="mem_info_outline">
+									<div class="mem_info_topic col-sm-4">Description:</div>
+									<div class="mem_info_text col-sm-8">'.$emp_detail['description'].'</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="clearfix"></div>
+                            </div>';
+				}
+				echo '</div>';
+			}
+			else
+			{
+				echo '<h3 class="project_list_heading">No Rresult Found</h3>';
+			}
+			
+			echo '</div>
+                 </div>';
+		}
+		
+		/*
+		- method for getting user education details
+		- Auth : Dipanjan
+		*/
+		function getUserEducation($user_id)
+		{
+			echo ' <div class="panel-heading"><i class="fa fa-list fa-fw"></i> Member Education Info</div>
+                        <div class="panel-body">';
+			
+			//get education details from database
+			$edu_details = $this->manage_content->getValueMultipleCondtn("user_education","*",array("user_id","status"),array($user_id,1));
+			if(!empty($edu_details[0]))
+			{
+				echo '<div class="list-group list_item">';
+				foreach($edu_details as $edu_detail)
+				{
+					echo '<div class="list-group-item">
+								<div class="mem_info_outline">
+									<div class="mem_info_topic col-sm-4">Institute Name:</div>
+									<div class="mem_info_text col-sm-8">'.$edu_detail['inst_name'].'</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="mem_info_outline">
+									<div class="mem_info_topic col-sm-4">Degree:</div>
+									<div class="mem_info_text col-sm-8">'.$edu_detail['degree'].'</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="mem_info_outline">
+									<div class="mem_info_topic col-sm-4">Start Date:</div>
+									<div class="mem_info_text col-sm-8">'.$edu_detail['start_date'].'</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="mem_info_outline">
+									<div class="mem_info_topic col-sm-4">End Date:</div>
+									<div class="mem_info_text col-sm-8">'.$edu_detail['end_date'].'</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="mem_info_outline">
+									<div class="mem_info_topic col-sm-4">Description:</div>
+									<div class="mem_info_text col-sm-8">'.$edu_detail['description'].'</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="clearfix"></div>
+                            </div>';
+				}
+				echo '</div>';
+			}
+			else
+			{
+				$this->manage_content->getValue_where("project_info","*","project_id",$project_id);
+			}
+			echo '</div>
+                 </div>';
+		}
+		
+		/*
+		- method for getting user activation details
+		- Auth : Dipanjan
+		*/
+		function getUserActivation($user_id)
+		{
+			echo ' <div class="panel-heading"><i class="fa fa-list fa-fw"></i> Member Activation Details Info</div>
+                        <div class="panel-body">';
+			//get the value from database
+			$acti_details = $this->manage_content->getValue_where("user_activation_info","*","user_id",$user_id);
+			if(!empty($acti_details[0]))
+			{
+				echo '<div class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>User Status</th>
+									<th>From</th>
+									<th>To</th>
+									<th>Reason</th>
+								</tr>
+							</thead>
+							<tbody>';
+						
+						foreach($acti_details as $acti_detail)
+						{
+							//getting the row color
+							if($acti_detail['action'] == 'Activated')
+							{
+								$row_class = 'success';
+							}
+							else if($acti_detail['action'] == 'Deactivated')
+							{
+								$row_class = 'danger';
+							}
+							//getting present status
+							if($acti_detail['date_to'] == "" || $acti_detail['time_to'] == "")
+							{
+								$present_date = 'Present';
+							}
+							else
+							{
+								$present_date = $acti_detail['date_to']." ".$acti_detail['time_to'];
+							}
+							
+							echo '<tr class="'.$row_class.'">
+									<td>'.$acti_detail['action'].'</td>
+									<td>'.$acti_detail['date_from']." ".$acti_detail['time_from'].'</td>
+									<td>'.$present_date.'</td>
+									<td>'.$acti_detail['notes'].'</td>
+								</tr>';
+							
+						}
+				
+				echo '</tbody>
+					</table>
+					</div>';
+			}
+			else
+			{
+				$this->manage_content->getValue_where("project_info","*","project_id",$project_id);
+			}
+			echo '</div>
+                 </div>';
 		}
 		
 		/*

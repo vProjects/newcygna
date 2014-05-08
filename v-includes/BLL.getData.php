@@ -470,7 +470,7 @@
 							
 							echo '<div class="project_details_outline">
 									<div class="project_title_outline">
-										<span class="pull-left project_title_text"><a href="post_bid.php">'.$job['title'].'</a></span>
+										<span class="pull-left project_title_text"><a href="post_bid.php?pid='.$job['project_id'].'">'.$job['title'].'</a></span>
 										<span class="pull-right project_bid_button"><img src="img/hammer.png" /><span class="project_bid_text">Bid</span></span>
 										<div class="clearfix"></div>
 									</div>
@@ -665,6 +665,71 @@
 					echo '<li class="pro_cat"><a href="project_list.php?cat=Category'.$i.'">Category'.$i.'</a></li>';
 				}
 			}
+		}
+		
+		/*
+		- method for getting project details in bid page
+		- Auth: Dipanjan
+		*/
+		function getProjectDetailsInBidPage($project_id)
+		{
+			//get project details
+			$project_details = $this->manage_content->getValue_where("project_info","*","project_id",$project_id);
+			
+			//calculate time remaining for this project
+			$datetime1 = new DateTime($this->getCurrentDate());
+			$datetime2 = new DateTime($project_details[0]['ending_date']);
+			$interval = $datetime1->diff($datetime2);
+			$int_day =  $interval->format('%a');
+			if($int_day == 1)
+			{
+				$time_remaining = $int_day.' day';
+			}
+			else if($int_day == 0)
+			{
+				$time_remaining = 'Today';
+			}
+			else
+			{
+				$time_remaining = $int_day.' days';
+			}
+			//setting values for upload file
+			if(!empty($project_details[0]['file']))
+			{
+				$file_path = '<a href="'.$project_details[0]['file'].'" target="_blank">'.$project_details[0]['file_or'].'</a>';
+			}
+			else
+			{
+				$file_path = 'No Files';
+			}
+			//showing the result in page
+			echo '<div class="project_description_title_text">'.$project_details[0]['title'].'</div>
+				<p class="post_bid_project_description">'.$project_details[0]['description'].'</p>
+				<p class="post_bid_info_outline"><span class="post_bid_info_topic">Skills:</span> '.$project_details[0]['skills'].'</p>
+				<p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> '.$project_details[0]['price_range'].'</p>
+				<p class="post_bid_info_outline"><span class="post_bid_info_topic">Preffered Location:</span> '.$project_details[0]['preferred_locations'].'</p>
+				<p class="post_bid_info_outline"><span class="post_bid_info_topic">Time Remaining:</span> '.$time_remaining.'</p>
+				<p class="post_bid_info_outline"><span class="post_bid_info_topic">Uploaded Files:</span> '.$file_path.'</p>';
+		}
+		
+		/*
+		- method for getting current date
+		- Auth: Dipanjan
+		*/
+		function getCurrentDate()
+		{
+			$date = date('y-m-d');
+			return $date;
+		}
+		
+		/*
+		- method for getting current time
+		- Auth: Dipanjan
+		*/
+		function getCurrentTime()
+		{
+			$time = date('h:i:s a');
+			return $time;
 		}
 	}
 	
