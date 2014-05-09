@@ -460,7 +460,8 @@
 				{
 					//reject the jobs which have posted by this user
 					//checking for job ending date exceeds the current date or not
-					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date']))
+					//checking for job status = 1
+					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date']) && $job['status'] == 1)
 					{
 						//checking for job no is in between the start point and end point or not
 						if($jobNo >= $startNo && $jobNo < $endNo)
@@ -525,7 +526,8 @@
 				{
 					//reject the jobs which have posted by this user
 					//checking for job ending date exceeds the current date or not
-					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date']))
+					//checking for job status = 1
+					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date']) && $job['status'] == 1)
 					{
 						//increment the counter
 						$rows++;

@@ -30,16 +30,9 @@
                         <li><a href="#">Billings & Invoice</a></li>
                     </ul>
                 </div>
-                <div class="profile_box_outline">
-                	<div class="profile_box_heading">RUNNING PROJECTS</div>
-                    <ul class="profile_overview">
-                    	<li><a href="#">Lorem Ipsum</a></li>
-                        <li><a href="#">Lorem Ipsum</a></li>
-                        <li><a href="#">Lorem Ipsum</a></li>
-                        <li><a href="#">Lorem Ipsum</a></li>
-                        <li><a href="#">Lorem Ipsum</a></li>
-                    </ul>
-                </div>
+                <?php
+					include 'v-modules/user-running-projects.php';
+				?>
 			<?php
 				include ("v-modules/polling.php");
 			?>	
@@ -112,6 +105,49 @@
                         <p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> $500</p>
                     </div>
                     <div class="clearfix"></div>
+                </div>
+                
+                
+                <div class="project_list_heading_bar pro_list_myproject">
+                	<span class="pull-left">Project List</span>
+                    
+                    <div class="clearfix"></div>
+                </div>
+                <div class="profile_box_outline">
+                    <div class="portfolio_details">
+                        <div class="portfolio_part_outline">
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <div class="portfolio_part_heading">Website Design <span class="portfolio_part_share">Share</span></div>
+                                <p>This contains heavy graphical artworks..</p>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4"></div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="portfolio_part_outline">
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <div class="portfolio_part_heading">Website Design <span class="portfolio_part_share">Share</span></div>
+                                <p>This contains heavy graphical artworks..</p>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4"></div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="portfolio_part_outline">
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <div class="portfolio_part_heading">Website Design <span class="portfolio_part_share">Share</span></div>
+                                <p>This contains heavy graphical artworks..</p>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4"></div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="portfolio_part_outline borderless_box">
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <div class="portfolio_part_heading">Website Design <span class="portfolio_part_share">Share</span></div>
+                                <p>This contains heavy graphical artworks..</p>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4"><div class="myprojects_more_button pull-right">MORE</div></div>
+                            <div class="clearfix"></div>
+                        </div>
+                   </div>
                 </div>
             </div>
             <!-- body right section ends here -->

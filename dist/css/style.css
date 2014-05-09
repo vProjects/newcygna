@@ -569,6 +569,9 @@ a:hover{
 	border-left:1px solid #cdcdcd;
 	font-size:1.4em;	
 }
+.pro_list_myproject{
+	margin-top:1.2em;
+}
 .project_list_pagination_outline{
 	margin:0em 0em;
 }

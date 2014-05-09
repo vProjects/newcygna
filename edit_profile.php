@@ -126,7 +126,7 @@
                                     <label class="col-md-3 pp_form_label control-label">Profile Image</label>
                                     <div class="col-md-8">
                                       <input type="file" name="pro_pic" id="pro_pic" class="form-control pp_form_file_upload">
-                                      <p class="text-notific">**Maximum filesize is 4mb.</p>
+                                      <p class="text-notific">**Maximum filesize is 2mb.</p>
                                     </div>
                                   </div>
                                   <div class="form-group">
@@ -151,7 +151,7 @@
                                     <label class="col-md-3 pp_form_label control-label">Cover Image</label>
                                     <div class="col-md-8">
                                       <input type="file" name="cov_pic" id="cov_pic" class="form-control pp_form_file_upload">
-                                      <p class="text-notific">**Maximum filesize is 4mb.</p>
+                                      <p class="text-notific">**Maximum filesize is 2mb.</p>
                                     </div>
                                   </div>
                                   <div class="form-group">

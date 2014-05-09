@@ -493,12 +493,14 @@
 			{
 				$preffered_loc = 'Any Where';
 			}
+			//setting status value
+			$status = 1;
 			
 			//inserting the values to database
-			$column_name = array("project_id","title","description","user_id","category","sub_category","skills","file_or","file","date","time","work_type","price_range","hour_per_week","hourly_time_frame","job_post_ip","ending_date","preferred_locations");
+			$column_name = array("project_id","title","description","user_id","category","sub_category","skills","file_or","file","date","time","work_type","price_range","hour_per_week","hourly_time_frame","job_post_ip","ending_date","preferred_locations","status");
 			
-			$column_value = array($project_id,$userData['pp_title'],$userData['pp_des'],$user_id,$userData['pro_category'],$userData['pro_sub_category'],$skills_string,$original_file,$project_file,$curDate,$curTime,$work_type,$price_range,$hours_of_week,$hourly_time_range,$ip,$job_ending_date,$preffered_loc);
-			print_r($column_value);
+			$column_value = array($project_id,$userData['pp_title'],$userData['pp_des'],$user_id,$userData['pro_category'],$userData['pro_sub_category'],$skills_string,$original_file,$project_file,$curDate,$curTime,$work_type,$price_range,$hours_of_week,$hourly_time_range,$ip,$job_ending_date,$preffered_loc,$status);
+			
 			$insertProjectValue = $this->manageContent->insertValue("project_info",$column_name,$column_value);
 			
 			return $insertProjectValue;
