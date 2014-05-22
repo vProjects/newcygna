@@ -104,7 +104,9 @@
 			//getting values from databases
 			$userDetails = $this->manage_content->getValue_where("user_info","*","user_id",$user_id);
 			
-			echo '<p>'.$userDetails[0]['description'].'</p>';
+			echo '<div class="profile_box_heading">'.$userDetails[0]['name'].'</div>
+        			<div class="hiring_rate profile_details">
+					<p>'.$userDetails[0]['description'].'</p>';
 		}
 		
 		/*
@@ -461,31 +463,74 @@
 					//reject the jobs which have posted by this user
 					//checking for job ending date exceeds the current date or not
 					//checking for job status = 1
-					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date']) && $job['status'] == 1)
+					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date'].' 23:59:59') && $job['status'] == 1)
 					{
 						//checking for job no is in between the start point and end point or not
 						if($jobNo >= $startNo && $jobNo < $endNo)
 						{
 							//sub string the project description
 							$project_des = substr($job['description'],0,1000);
+							//checking that user has bid on this project or not
+							$bidState = $this->bidOnProject($job['project_id'],$user_id);
+							if($bidState == 1)
+							{
+								$bid_icon = '<span class="pull-right project_bid_button"><img src="img/hammer.png" /><span class="project_bid_text">Bid</span></span>';
+								//getting bid id
+								$bid_id = $this->manage_content->getValueMultipleCondtn("bid_info","*",array("project_id","user_id"),array($job['project_id'],$user_id));
+								$post_bid_icon = '<a href="post_bid.php?bid='.$bid_id[0]['bid_id'].'">'.$job['title'].'</a>';
+							}
+							else
+							{
+								$bid_icon = '';
+								$post_bid_icon = '<a href="post_bid.php?pid='.$job['project_id'].'">'.$job['title'].'</a>';
+							}
+							//calculate time remaining for this project
+							$datetime1 = new DateTime($this->getCurrentDate());
+							$datetime2 = new DateTime($job['ending_date']);
+							$interval = $datetime1->diff($datetime2);
+							$int_day =  $interval->format('%a');
+							if($int_day == 1)
+							{
+								$time_remaining = $int_day.' day Left';
+							}
+							else if($int_day == 0)
+							{
+								$time_remaining = 'Today Left';
+							}
+							else
+							{
+								$time_remaining = $int_day.' days Left';
+							}
+							//getting the skills for this project
+							$job_skills = substr($job['skills'],0,20).'...';
+							//getting total bids
+							$total_bids = $this->manage_content->getRowValueMultipleCondition("bid_info",array("project_id","status"),array($job['project_id'],1));
+							if($total_bids <= 1)
+							{
+								$total_bid_text = $total_bids.' Bid';
+							}
+							else
+							{
+								$total_bid_text = $total_bids.' Bids';
+							}
 							
 							echo '<div class="project_details_outline">
 									<div class="project_title_outline">
-										<span class="pull-left project_title_text"><a href="post_bid.php?pid='.$job['project_id'].'">'.$job['title'].'</a></span>
-										<span class="pull-right project_bid_button"><img src="img/hammer.png" /><span class="project_bid_text">Bid</span></span>
+										<span class="pull-left project_title_text">'.$post_bid_icon.'</span>
+										'.$bid_icon.'
 										<div class="clearfix"></div>
 									</div>
 									<div class="project_part_details_outline">
 										<p class="project_part_description">'.$project_des.'</p>
 										<div class="project_list_info_outline">
 											<span class="project_list_icon pull-left"><img src="img/time_icon.png" /></span>
-											<span class="project_list_icon_text pull-left">15 Days Left</span>
+											<span class="project_list_icon_text pull-left">'.$time_remaining.'</span>
 											<span class="project_list_icon pull-left"><img src="img/skills_icon.png" /></span>
-											<span class="project_list_icon_text pull-left">PHP, Javascript</span>
+											<span class="project_list_icon_text pull-left">'.$job_skills.'</span>
 											<span class="project_list_icon pull-left"><img src="img/price_icon.png" /></span>
-											<span class="project_list_icon_text pull-left">$ 500</span>
+											<span class="project_list_icon_text pull-left">'.$job['price_range'].'</span>
 											<span class="project_list_icon pull-left"><img src="img/bids_icon.png" /></span>
-											<span class="project_list_icon_text pull-left">31 Bids</span>
+											<span class="project_list_icon_text pull-left">'.$total_bid_text.'</span>
 											<div class="clearfix"></div>
 										</div>
 										<div class="clearfix"></div>
@@ -512,6 +557,30 @@
 		}
 		
 		/*
+		- method for checking that user has submitted proposal on a project or not
+		- Auth : Dipanjan
+		*/
+		function bidOnProject($project_id,$user_id)
+		{
+			//get the value of bid table
+			$getValues = $this->manage_content->getValueMultipleCondtn("bid_info","*",array("project_id","status"),array($project_id,1));
+			//initiate parameter
+			$flag = 0;
+			if(!empty($getValues[0]))
+			{
+				foreach($getValues as $getValue)
+				{
+					if($getValue['user_id'] == $user_id)
+					{
+						$flag = 1;
+						break;
+					}
+				}
+			}
+			return $flag;
+		}
+		
+		/*
 		- method for getting the value of the pagination
 		- Auth : Dipanjan
 		*/
@@ -527,7 +596,7 @@
 					//reject the jobs which have posted by this user
 					//checking for job ending date exceeds the current date or not
 					//checking for job status = 1
-					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date']) && $job['status'] == 1)
+					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date'].' 23:59:59') && $job['status'] == 1)
 					{
 						//increment the counter
 						$rows++;
@@ -712,6 +781,179 @@
 				<p class="post_bid_info_outline"><span class="post_bid_info_topic">Preffered Location:</span> '.$project_details[0]['preferred_locations'].'</p>
 				<p class="post_bid_info_outline"><span class="post_bid_info_topic">Time Remaining:</span> '.$time_remaining.'</p>
 				<p class="post_bid_info_outline"><span class="post_bid_info_topic">Uploaded Files:</span> '.$file_path.'</p>';
+		}
+		
+		/*
+		- method for getting list of bids in post bid page
+		- Auth: Dipanjan
+		*/
+		function getBidListInPostBidPage($project_id)
+		{
+			//get values from bid table
+			$bids = $this->manage_content->getValueMultipleCondtn("bid_info","*",array("project_id","status"),array($project_id,1));
+			//get total row value
+			$bidRow = $this->manage_content->getRowValueMultipleCondition("bid_info",array("project_id","status"),array($project_id,1));
+			
+			//printing the header part
+			echo '<div class="project_list_heading_bar">
+					<span class="pull-left">Proposal List</span>
+					<span class="pull-right">Total Bids: <b>'.$bidRow.'</b></span>
+					<div class="clearfix"></div>
+				</div>';
+			
+			//showing bid list of this project
+			if(!empty($bids[0]))
+			{
+				foreach($bids as $bid)
+				{
+					//getting the personal info of bidder
+					$perInfo = $this->manage_content->getValue_where("user_info","*","user_id",$bid['user_id']);
+					//getting profile pic
+					if(!empty($perInfo[0]['profile_image']))
+					{
+						$pro_img = $perInfo[0]['profile_image'];
+					}
+					else
+					{
+						$pro_img = 'img/dummy_profile.jpg';
+					}
+					//bidder skills
+					$bidder_skills = substr($perInfo[0]['skills'],0,100).'...';
+					//bid details
+					$bid_text = substr($bid['description'],0,400).'...';
+					
+					//printing the info
+					echo '<div class="project_details_outline post_bid_proposal_list">
+							<div class="col-md-2 post_bid_proposal_image_outline">
+								<img src="'.$pro_img.'" class="center-block" />
+							</div>
+							<div class="col-md-10 post_bid_proposal_outline">
+								<div class="project_title_text post_bid_bidder_name"><a>'.$perInfo[0]['name'].'</a></div>
+								<p class="project_part_description">'.$bid_text.'</p>
+								<p class="post_bid_info_outline"><span class="post_bid_info_topic">Skills:</span> '.$bidder_skills.'</p>
+								<p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> '.$bid['currency'].' '.$bid['amount'].'</p>
+							</div>
+							<div class="clearfix"></div>
+						</div>';
+				}
+			}
+			else
+			{
+				echo '<div class="portfolio_part_heading">No Proposals Yet</div>';
+			}
+		}
+		
+		/*
+		- method for updating project id
+		- Auth: Dipanjan
+		*/
+		function updateProjectPost($bid_id)
+		{
+			//get the bid details from database
+			$bid_details = $this->manage_content->getValue_where("bid_info","*","bid_id",$bid_id);
+			echo '<textarea rows="20" name="bid_pro" class="form-control post_bid_textarea">'.$bid_details[0]['description'].'</textarea>
+					<p>Cost</p>
+					<input type="text" name="bid_price" placeholder="Only write the amount" class="form-control post_bid_textbox post_bid_smltext" value="'.$bid_details[0]['amount'].'"/>
+					<p>Time Required</p>
+					<select name="time_range" class="form-control post_bid_textbox">';
+					echo '<option value="1 Day"'; if($bid_details[0]['time_range'] == '1 Day') { echo 'selected="selected"';} echo '>1 Day</option>';
+					echo '<option value="3 Days"'; if($bid_details[0]['time_range'] == '3 Days') { echo 'selected="selected"';} echo '>3 Days</option>';
+					echo '<option value="5 Days"'; if($bid_details[0]['time_range'] == '5 Days') { echo 'selected="selected"';} echo '>5 Days</option>';
+					echo '<option value="1 Week"'; if($bid_details[0]['time_range'] == '1 Week') { echo 'selected="selected"';} echo '>1 Week</option>';
+					echo '<option value="2 Weeks"'; if($bid_details[0]['time_range'] == '2 Weeks') { echo 'selected="selected"';} echo '>2 Weeks</option>';
+					echo '<option value="1 Month"'; if($bid_details[0]['time_range'] == '1 Month') { echo 'selected="selected"';} echo '>1 Month</option>';
+					echo '<option value="2 Months"'; if($bid_details[0]['time_range'] == '2 Months') { echo 'selected="selected"';} echo '>2 Months</option>';
+					echo '<option value="Above 2 Months"'; if($bid_details[0]['time_range'] == 'Above 2 Months') { echo 'selected="selected"';} echo '>Above 2 Months</option>';
+			echo 	'</select>
+					<p>Attach File</p>
+					<input type="file" name="file" class="post_bid_textbox"/>
+					<input type="hidden" name="bid" value="'.$bid_id.'" />
+					<input type="hidden" name="fn" value="'.md5('update_bid').'" />
+					<input type="submit" class="btn btn-success btn-lg pull-right" value="UPDATE"/>';
+		}
+		
+		/*
+		- method for getting job list by a user
+		- Auth: Dipanjan
+		*/
+		function getUserJobList($user_id)
+		{
+			//getting bid list
+			$bids = $this->manage_content->getValueMultipleCondtnDesc("bid_info","*",array("user_id","status"),array($user_id,1));
+			if(!empty($bids[0]))
+			{
+				foreach($bids as $bid)
+				{
+					//getting project details
+					$pro_details = $this->manage_content->getValue_where("project_info","*","project_id",$bid['project_id']);
+					//getting user details of project post
+					$project_user = $this->manage_content->getValue_where("user_info","*","user_id",$pro_details[0]['user_id']);
+					if(!empty($project_user[0]['profile_image']))
+					{
+						$pro_pic = $project_user[0]['profile_image'];
+					}
+					else
+					{
+						$pro_pic = 'files/pro-image/default.jpg';
+					}
+					
+					echo '<div class="project_details_outline post_bid_proposal_list">
+							<div class="col-md-2 post_bid_proposal_image_outline">
+								<img src="'.$pro_pic.'" class="center-block" />
+							</div>
+							<div class="col-md-10 post_bid_proposal_outline">
+								<div class="project_title_text post_bid_bidder_name"><a href="#">'.$pro_details[0]['title'].'</a></div>
+								<p class="project_part_description">'.substr($bid['description'],0,500).'</p>
+								
+								<p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> '.$bid['currency'].$bid['amount'].'</p>
+								<p class="post_bid_info_outline"><span class="post_bid_info_topic">Time Range:</span> '.$bid['time_range'].'</p>
+							</div>
+							<div class="clearfix"></div>
+						</div>';
+				}
+			}
+			else
+			{
+				echo '<div class="portfolio_part_heading">No Jobs Yet.</div>';
+			}
+			
+		}
+		
+		/*
+		- method for getting project list of user
+		- Auth: Dipanjan
+		*/
+		function getUserProjectList($user_id)
+		{
+			//get values from database
+			$projects = $this->manage_content->getValueMultipleCondtnDesc("project_info","*",array("user_id","status"),array($user_id,1));
+			if(!empty($projects[0]))
+			{
+				foreach($projects as $project)
+				{
+					echo '<div class="portfolio_part_outline">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="portfolio_part_heading"><a href="#">'.$project['title'].' </a><span class="portfolio_part_share">Share</span></div>
+                                <p>'.substr($project['description'],0,500).'</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>';
+				}
+			}
+			else
+			{
+				echo '<div class="portfolio_part_heading">No Projects Found</div>';
+			}
+		}
+		
+		/*
+		- method for getting project id
+		- Auth: Dipanjan
+		*/
+		function getProjectIdFromBid($bid_id)
+		{
+			$bidRow = $this->manage_content->getValue_where("bid_info","*","bid_id",$bid_id);
+			return $bidRow[0]['project_id'];
 		}
 		
 		/*

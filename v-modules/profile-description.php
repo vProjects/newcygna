@@ -36,8 +36,6 @@
 		$manageContent->getUserImage($_SESSION['user_id'],'cp'); 
 	?>
     <div class="profile_box_outline">
-        <div class="profile_box_heading">Anand K. Singh</div>
-        <div class="hiring_rate profile_details">
             <?php
 				//getting cover images
 				$manageContent->getUserDescription($_SESSION['user_id']); 

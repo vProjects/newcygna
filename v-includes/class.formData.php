@@ -402,7 +402,7 @@
 				$skills_string = substr($skills_string,1);
 			}
 			
-			//uploading profile pic
+			//uploading project pic
 			if(!empty($userFile['file']['name']) && !empty($userFile['file']['size']))
 			{
 				$original_file = $userFile['file']['name'];
@@ -470,7 +470,7 @@
 				{
 					if(!empty($userData['fixed_custom_min']) && !empty($userData['fixed_custom_max']))
 					{
-						$price_range = '$'.$userData['fixed_custom_min'].' to '.$userData['fixed_custom_max'];
+						$price_range = '$'.$userData['fixed_custom_min'].' to $'.$userData['fixed_custom_max'];
 					}
 					else
 					{
@@ -539,6 +539,106 @@
 				}
 			}
 			return $update;
+		}
+		
+		/*
+		- method for inserting a bid
+		- Auth: Dipanjan
+		*/
+		function insertProjectBid($user_id,$userData,$userFile)
+		{
+			//create bid id
+			$bid_id = uniqid('bid');
+			//uploading bid attachement file
+			if(!empty($userFile['file']['name']) && !empty($userFile['file']['size']))
+			{
+				$original_file = $userFile['file']['name'];
+				//get unix timestamp
+				$unixTimeStamp = time();
+				//image desired name
+				$bid_file_name = md5($bid_id.$unixTimeStamp);
+				$bid_pic = $this->manageFileUploader->upload_document_file($bid_file_name,$userFile['file'],'../files/project/');
+				$bid_file = 'files/project/'.$bid_pic;	
+			}
+			else
+			{
+				$original_file = '';
+				$bid_file = '';
+			}
+			//get bid amount and currency
+			$bid_amount = intval($userData['bid_price']);
+			$currency = '$';
+			//getting date, time, ip of bid post
+			$curDate = $this->getCurrentDate();
+			$curTime = $this->getCurrentTime();
+			$ip = $this->manageUtility->getIpAddress();
+			//setting status = 1
+			$status = 1;
+			//inserting the value to table
+			$column_name = array("bid_id","project_id","user_id","description","original_file","file","currency","amount","time_range","date","time","ip","status");
+			$column_value = array($bid_id,$userData['pid'],$user_id,$userData['bid_pro'],$original_file,$bid_file,$currency,$bid_amount,$userData['time_range'],$curDate,$curTime,$ip,$status);
+			$insert = $this->manageContent->insertValue("bid_info",$column_name,$column_value);
+			//increasing total no of bids in project info table
+			if($insert == 1)
+			{
+				//increment the value by 1
+				$increamentValue = $this->manageContent->increamentValue("project_info","total_bids",1,"project_id",$userData['pid']);
+			}
+			return $insert;
+			
+		}
+		
+		/*
+		- method for updating the bid
+		- Auth: Dipanjan
+		*/
+		function updateUserBid($user_id,$userData,$userFile)
+		{
+			//get the id number of this bid
+			$id_nmbr = $this->manageContent->getValue_where("bid_info","*","bid_id",$userData['bid']);
+			$id = $id_nmbr[0]['id'];
+			if(!empty($userFile['file']['name']) && !empty($userFile['file']['size']))
+			{
+				$original_file = $userFile['file']['name'];
+				//get unix timestamp
+				$unixTimeStamp = time();
+				//image desired name
+				$bid_file_name = md5($userData['bid'].$unixTimeStamp);
+				$bid_pic = $this->manageFileUploader->upload_document_file($bid_file_name,$userFile['file'],'../files/project/');
+				$bid_file = 'files/project/'.$bid_pic;
+				//updating the file
+				$update_orfile = $this->manageContent->updateValueWhere("bid_info","original_file",$original_file,"id",$id);
+				$update_file = $this->manageContent->updateValueWhere("bid_info","file",$bid_file,"id",$id);
+			}
+			
+			//update the other field
+			if(isset($userData['bid_pro']))
+			{
+				$updte_des1 = $this->manageContent->updateValueWhere("bid_info","description",$userData['bid_pro'],"id",$id);
+			}
+			
+			if(isset($userData['bid_price']))
+			{
+				$updte_des2 = $this->manageContent->updateValueWhere("bid_info","amount",$userData['bid_price'],"id",$id);
+			}
+			
+			if(isset($userData['bid_price']))
+			{
+				$updte_des3 = $this->manageContent->updateValueWhere("bid_info","amount",$userData['bid_price'],"id",$id);
+			}
+			
+			if(isset($userData['time_range']))
+			{
+				$updte_des4 = $this->manageContent->updateValueWhere("bid_info","time_range",$userData['time_range'],"id",$id);
+			}
+			if($update_orfile == 1 || $update_file == 1 || $updte_des1 == 1 || $updte_des2 == 1 || $updte_des3 == 1 || $updte_des4 == 1)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
 		}
 		
 		/*
@@ -752,6 +852,36 @@
 				$_SESSION['warning'] = 'Survey Report Submission Unsuccessfully!!';
 			}
 			header("Location: ../survey.php");
+			break;
+		}
+		//for inserting bid for a project
+		case md5('insert_bid'):
+		{
+			$insertBid= $formData->insertProjectBid($_SESSION['user_id'],$GLOBALS['_POST'],$GLOBALS['_FILES']);
+			if($insertBid == 1)
+			{
+				$_SESSION['success'] = 'Your Proposal Submitted Successfully!!';
+			}
+			else
+			{
+				$_SESSION['warning'] = 'Your Proposal Submission Unsuccessfully!!';
+			}
+			header("Location: ../project_list.php");
+			break;
+		}
+		//for inserting bid for a project
+		case md5('update_bid'):
+		{
+			$updateBid= $formData->updateUserBid($_SESSION['user_id'],$GLOBALS['_POST'],$GLOBALS['_FILES']);
+			if($updateBid == 1)
+			{
+				$_SESSION['success'] = 'Your Proposal Updated Successfully!!';
+			}
+			else
+			{
+				$_SESSION['warning'] = 'Your Proposal Update Unsuccessfull!!';
+			}
+			header("Location: ../project_list.php");
 			break;
 		}
 		default:

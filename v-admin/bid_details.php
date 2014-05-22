@@ -7,8 +7,8 @@
 		include 'v-templates/left_sidebar.php';
 	?>
     <?php
-		if(isset($GLOBALS['_GET']['pid'])) 
-		{ $pid = $GLOBALS['_GET']['pid'];
+		if(isset($GLOBALS['_GET']['bid'])) 
+		{ $bid = $GLOBALS['_GET']['bid'];
 	?>
     
         <div id="page-wrapper">
@@ -26,7 +26,7 @@
                         <div class="panel-body">
                         	<?php
 								//getting the project details
-								$manageContent->getProjectPageDetails($pid);
+								$manageContent->getProjectDetailsOfBid($bid);
 							?>
                         </div>
                     </div>
@@ -36,8 +36,8 @@
                         <div class="panel-body">
                         	<div class="list-group list_item">
                             	<?php
-									//getting bid list of this project
-									$manageContent->getProjectBidList($pid);
+									//getting bid details of given bid
+									$manageContent->getDetailsOfBid($bid);
 								?>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                         <div class="panel-body">
                         	<?php
 								//getting the project details
-								$manageContent->getProjectQuickLinks($pid);
+								$manageContent->getBidQuickLinks($bid);
 							?>
                         </div>
                     </div>

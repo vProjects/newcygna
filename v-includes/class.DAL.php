@@ -291,6 +291,30 @@
 		}
 		
 		/*
+		- method for increment the value
+		- auth: Dipanjan
+		*/
+		function increamentValue($table_name,$update_column,$no,$column_name,$column_value)
+		{
+			$query = $this->link->prepare("UPDATE `$table_name` SET `$update_column` = $update_column + $no WHERE `$column_name` = '$column_value'");
+			$query->execute();
+			$count = $query->rowCount();
+			return $count;
+		}
+		
+		/*
+		- method for decreament the value
+		- auth: Dipanjan
+		*/
+		function decreamentValue($table_name,$update_column,$no,$column_name,$column_value)
+		{
+			$query = $this->link->prepare("UPDATE `$table_name` SET `$update_column` = $update_column - $no WHERE `$column_name` = '$column_value'");
+			$query->execute();
+			$count = $query->rowCount();
+			return $count;
+		}
+		
+		/*
 		- function to get the likely values of keyword with multiple condition
 		- auth: Dipanjan
 		*/

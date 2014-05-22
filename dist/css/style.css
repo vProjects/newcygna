@@ -641,7 +641,7 @@ a:hover{
 	margin:0 0.5em;
 }
 .project_list_icon_text{
-	margin-right:1em;
+	margin-right:8px;
 }
 .bottom_pagination{
 	margin-top:1.2em;
@@ -917,6 +917,9 @@ a:hover{
 .post_bid_textbox{
 	margin-bottom:0.8em;
 	border-radius:0px;
+}
+.post_bid_smltext{
+	width:50%;
 }
 /* post project page css */
 .post_project_body_outline{

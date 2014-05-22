@@ -13,7 +13,7 @@
 	print_r($abc);
 	echo '</pre>';*/
 	
-	if (time() < strtotime("0000-00-00"))
+	/*if (time() < strtotime("0000-00-00"))
 	{
 		echo time();
 		echo strtotime("2014-06-04");
@@ -22,6 +22,10 @@
 	$datetime1 = new DateTime('2009-10-11');
 	$datetime2 = new DateTime('2009-10-11');
 	$interval = $datetime1->diff($datetime2);
-	echo $interval->format('%a');
+	echo $interval->format('%a');*/
+	
+	/*$abc = $obj->increamentValue("project_info","total_bids",2,"project_id","pro535a050d029eb");
+	echo $abc;*/
+	
 	
 ?>

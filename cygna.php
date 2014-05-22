@@ -14,20 +14,25 @@
 	<div class="alert alert-success" id="success_msg"></div>
 	<!-- div for showing warning message--->
 	<div class="alert alert-danger" id="warning_msg"></div>
-    
+    <?php
+		if(isset($GLOBALS['_GET']))
+		{
+			$option = $GLOBALS['_GET']['op'];
+		}
+	?>
 
 	<div class="container">
     	<div class="row profile_body_row">
         	<!-- body left section starts here -->
         	<div class="col-md-3 profile_left_part_outline">
                 <div class="profile_box_outline project_list_leftbar_outline">
-                	<div class="profile_box_heading">WORKROOM</div>
+                	<div class="profile_box_heading">Quick Links</div>
                     <ul class="profile_overview">
-                    	<li><a href="message.php">Message</a></li>
-                        <li><a href="escrow.php">Milestones</a></li>
-                        <li><a href="#">Files</a></li>
-                        <li><a href="post_bid.php">My Proposal</a></li>
-                        <li><a href="#">Billings & Invoice</a></li>
+                    	<li><a href="cygna.php?op=job">JobList</a></li>
+                        <li><a href="cygna.php?op=pro">ProjectList</a></li>
+                        <li><a href="message.php">Message</a></li>
+                        <!--<li><a href="post_bid.php">My Proposal</a></li>
+                        <li><a href="#">Billings & Invoice</a></li>-->
                     </ul>
                 </div>
                 <?php
@@ -41,12 +46,45 @@
             <!-- body left section ends here -->
             <!-- body right section starts here -->
            <div class="col-md-8 profile_left_part_outline">
-                <div class="project_list_heading_bar">
-                	<span class="pull-left">Job List</span>
-                    <span class="pull-right">Total awards: <b>5</b></span>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="project_details_outline post_bid_proposal_list">
+           		<?php
+					if(isset($option) && $option == 'job')
+					{
+						echo '<div class="project_list_heading_bar">
+								<span class="pull-left">Job List</span>
+								<span class="pull-right">Total awards: <b>5</b></span>
+								<div class="clearfix"></div>
+							</div>';
+						
+						$manageContent->getUserJobList($_SESSION['user_id']);
+						
+						echo '<div class="project_list_heading_bar bottom_pagination">
+								<div class="clearfix"></div>
+							</div>';
+					}
+					else if(isset($option) && $option == 'pro')
+					{
+						echo '<div class="project_list_heading_bar">
+								<span class="pull-left">Project List</span>
+								
+								<div class="clearfix"></div>
+							</div>
+							<div class="profile_box_outline">
+                    			<div class="portfolio_details">';
+						
+						$manageContent->getUserProjectList($_SESSION['user_id']);
+							
+						echo '</div>
+							</div>
+							<div class="project_list_heading_bar bottom_pagination">
+								<div class="clearfix"></div>
+							</div>';
+					}
+				?>
+           
+           
+           
+                
+                <!--<div class="project_details_outline post_bid_proposal_list">
                 	<div class="col-md-2 post_bid_proposal_image_outline">
                     	<img src="img/dummy_profile.jpg" class="center-block" />
                     </div>
@@ -105,10 +143,10 @@
                         <p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> $500</p>
                     </div>
                     <div class="clearfix"></div>
-                </div>
+                </div>-->
                 
                 
-                <div class="project_list_heading_bar pro_list_myproject">
+                <!--<div class="project_list_heading_bar pro_list_myproject">
                 	<span class="pull-left">Project List</span>
                     
                     <div class="clearfix"></div>
@@ -148,7 +186,7 @@
                             <div class="clearfix"></div>
                         </div>
                    </div>
-                </div>
+                </div>-->
             </div>
             <!-- body right section ends here -->
         </div>

@@ -16,7 +16,19 @@
 	<div class="alert alert-danger" id="warning_msg"></div>
     
 	<?php
-		if(isset($GLOBALS['_GET']['pid'])) { $pid = $GLOBALS['_GET']['pid']; 
+		if(isset($GLOBALS['_GET']['pid']) || isset($GLOBALS['_GET']['bid'])) 
+		{
+			if(isset($GLOBALS['_GET']['pid']))
+			{
+				$pid = $GLOBALS['_GET']['pid']; 
+			}
+			else if(isset($GLOBALS['_GET']['bid']))
+			{
+				$bid = $GLOBALS['_GET']['bid'];
+				//get the project id
+				$pid = $manageContent->getProjectIdFromBid($bid);
+			}
+			
 	?>
 	<div class="container">
     	<div class="row profile_body_row">

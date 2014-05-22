@@ -182,7 +182,7 @@
 							<td>'.$name[0]['name'].'</td>
 							<td>'.$email[0]['email_id'].'</td>
 							<td><a href="memberProjectList.php?uid='.$member['user_id'].'"><button class="btn btn-primary">Project Details</button></a></td>
-							<td><a><button class="btn btn-primary">Bid Details</button></a></td>
+							<td><a href="memberBidList.php?uid='.$member['user_id'].'"><button class="btn btn-primary">Bid Details</button></a></td>
 							<td><a href="memberProfileDetails.php?uid='.$member['user_id'].'"><button class="btn btn-warning">Profile Details</button></a></td>
 							<td>'.$action_button.'</td>
 						</tr>';
@@ -311,6 +311,58 @@
 							</div>
 							<div class="clearfix"></div>
 						</div>';
+				}
+				echo '</div>';
+			}
+			else
+			{
+				echo '<h3 class="project_list_heading">No Rresult Found</h3>';
+			}
+		}
+		
+		/*
+		- method for getting bid details of a member
+		- Auth : Dipanjan
+		*/
+		function getMemberBidDetails($user_id)
+		{
+			//getting bid list of a member
+			$bidList = $this->manage_content->getValue_where("bid_info","*","user_id",$user_id);
+			if(!empty($bidList[0]))
+			{
+				echo '<div class="list-group list_item">';
+				foreach($bidList as $bid)
+				{
+					//getting the project details of this bid
+					$project_details = $this->manage_content->getValue_where("project_info","*","project_id",$bid['project_id']);
+					
+					//sub string the bid description
+					$bid_des = substr($bid['description'],0,300).'...';
+					
+					echo '<div class="list-group-item project_list_item">
+							<h3 class="project_list_heading"><a href="bid_details.php?bid='.$bid['bid_id'].'">'.$project_details[0]['title'].'</a></h3>
+							<p>'.$bid_des.'</p>
+							<div class="col-sm-4">
+								<p>
+									<span class="project_list_topic">Price: </span>
+									<span class="project_list_des">'.$bid['currency'].$bid['amount'].'</span>
+								</p>
+							</div>
+							<div class="col-sm-4">
+								<p>
+									<span class="project_list_topic">Time Range: </span>
+									<span class="project_list_des">'.$bid['time_range'].'</span>
+								</p>
+							</div>
+							<div class="col-sm-4">
+								<p>
+									<span class="project_list_topic">Job Posted On: </span>
+									<span class="project_list_des">'.$bid['date'].' '.$bid['time'].'</span>
+								</p>
+							</div>
+							<div class="clearfix"></div>
+						</div>';
+					
 				}
 				echo '</div>';
 			}
@@ -694,6 +746,27 @@
 		}
 		
 		/*
+		- method for getting project details of given bid id
+		- Auth : Dipanjan
+		*/
+		function getProjectDetailsOfBid($bid_id)
+		{
+			//getting details of this project
+			$bid_details = $this->manage_content->getValue_where("bid_info","*","bid_id",$bid_id);
+			if(!empty($bid_details[0]))
+			{
+				//get project details
+				$pro_details = $this->manage_content->getValue_where("project_info","*","project_id",$bid_details[0]['project_id']);
+				echo '<h3 class="project_list_heading"><a href="project_details.php?pid='.$bid_details[0]['project_id'].'">'.$pro_details[0]['title'].'</a></h3>
+                      <p>'.$pro_details[0]['description'].'</p>';
+			}
+			else
+			{
+				echo '<h3 class="project_list_heading">No Rresult Found</h3>';
+			}
+		}
+		
+		/*
 		- method for getting project quick links of a project
 		- Auth : Dipanjan
 		*/
@@ -703,13 +776,37 @@
 			$project_details = $this->manage_content->getValue_where("project_info","*","project_id",$project_id);
 			if(!empty($project_details[0]))
 			{
+				//get total no of bid
+				$totalBid = $this->manage_content->getRowValueMultipleCondition('bid_info',array('project_id'),array($project_id));
+				
+				//calculate time remaining for this project
+				$datetime1 = new DateTime($this->getCurrentDate());
+				$datetime2 = new DateTime($project_details[0]['ending_date']);
+				$interval = $datetime1->diff($datetime2);
+				$int_day =  $interval->format('%a');
+				if($int_day == 1)
+				{
+					$time_remaining = $int_day.' day Left';
+				}
+				else if($int_day == 0)
+				{
+					$time_remaining = 'Today Left';
+				}
+				else if($int_day > 1)
+				{
+					$time_remaining = $int_day.' days Left';
+				}
+				else
+				{
+					$time_remaining = 'Job Is Closed';
+				}
+				
 				echo '<div class="list-group list_item">
-						<a class="list-group-item">Total Bids: 20</a>
-						<a class="list-group-item">Job Is Open</a>
+						<a class="list-group-item">Total Bids: '.$totalBid.'</a>
+						<a class="list-group-item">'.$time_remaining.'</a>
 						<a class="list-group-item">Job Is Not Awarded</a>
-						<a class="list-group-item">15 Days Left</a>
-						<a class="list-group-item">Skills Required</a>
-						<a class="list-group-item">Price Range</a>
+						<a class="list-group-item">'.$project_details[0]['skills'].'</a>
+						<a class="list-group-item">'.$project_details[0]['price_range'].'</a>
 						<a class="list-group-item"><button class="btn btn-danger">Terminate This Project</button></a>
 					</div>';
 			}
@@ -717,6 +814,113 @@
 			{
 				echo '<h3 class="project_list_heading">No Rresult Found</h3>';
 			}
+		}
+		
+		/*
+		- method for getting quick links of a bid
+		- Auth : Dipanjan
+		*/
+		function getBidQuickLinks($bid_id)
+		{
+			//get bid details from database
+			$bid_details = $this->manage_content->getValue_where("bid_info","*","bid_id",$bid_id);
+			if(!empty($bid_details[0]))
+			{
+				echo '<div class="list-group list_item">
+						<a class="list-group-item">Price: '.$bid_details[0]['currency'].$bid_details[0]['amount'].'</a>
+						<a class="list-group-item">Time: '.$bid_details[0]['time_range'].'</a>
+						<a class="list-group-item">Bid Is Not Awarded</a>
+						<a class="list-group-item">'.$bid_details[0]['date'].' '.$bid_details[0]['time'].'</a>
+						<a class="list-group-item"><button class="btn btn-danger">Terminate This Bid</button></a>
+					</div>';
+			}
+			else
+			{
+				echo '<h3 class="project_list_heading">No Rresult Found</h3>';
+			}
+		}
+		
+		/*
+		- method for getting bid details
+		- Auth: Dipanjan
+		*/
+		function getProjectBidList($project_id)
+		{
+			//get bid details
+			$bidDetails = $this->manage_content->getValue_where("bid_info","*","project_id",$project_id);
+			
+			if(!empty($bidDetails[0]))
+			{
+				foreach($bidDetails as $bidDetail)
+				{
+					//getting bidder name
+					$bidderDetails = $this->manage_content->getValue_where("user_info","*","user_id",$bidDetail['user_id']);
+					echo '<div class="list-group-item project_list_item">
+							<h4 class="project_list_heading"><a>'.$bidderDetails[0]['name'].'</a></h4>
+							<p>'.$bidDetail['description'].'</p>
+							<div class="col-sm-4">
+								<p>
+									<span class="project_list_topic">Bid Price: </span>
+									<span class="project_list_des">'.$bidDetail['currency'].$bidDetail['amount'].'</span>
+								</p>
+							</div>
+							<div class="col-sm-4">
+								<p>
+									<span class="project_list_topic">Time Range: </span>
+									<span class="project_list_des">'.$bidDetail['time_range'].'</span>
+								</p>
+							</div>
+							<div class="clearfix"></div>
+						</div>';
+				}
+			}
+			else
+			{
+				echo '<h3 class="project_list_heading">No Bids Yet</h3>';
+			}
+		}
+		
+		/*
+		- method for getting bid details of given bid id
+		- Auth: Dipanjan
+		*/
+		function getDetailsOfBid($bid_id)
+		{
+			//get bid details
+			$bidDetails = $this->manage_content->getValue_where("bid_info","*","bid_id",$bid_id);
+			
+			if(!empty($bidDetails[0]))
+			{
+				echo '<div class="list-group-item project_list_item">
+						<p>'.$bidDetails[0]['description'].'</p>
+						
+						<div class="clearfix"></div>
+					</div>';
+			}
+			else
+			{
+				echo '<h3 class="project_list_heading">No Result Found</h3>';
+			}
+		}
+		
+		/*
+		- method for getting current date
+		- Auth: Dipanjan
+		*/
+		function getCurrentDate()
+		{
+			$date = date('y-m-d');
+			return $date;
+		}
+		
+		/*
+		- method for getting current time
+		- Auth: Dipanjan
+		*/
+		function getCurrentTime()
+		{
+			$time = date('h:i:s a');
+			return $time;
 		}
 	}
 	
