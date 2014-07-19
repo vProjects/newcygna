@@ -3,6 +3,10 @@
 	$pageTitle = 'Advertise';
 	include ('v-templates/header.php');
 ?>
+<?php
+	//including post header to this page
+	include ("v-templates/post-header.php");
+?>
 
 <!-- body starts here -->
 <div id="profile_body_outline">
@@ -89,5 +93,12 @@
 </div>
 <!-- body ends here -->
 <?php
-	include 'v-templates/footer.php';
+	if(isset($GLOBALS['_COOKIE']['uid']) || isset($_SESSION['user_id']))
+	{
+		include 'v-templates/post-footer.php';
+	}
+	else
+	{
+		include 'v-templates/footer.php';
+	}
 ?>

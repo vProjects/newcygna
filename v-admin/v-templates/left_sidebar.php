@@ -28,10 +28,52 @@
                         <!-- /.nav-second-level -->
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-table fa-fw"></i> Lorem Ipsum</a>
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Polling Details<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="addPoll.php">Add New Poll</a>
+                            </li>
+                            <li>
+                                <a href="pollList.php">Poll List</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-edit fa-fw"></i> Lorem Ipsum</a>
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Survey Details<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="addSurvey.php">Add New Survey</a>
+                            </li>
+                            <li>
+                                <a href="surveyList.php">Survey List</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-files-o fa-fw"></i> Faq Details<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="addFaq.php">Add Faq Question</a>
+                            </li>
+                            <li>
+                                <a href="faqList.php">Faq List</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-folder-open fa-fw"></i> MyPage Details<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="addPage.php">Add New Page</a>
+                            </li>
+                            <li>
+                                <a href="pageList.php">MyPage List</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-wrench fa-fw"></i> Lorem Ipsum<span class="fa arrow"></span></a>
@@ -55,7 +97,7 @@
                         <!-- /.nav-second-level -->
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i>Lorem Ipsum<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Lorem Ipsum<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="#">Second Level Item</a>

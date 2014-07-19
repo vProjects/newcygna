@@ -7,6 +7,10 @@
 		include 'v-templates/left_sidebar.php';
 	?>
         <div id="page-wrapper">
+        	<!-- div for showing success message--->
+            <div class="alert alert-success" id="success_msg"></div>
+            <!-- div for showing warning message--->
+            <div class="alert alert-danger" id="warning_msg"></div>
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Project List</h1>
@@ -32,6 +36,9 @@
 							?>
                         </div>
                     </div>
+                    <!-- previous page link -->
+                   <p class="previous_page_link"><a href="user-list.php?uid=<?php echo $GLOBALS['_GET']['uid']; ?>">back to previous page</a></p>
+                   
                 </div>
             </div>
             <!-- /.row -->

@@ -28,4 +28,18 @@
 	echo $abc;*/
 	
 	
+	/*include 'v-includes/BLL.getData.php';
+
+	$obj = new BLL_manageData();*/
+	
+	//inserting faq details
+	/*for($i=0;$i<9;$i++)
+	{
+		$insert = $obj->insertValue('faq_info',array('question','answer','date','time','status'),array('Lorem Ipsum is simply dummy text?','Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',date('y-m-d'),date('h:i:s a'),1));
+	}*/
+	
+	
+	
+	
+	
 ?>

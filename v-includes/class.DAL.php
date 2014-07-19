@@ -230,7 +230,7 @@
 				{
 					$column = $column." AND `".$column_name[$i]."` = ".$column_values[$i]."";
 				}*/
-				$column = $column." AND ".$column_name[$i]." = '".$column_values[$i]."'";
+				$column = $column." AND ".$column_name[$i]." = ".$column_values[$i];
 			}
 			$column = substr($column,5);
 			$query = $this->link->prepare("UPDATE `$table_name` SET ". $column ." WHERE $condition_column = $condition_value");
@@ -445,6 +445,35 @@
 		function getValue_latestDate($table_name,$value,$no)
 		{
 			$query = $this->link->prepare("SELECT $value from $table_name ORDER BY `date` DESC LIMIT $no");
+			$query->execute();
+			$rowcount = $query->rowCount();
+			if($rowcount > 0){
+				$result = $query->fetchAll(PDO::FETCH_ASSOC);
+				return $result;
+			}
+			else{
+				return $rowcount;
+			}
+		}
+		
+		/*
+		- function to get values with or clause
+		- auth: Dipanjan
+		*/
+		function getValueOrMultipleCondtn($table_name,$col_value,$column_name,$column_values)
+		{
+			//declaring variables for preparing the query
+			$column = "";
+			$value = "";
+			
+			for($i=0;$i<count($column_name);$i++)
+			{
+				$column = $column." OR ".$column_name[$i]."='".$column_values[$i]."'";
+				
+			}
+			$column = substr($column,4);
+			
+			$query = $this->link->prepare("SELECT ". $col_value ." from ". $table_name ." where ". $column);
 			$query->execute();
 			$rowcount = $query->rowCount();
 			if($rowcount > 0){

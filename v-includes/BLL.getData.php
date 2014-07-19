@@ -54,7 +54,43 @@
 			}
 			else
 			{
-				$profile_img = 'files/pro-image/default.jpg';
+				$profile_img = 'files/pro-image/dummy.png';
+			}
+			//for profile image
+			if(!empty($userDetails[0]['cover_image']))
+			{
+				$cover_img = $userDetails[0]['cover_image'];
+			}
+			else
+			{
+				$cover_img = 'files/cov-image/default.png';
+			}
+			if($image_type == 'pp')
+			{
+				echo '<img src="'.$profile_img.'" class="profile_image" alt="Profile Image"/>';
+			}
+			else if($image_type == 'cp')
+			{
+				echo '<img src="'.$cover_img.'" class="cover_image" alt="Cover Image"/>';
+			}
+		}
+		
+		/*
+		- method for getting profile and cover image
+		- Auth: Dipanjan
+		*/
+		function getUserImageForPublic($user_id,$image_type)
+		{
+			//getting values from databases
+			$userDetails = $this->manage_content->getValue_where("user_info","*","user_id",$user_id);
+			//for profile image
+			if(!empty($userDetails[0]['profile_image']))
+			{
+				$profile_img = $userDetails[0]['profile_image'];
+			}
+			else
+			{
+				$profile_img = 'files/pro-image/dummy.png';
 			}
 			//for profile image
 			if(!empty($userDetails[0]['cover_image']))
@@ -91,6 +127,28 @@
 			{
 				$hourly_rate = 'Undefined';
 			}
+			echo '<div class="profile_box_heading">Hire ME 
+					<span class="portfolio_part_share pull-right"><a href="edit_profile.php?op=pro">Edit</a></span>
+				</div>
+        		<div class="hiring_rate">'.$hourly_rate.'</div>';
+		}
+		
+		/*
+		- method for getting user hourly rate
+		- Auth: Dipanjan
+		*/
+		function getUserHourlyRateForPublic($user_id)
+		{
+			//getting values from databases
+			$userDetails = $this->manage_content->getValue_where("user_info","*","user_id",$user_id);
+			if(!empty($userDetails[0]['hourly_rate']))
+			{
+				$hourly_rate = '$'.$userDetails[0]['hourly_rate'].'/Hour';
+			}
+			else
+			{
+				$hourly_rate = 'Undefined';
+			}
 			echo '<div class="profile_box_heading">Hire ME</div>
         		<div class="hiring_rate">'.$hourly_rate.'</div>';
 		}
@@ -104,9 +162,81 @@
 			//getting values from databases
 			$userDetails = $this->manage_content->getValue_where("user_info","*","user_id",$user_id);
 			
+			echo '<div class="profile_box_heading">'.$userDetails[0]['name'].'
+					<span class="portfolio_part_share pull-right"><a href="edit_profile.php?op=per">Edit</a></span>
+				</div>
+        			<div class="hiring_rate profile_details">
+						<p>'.$userDetails[0]['description'].'</p>
+						<div class="profile_info_outline">
+							<div class="profile_info_box pull-left">
+								<img src="img/expertise_icon.png"  class="profile_info_icon pull-left"/>
+								<div class="profile_info_text_outline pull-left">
+									<div class="profile_info_heading">Certifications</div>
+									<div class="profile_info_text">'; if(!empty($userDetails[0]['no_certificates'])) { echo substr($userDetails[0]['no_certificates'],0,30); } else { echo 'NULL'; } echo '</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="profile_info_box pull-left">
+								<img src="img/availability_icon.png"  class="profile_info_icon pull-left" />
+								<div class="profile_info_text_outline pull-left">
+									<div class="profile_info_heading">Availability</div>
+									<div class="profile_info_text">'.$userDetails[0]['availability'].'</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="profile_info_box pull-left">
+								<img src="img/interested_icon.png"  class="profile_info_icon pull-left" />
+								<div class="profile_info_text_outline pull-left">
+									<div class="profile_info_heading">Interested In</div>
+									<div class="profile_info_text">'; if(!empty($userDetails[0]['interested_topic'])) { echo substr($userDetails[0]['interested_topic'],0,30); } else { echo 'Nothing Specify'; } echo '</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>';
+		}
+		
+		/*
+		- method for getting user description
+		- Auth: Dipanjan
+		*/
+		function getUserDescriptionForPublic($user_id)
+		{
+			//getting values from databases
+			$userDetails = $this->manage_content->getValue_where("user_info","*","user_id",$user_id);
+			
 			echo '<div class="profile_box_heading">'.$userDetails[0]['name'].'</div>
         			<div class="hiring_rate profile_details">
-					<p>'.$userDetails[0]['description'].'</p>';
+						<p>'.$userDetails[0]['description'].'</p>
+						<div class="profile_info_outline">
+							<div class="profile_info_box pull-left">
+								<img src="img/expertise_icon.png"  class="profile_info_icon pull-left"/>
+								<div class="profile_info_text_outline pull-left">
+									<div class="profile_info_heading">Certifications</div>
+									<div class="profile_info_text">'; if(!empty($userDetails[0]['no_certificates'])) { echo substr($userDetails[0]['no_certificates'],0,30); } else { echo 'NULL'; } echo '</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="profile_info_box pull-left">
+								<img src="img/availability_icon.png"  class="profile_info_icon pull-left" />
+								<div class="profile_info_text_outline pull-left">
+									<div class="profile_info_heading">Availability</div>
+									<div class="profile_info_text">'.$userDetails[0]['availability'].'</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="profile_info_box pull-left">
+								<img src="img/interested_icon.png"  class="profile_info_icon pull-left" />
+								<div class="profile_info_text_outline pull-left">
+									<div class="profile_info_heading">Interested In</div>
+									<div class="profile_info_text">'; if(!empty($userDetails[0]['interested_topic'])) { echo substr($userDetails[0]['interested_topic'],0,30); } else { echo 'Nothing Specify'; } echo '</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>';
 		}
 		
 		/*
@@ -128,7 +258,40 @@
 				{
 					echo '<div class="portfolio_part_outline'; if($i++ == $last_key) {echo ' borderless_box'; } echo'">
 							<div class="col-md-8 col-sm-8 col-xs-8">
-								<div class="portfolio_part_heading">'.$userportfolio['skills'].' <span class="portfolio_part_share">Share</span></div>
+								<div class="portfolio_part_heading">'.$userportfolio['skills'].' <span class="portfolio_part_share"><a href="edit_profile.php?op=port&port_id='.$userportfolio['id'].'">Edit</a></span></div>
+								<p>'.$userportfolio['description'].'</p>
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-4"><img src="'.$userportfolio['file'].'" class="pull-right"/></div>
+							<div class="clearfix"></div>
+						</div>';
+				}
+			}
+			else
+			{
+				echo '<div class="portfolio_part_heading">You Have Not Uploaded Any Portfolio.</div>';
+			}
+		}
+		
+		/*
+		- method for getting user portfolio
+		- Auth: Dipanjan
+		*/
+		function getUserPortfolioForPublic($user_id)
+		{
+			//getting values from databases
+			$userportfolios= $this->manage_content->getValue_where("user_portfolio","*","user_id",$user_id);
+			
+			if(!empty($userportfolios[0]))
+			{
+				//getting the last number of array and initialize parameter
+				$last_key = end(array_keys($userportfolios));
+				$i=0;
+				
+				foreach($userportfolios as $userportfolio)
+				{
+					echo '<div class="portfolio_part_outline'; if($i++ == $last_key) {echo ' borderless_box'; } echo'">
+							<div class="col-md-8 col-sm-8 col-xs-8">
+								<div class="portfolio_part_heading">'.$userportfolio['skills'].'</div>
 								<p>'.$userportfolio['description'].'</p>
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-4"><img src="'.$userportfolio['file'].'" class="pull-right"/></div>
@@ -147,6 +310,31 @@
 		- Auth: Dipanjan
 		*/
 		function getUserSkills($user_id)
+		{
+			//getting values from databases
+			$userDetails = $this->manage_content->getValue_where("user_info","*","user_id",$user_id);
+			
+			if(!empty($userDetails[0]['skills']))
+			{
+				//seperating the comma(',') and making an array of skill element
+				$skills = explode(',',$userDetails[0]['skills']);
+				//showing them in page
+				foreach($skills as $skill)
+				{
+					echo '<div class="myskills_box pull-left">'.$skill.'</div>';
+				}
+			}
+			else
+			{
+				echo '<div class="portfolio_part_heading">You Have Not Choosed Any Skill.</div>';
+			}
+		}
+		
+		/*
+		- method for getting user skills
+		- Auth: Dipanjan
+		*/
+		function getUserSkillsForPublic($user_id)
 		{
 			//getting values from databases
 			$userDetails = $this->manage_content->getValue_where("user_info","*","user_id",$user_id);
@@ -213,6 +401,154 @@
 		}
 		
 		/*
+		- method for getting user employment
+		- Auth: Dipanjan
+		*/
+		function getUserEmployementList($user_id)
+		{
+			//getting values from databases
+			$empDetails = $this->manage_content->getValueMultipleCondtn("user_employment","*",array("user_id","status"),array($user_id,1));
+			if(!empty($empDetails[0]))
+			{
+				echo '<thead>
+                    	<tr>
+                        	<th>Company</th>
+                            <th>Position</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Description</th>
+							<th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+				
+				foreach($empDetails as $empDetail)
+				{
+					echo '<tr>
+                        	<td>'.$empDetail['com_name'].'</td>
+                            <td>'.$empDetail['position'].'</td>
+                            <td>'.$empDetail['start_date'].'</td>
+                            <td>'.$empDetail['end_date'].'</td>
+                            <td>'.$empDetail['description'].'</td>
+							<td><span class="portfolio_part_share"><a href="edit_profile.php?op=emp&emp_id='.$empDetail['id'].'">Edit</a></span></td>
+                        </tr>';
+				}
+				
+				echo '</tbody>';
+			}
+		}
+		
+		/*
+		- method for getting user employment
+		- Auth: Dipanjan
+		*/
+		function getUserEmployementListForPublic($user_id)
+		{
+			//getting values from databases
+			$empDetails = $this->manage_content->getValueMultipleCondtn("user_employment","*",array("user_id","status"),array($user_id,1));
+			if(!empty($empDetails[0]))
+			{
+				echo '<thead>
+                    	<tr>
+                        	<th>Company</th>
+                            <th>Position</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+				
+				foreach($empDetails as $empDetail)
+				{
+					echo '<tr>
+                        	<td>'.$empDetail['com_name'].'</td>
+                            <td>'.$empDetail['position'].'</td>
+                            <td>'.$empDetail['start_date'].'</td>
+                            <td>'.$empDetail['end_date'].'</td>
+                            <td>'.$empDetail['description'].'</td>
+                        </tr>';
+				}
+				
+				echo '</tbody>';
+			}
+		}
+		
+		/*
+		- method for getting user education
+		- Auth: Dipanjan
+		*/
+		function getUserEducationList($user_id)
+		{
+			//getting values from databases
+			$empDetails = $this->manage_content->getValueMultipleCondtn("user_education","*",array("user_id","status"),array($user_id,1));
+			if(!empty($empDetails[0]))
+			{
+				echo '<thead>
+                    	<tr>
+                        	<th>Institute</th>
+                            <th>Degree</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Description</th>
+							<th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+				
+				foreach($empDetails as $empDetail)
+				{
+					echo '<tr>
+                        	<td>'.$empDetail['inst_name'].'</td>
+                            <td>'.$empDetail['degree'].'</td>
+                            <td>'.$empDetail['start_date'].'</td>
+                            <td>'.$empDetail['end_date'].'</td>
+                            <td>'.$empDetail['description'].'</td>
+							<td><span class="portfolio_part_share"><a href="edit_profile.php?op=edu&edu_id='.$empDetail['id'].'">Edit</a></span></td>
+                        </tr>';
+				}
+				
+				echo '</tbody>';
+			}
+		}
+		
+		/*
+		- method for getting user education
+		- Auth: Dipanjan
+		*/
+		function getUserEducationListForPublic($user_id)
+		{
+			//getting values from databases
+			$empDetails = $this->manage_content->getValueMultipleCondtn("user_education","*",array("user_id","status"),array($user_id,1));
+			if(!empty($empDetails[0]))
+			{
+				echo '<thead>
+                    	<tr>
+                        	<th>Institute</th>
+                            <th>Degree</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+				
+				foreach($empDetails as $empDetail)
+				{
+					echo '<tr>
+                        	<td>'.$empDetail['inst_name'].'</td>
+                            <td>'.$empDetail['degree'].'</td>
+                            <td>'.$empDetail['start_date'].'</td>
+                            <td>'.$empDetail['end_date'].'</td>
+                            <td>'.$empDetail['description'].'</td>
+                        </tr>';
+				}
+				
+				echo '</tbody>';
+			}
+		}
+		
+		/*
 		- method for getting survey set active
 		- Auth: Dipanjan
 		*/
@@ -241,6 +577,14 @@
 		*/
 		function getSurveyQusetions($user_id,$survey_set_no,$action)
 		{
+			if($user_id == 'guest')
+			{
+				$user_id = 'none';
+			}
+			else
+			{
+				$user_id = $user_id;
+			}
 			//getting the set which are active
 			$active_set = $this->manage_content->getValueMultipleCondtn("survey_info","question_no",array("set_no"),array($survey_set_no));
 			if(!empty($active_set[0]['question_no']))
@@ -463,7 +807,8 @@
 					//reject the jobs which have posted by this user
 					//checking for job ending date exceeds the current date or not
 					//checking for job status = 1
-					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date'].' 23:59:59') && $job['status'] == 1)
+					//checking that job is already awarded or not
+					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date'].' 23:59:59') && $job['status'] == 1 && empty($job['award_bid_id']))
 					{
 						//checking for job no is in between the start point and end point or not
 						if($jobNo >= $startNo && $jobNo < $endNo)
@@ -596,7 +941,7 @@
 					//reject the jobs which have posted by this user
 					//checking for job ending date exceeds the current date or not
 					//checking for job status = 1
-					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date'].' 23:59:59') && $job['status'] == 1)
+					if($job['user_id'] != $user_id && time() <= strtotime($job['ending_date'].' 23:59:59') && $job['status'] == 1 && empty($job['award_bid_id']))
 					{
 						//increment the counter
 						$rows++;
@@ -611,7 +956,15 @@
 			//show pagination when there is more than one page is there
 			if($no_page > 1)
 			{
-				$no_page = intval($no_page) + 1;
+				if($rows%$limit == 0)
+				{
+					$no_page = intval($no_page);
+				}
+				else
+				{
+					$no_page = intval($no_page) + 1;
+				}
+				
 				//set no of index to be displayed
 				$no_index = 1 ;
 				
@@ -667,6 +1020,90 @@
 				//echo '<li><a href="'.$PageUrl.'?p='.($no_page - 1).'&limit='.$limit.'">Last</a></li>' ;
 				echo	 '</ul>
 					</span>';
+			}
+			
+		}
+		
+		/*
+		- method for getting the value of the pagination
+		- Auth : Dipanjan
+		*/
+		function pagination2($page,$result,$pageUrl,$max_no_index,$limit)
+		{
+			//used in the db for getting o/p
+			$startPoint = $page*$limit ;
+			//no of page to be displayed
+			$no_page = $result/$limit ;
+			//show pagination when there is more than one page is there
+			if($no_page > 1)
+			{
+				if($result%$limit == 0)
+				{
+					$no_page = intval($no_page);
+				}
+				else
+				{
+					$no_page = intval($no_page) + 1;
+				}
+				
+				//set no of index to be displayed
+				$no_index = 1 ;
+				
+				//generate the pagination UI
+				echo '<div class="pull-right">
+                        <ul class="pagination new_pagination">';
+				//logic for setting the prev button
+				//condition for escaping the -ve page index when $page = 0
+				
+				if( ($page-1) < 0 && $page != 0 )
+				{
+					echo '<li><a href="'.$pageUrl.'p=0">&laquo;</a></li>';
+				}
+				elseif( $page != 0 )
+				{
+					echo '<li><a href="'.$pageUrl.'p='.($page-1).'">&laquo;</a></li>';
+				}
+				/*for the indexes*/
+				//index initilization variable
+				if( ( $page + 1 ) >= ( $no_page - $max_no_index + 1))
+				{
+					$inti_i = $no_page - $max_no_index + 1 ;
+				}
+				else
+				{
+					$inti_i = $page + 1 ;
+				}
+				for( $i = $inti_i ; $i <= $no_page ; $i++ )
+				{
+					if( $i > 0 )
+					{
+						//echo '<li><a ';
+						//codes for active class
+						if( $page == ( $i - 1 ) )
+						{
+							echo '<li class="active"><a ';
+						}
+						else
+						{
+							echo '<li><a ';
+						}
+						echo 'href="'.$pageUrl.'p='.($i-1).'">'.$i.'</a></li>' ;
+						//increment the index no by 1
+						$no_index++ ;
+						if( $no_index > $max_no_index )
+						{
+							break ;
+						}
+					}
+				}
+				if( $page != ( $no_page - 1 ) )
+				{
+					//for the next button
+					echo '<li><a href="'.$pageUrl.'p='.($page + 1).'">&raquo;</a></li>';
+				}
+				
+				echo	 '</ul>
+					</div>';
 			}
 			
 		}
@@ -789,6 +1226,8 @@
 		*/
 		function getBidListInPostBidPage($project_id)
 		{
+			//get project details
+			$project_details = $this->manage_content->getValue_where("project_info","*","project_id",$project_id);
 			//get values from bid table
 			$bids = $this->manage_content->getValueMultipleCondtn("bid_info","*",array("project_id","status"),array($project_id,1));
 			//get total row value
@@ -815,7 +1254,7 @@
 					}
 					else
 					{
-						$pro_img = 'img/dummy_profile.jpg';
+						$pro_img = 'img/dummy_profile.png';
 					}
 					//bidder skills
 					$bidder_skills = substr($perInfo[0]['skills'],0,100).'...';
@@ -828,9 +1267,18 @@
 								<img src="'.$pro_img.'" class="center-block" />
 							</div>
 							<div class="col-md-10 post_bid_proposal_outline">
-								<div class="project_title_text post_bid_bidder_name"><a>'.$perInfo[0]['name'].'</a></div>
-								<p class="project_part_description">'.$bid_text.'</p>
-								<p class="post_bid_info_outline"><span class="post_bid_info_topic">Skills:</span> '.$bidder_skills.'</p>
+								<div class="project_title_text post_bid_bidder_name"><a>'.$perInfo[0]['name'].'</a></div>';
+						if($project_details[0]['award_bid_id'] == $bid['bid_id'] && $bid['awarded'] != 0)
+						{
+							echo '<p class="project_part_description col-sm-9" style="padding:0px">'.$bid_text.'</p>
+								<p class="col-sm-3 awarded_logo_right"><img src="img/award2.png" alt="awarded" /></p>';
+						}
+						else
+						{
+							echo'<p class="project_part_description">'.$bid_text.'</p>';
+						}
+								
+					echo	'<p class="post_bid_info_outline"><span class="post_bid_info_topic">Skills:</span> '.$bidder_skills.'</p>
 								<p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> '.$bid['currency'].' '.$bid['amount'].'</p>
 							</div>
 							<div class="clearfix"></div>
@@ -839,7 +1287,92 @@
 			}
 			else
 			{
-				echo '<div class="portfolio_part_heading">No Proposals Yet</div>';
+				echo '<div class="profile_box_outline">
+                    	<div class="portfolio_details">
+							<div class="portfolio_part_heading">No Bids Till Now</div>
+						</div>
+					</div>';
+			}
+		}
+		
+		/*
+		- method for getting list of bids in user project page
+		- Auth: Dipanjan
+		*/
+		function getBidListInUserProjectPage($project_id)
+		{
+			//get project details
+			$project_details = $this->manage_content->getValue_where("project_info","*","project_id",$project_id);
+			//get values from bid table
+			$bids = $this->manage_content->getValueMultipleCondtn("bid_info","*",array("project_id","status"),array($project_id,1));
+			//get total row value
+			$bidRow = $this->manage_content->getRowValueMultipleCondition("bid_info",array("project_id","status"),array($project_id,1));
+			
+			//printing the header part
+			echo '<div class="project_list_heading_bar">
+					<span class="pull-left">Proposal List</span>
+					<span class="pull-right">Total Bids: <b>'.$bidRow.'</b></span>
+					<div class="clearfix"></div>
+				</div>';
+			
+			//showing bid list of this project
+			if(!empty($bids[0]))
+			{
+				foreach($bids as $bid)
+				{
+					//getting the personal info of bidder
+					$perInfo = $this->manage_content->getValue_where("user_info","*","user_id",$bid['user_id']);
+					//getting profile pic
+					if(!empty($perInfo[0]['profile_image']))
+					{
+						$pro_img = $perInfo[0]['profile_image'];
+					}
+					else
+					{
+						$pro_img = 'img/dummy_profile.png';
+					}
+					//bidder skills
+					$bidder_skills = substr($perInfo[0]['skills'],0,100).'...';
+					//bid details
+					$bid_text = substr($bid['description'],0,400).'...';
+					
+					//printing the info
+					echo '<div class="project_details_outline post_bid_proposal_list">
+							<div class="col-md-2 post_bid_proposal_image_outline">
+								<img src="'.$pro_img.'" class="center-block" />
+							</div>';
+						//checking for job is awarded or not
+						if($project_details[0]['award_bid_id'] == $bid['bid_id'] && $bid['awarded'] != 0)
+						{
+							echo	'<div class="col-md-10 post_bid_proposal_outline">
+									<div class="project_title_text post_bid_bidder_name"><a href="public-profile.php?uid='.$perInfo[0]['user_id'].'">'.$perInfo[0]['name'].'</a><a href="userProjectFullBidDetails.php?bid='.$bid['bid_id'].'"><button class="btn btn-primary pull-right">View Full Bid</button></a></div>
+									<p class="project_part_description col-sm-9" style="padding:0px">'.$bid_text.'</p>
+									<p class="col-sm-3 awarded_logo_right"><img src="img/award2.png" alt="awarded" /></p>
+									<p class="post_bid_info_outline"><span class="post_bid_info_topic">Skills:</span> '.$bidder_skills.'</p>
+									<p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> '.$bid['currency'].' '.$bid['amount'].'</p>';
+						}
+						else
+						{
+							echo	'<div class="col-md-10 post_bid_proposal_outline">
+									<div class="project_title_text post_bid_bidder_name"><a>'.$perInfo[0]['name'].'</a><a href="userProjectFullBidDetails.php?bid='.$bid['bid_id'].'"><button class="btn btn-primary pull-right">View Full Bid</button></a></div>
+									<p class="project_part_description">'.$bid_text.'</p>
+									<p class="post_bid_info_outline"><span class="post_bid_info_topic">Skills:</span> '.$bidder_skills.'</p>
+									<p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> '.$bid['currency'].' '.$bid['amount'].'</p>';
+						}
+						
+								
+					echo	'</div>
+							<div class="clearfix"></div>
+						</div>';
+				}
+			}
+			else
+			{
+				echo '<div class="profile_box_outline">
+                    	<div class="portfolio_details">
+							<div class="portfolio_part_heading">No Bids Till Now</div>
+						</div>
+					</div>';
 			}
 		}
 		
@@ -866,10 +1399,7 @@
 					echo '<option value="Above 2 Months"'; if($bid_details[0]['time_range'] == 'Above 2 Months') { echo 'selected="selected"';} echo '>Above 2 Months</option>';
 			echo 	'</select>
 					<p>Attach File</p>
-					<input type="file" name="file" class="post_bid_textbox"/>
-					<input type="hidden" name="bid" value="'.$bid_id.'" />
-					<input type="hidden" name="fn" value="'.md5('update_bid').'" />
-					<input type="submit" class="btn btn-success btn-lg pull-right" value="UPDATE"/>';
+					<input type="file" name="file" class="post_bid_textbox"/>';
 		}
 		
 		/*
@@ -894,29 +1424,129 @@
 					}
 					else
 					{
-						$pro_pic = 'files/pro-image/default.jpg';
+						$pro_pic = 'files/pro-image/dummy.png';
 					}
+					
 					
 					echo '<div class="project_details_outline post_bid_proposal_list">
 							<div class="col-md-2 post_bid_proposal_image_outline">
 								<img src="'.$pro_pic.'" class="center-block" />
 							</div>
 							<div class="col-md-10 post_bid_proposal_outline">
-								<div class="project_title_text post_bid_bidder_name"><a href="#">'.$pro_details[0]['title'].'</a></div>
+								<div class="project_title_text post_bid_bidder_name"><a href="post_bid.php?bid='.$bid['bid_id'].'">'.$pro_details[0]['title'].'</a></div>
 								<p class="project_part_description">'.substr($bid['description'],0,500).'</p>
 								
 								<p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> '.$bid['currency'].$bid['amount'].'</p>
-								<p class="post_bid_info_outline"><span class="post_bid_info_topic">Time Range:</span> '.$bid['time_range'].'</p>
-							</div>
-							<div class="clearfix"></div>
-						</div>';
+								<p class="post_bid_info_outline"><span class="post_bid_info_topic">Time Range:</span> '.$bid['time_range'].'</p>';
+					//setting job accept or decline btn
+					if($bid['awarded'] == 1 && $pro_details[0]['award_bid_id'] == $bid['bid_info'])
+					{
+						echo '<div class="col-md-6">
+									<form action="v-includes/class.formData.php" method="post">
+										<input type="hidden" name="bid" value="'.$bid['bid_id'].'" />
+										<input type="hidden" name="fn" value="'.md5('accept_award').'" />
+										<input type="submit" class="btn btn-success btn-lg" value="Accept This Job" />
+									</form>
+								</div>
+								<div class="col-md-6">
+									<form action="v-includes/class.formData.php" method="post">
+										<input type="hidden" name="bid" value="'.$bid['bid_id'].'" />
+										<input type="hidden" name="fn" value="'.md5('decline_award').'" />
+										<input type="submit" class="btn btn-danger btn-lg" value="Decline The Job" />
+									</form>
+								</div>';
+					}
+					echo '</div>
+						<div class="clearfix"></div>
+					</div>';
 				}
 			}
 			else
 			{
-				echo '<div class="portfolio_part_heading">No Jobs Yet.</div>';
+				echo '<div class="profile_box_outline">
+                    	<div class="portfolio_details">
+							<div class="portfolio_part_heading">No Jobs Found</div>
+						</div>
+					</div>';
 			}
 			
+		}
+		
+		/*
+		- method for getting bid full details
+		- Auth: Dipanjan
+		*/
+		function getBidFullDetails($bid_id)
+		{
+			//get details of bid
+			$bid_details = $this->manage_content->getValueMultipleCondtn("bid_info","*",array("bid_id","status"),array($bid_id,1));
+			if(!empty($bid_details[0]))
+			{
+				//getting user details
+				$userDetails = $this->manage_content->getValue_where("user_info","*","user_id",$bid_details[0]['user_id']);
+				//getting project details
+				$project_details = $this->manage_content->getValue_where("project_info","*","project_id",$bid_details[0]['project_id']);
+				//getting profile pic
+				if(!empty($userDetails[0]['pro_image']))
+				{
+					$pro_pic = $userDetails[0]['pro_image'];
+				}
+				else
+				{
+					$pro_pic = 'img/dummy_profile.png';
+				}
+				//getting uploaded file
+				if(!empty($bid_details[0]['file']))
+				{
+					$filename = '<a href="'.$bid_details[0]['file'].'" target="_blank">'.$bid_details[0]['original_file'].'</a>';
+				}
+				else
+				{
+					$filename = 'No Files';
+				}
+				
+				echo '<div class="full_bid_outline">
+						<div class="col-md-2 post_bid_proposal_image_outline">
+							<img src="'.$pro_pic.'" class="center-block">
+						</div>
+						<div class="col-md-10 post_bid_proposal_outline">
+							<div class="project_description_title_text"><a href="public-profile.php?uid='.$userDetails[0]['user_id'].'">'.$userDetails[0]['name'].'</a></div>
+							<p class="post_bid_project_description">'.$bid_details[0]['description'].'</p>
+							<p class="post_bid_info_outline">
+								<span class="post_bid_info_topic">Skills:</span> '.$userDetails[0]['skills'].'
+							</p>
+							<p class="post_bid_info_outline">
+								<span class="post_bid_info_topic">Proposal Amount:</span> '.$bid_details[0]['currency'].$bid_details[0]['amount'].'
+							</p>
+							<p class="post_bid_info_outline">
+								<span class="post_bid_info_topic">Time Frame:</span> '.$bid_details[0]['time_range'].'
+							</p>
+							<p class="post_bid_info_outline">
+								<span class="post_bid_info_topic">Bid Posted On:</span> '.$bid_details[0]['date'].' | '.$bid_details[0]['time'].'
+							</p>
+							<p class="post_bid_info_outline">
+								<span class="post_bid_info_topic">Uploaded File:</span> '.$filename.'
+							</p>';
+							if($project_details[0]['award_bid_id'] == $bid_details[0]['bid_id'] && $bid_details[0]['awarded'] != 0)
+							{
+								echo '<p class="post_bid_info_outline"><img src="img/award2.png" alt="awarded" /></p>';
+							}
+							else if(empty($project_details[0]['award_bid_id']) &&  $bid_details[0]['awarded'] == 0)
+							{
+								echo '<p class="post_bid_info_outline"><button class="btn btn-success btn-lg" id="award_bid">Award This Bid</button></p>';
+							}
+					echo '</div>
+						<div class="clearfix"></div>
+					</div>';
+			}
+			else
+			{
+				echo '<div class="profile_box_outline">
+                    	<div class="portfolio_details">
+							<div class="portfolio_part_heading">No Bid Details Found</div>
+						</div>
+					</div>';
+			}
 		}
 		
 		/*
@@ -933,8 +1563,9 @@
 				{
 					echo '<div class="portfolio_part_outline">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="portfolio_part_heading"><a href="#">'.$project['title'].' </a><span class="portfolio_part_share">Share</span></div>
+                                <div class="portfolio_part_heading"><a href="userProjectDetails.php?pid='.$project['project_id'].'">'.$project['title'].' </a><span class="portfolio_part_share"><a href="edit_project.php?pid='.$project['project_id'].'">Edit</a></span></div>
                                 <p>'.substr($project['description'],0,500).'</p>
+								<p>Posted On: '.$project['date'].' | '.$project['time'].'</p>
                             </div>
                             <div class="clearfix"></div>
                         </div>';
@@ -947,6 +1578,734 @@
 		}
 		
 		/*
+		- method for getting user personal info
+		- Auth: Dipanjan
+		*/
+		function getUserPersonalInfo($user_id)
+		{
+			//get user personal info details
+			$user = $this->manage_content->getValue_where("user_info","*","user_id",$user_id);
+			if(!empty($user[0]))
+			{
+				echo '<div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">First Name</label>
+						<div class="col-md-8">
+						  <input type="text" class="form-control pp_form_textbox" placeholder="Enter Your Name" name="name" value="'.$user[0]['name'].'">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Gender</label>
+						<div class="col-md-8">
+						  <div class="col-md-2"><input type="radio"  name="gender" value="male" '; if($user[0]['gender'] == 'male') { echo 'checked="checked"'; } echo '>Male</div>
+						  <div class="col-md-2"><input type="radio"  name="gender" value="female" '; if($user[0]['gender'] == 'female') { echo 'checked="checked"'; } echo '>Female</div>
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Date of Birth</label>
+						<div class="col-md-4">
+						  <input type="text" class="form-control pp_form_textbox" name="dob" id="per_date" value="'.$user[0]['dob'].'">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Contact No.</label>
+						<div class="col-md-4">
+						  <input type="text" class="form-control pp_form_textbox" name="contact" placeholder="Contact No." value="'.$user[0]['contact_no'].'">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Address Line 1</label>
+						<div class="col-md-8">
+						  <input type="text" class="form-control pp_form_textbox" name="add1" placeholder="Address Line 1" value="'.$user[0]['addr_line1'].'">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Address Line 2</label>
+						<div class="col-md-8">
+						  <input type="text" class="form-control pp_form_textbox" name="add2" placeholder="Address Line 2" value="'.$user[0]['addr_line2'].'">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Pincode</label>
+						<div class="col-md-3">
+						  <input type="text" class="form-control pp_form_textbox" name="pin" placeholder="Pincode" value="'.$user[0]['pincode'].'">
+						</div>
+						<label class="col-md-2 pp_form_label control-label">City</label>
+						<div class="col-md-3">
+						  <input type="text" class="form-control pp_form_textbox" name="city" placeholder="City" value="'.$user[0]['city'].'">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">State</label>
+						<div class="col-md-3">
+						  <input type="text" class="form-control pp_form_textbox" name="state" placeholder="State" value="'.$user[0]['state'].'">
+						</div>
+						<label class="col-md-2 pp_form_label control-label">Country</label>
+						<div class="col-md-3">
+						  <input type="text" class="form-control pp_form_textbox" name="country" placeholder="Country" value="'.$user[0]['country'].'">
+						</div>
+					  </div>';
+			}
+		}
+		
+		/*
+		- method for getting user profile info
+		- Auth: Dipanjan
+		*/
+		function getUserProfileInfo($user_id)
+		{
+			//get user personal info details
+			$user = $this->manage_content->getValue_where("user_info","*","user_id",$user_id);
+			if(!empty($user[0]))
+			{
+				//checking the values of skills selected
+				if(!empty($user[0]['skills']))
+				{
+					$skill = explode(',',$user[0]['skills']);
+				}
+				else
+				{
+					$skill = array();
+				}
+				
+				echo '<div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Skills<span class="man_field">**</span></label>
+						<div class="col-md-8">
+						  <div class="myskills_details ep_skills_list col-md-12" id="skills_list_value">';
+						
+						if(!empty($skill))
+						{
+							foreach($skill as $key=>$value)
+							{
+								echo '<div class="myskills_box pull-left">'.$value.'</div>';
+							}
+						}
+							
+							
+				echo   	'</div>
+						</div>
+					  </div>
+					  <div class="form-group">
+						<div class="col-md-offset-3 col-md-8">
+							<div class="form-control pp_form_textbox scrollable-content">
+								<label class="checkbox col-md-4">
+								  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill1"'; if(in_array('Skill1',$skill)) { echo 'checked="checked"'; } echo '> Skill1
+								</label>
+								<label class="checkbox col-md-4">
+								  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill2"'; if(in_array('Skill2',$skill)) { echo 'checked="checked"'; } echo '> Skill2
+								</label>
+								<label class="checkbox col-md-4">
+								  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill3"'; if(in_array('Skill3',$skill)) { echo 'checked="checked"'; } echo '> Skill3
+								</label>
+								<label class="checkbox col-md-4">
+								  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill4"'; if(in_array('Skill4',$skill)) { echo 'checked="checked"'; } echo '> Skill4
+								</label>
+								<label class="checkbox col-md-4">
+								  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill5"'; if(in_array('Skill5',$skill)) { echo 'checked="checked"'; } echo '> Skill5
+								</label>
+								<label class="checkbox col-md-4">
+								  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill6"'; if(in_array('Skill6',$skill)) { echo 'checked="checked"'; } echo '> Skill6
+								</label>
+								<label class="checkbox col-md-4">
+								  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill7"'; if(in_array('Skill7',$skill)) { echo 'checked="checked"'; } echo '> Skill7
+								</label>
+								<label class="checkbox col-md-4">
+								  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill8"'; if(in_array('Skill8',$skill)) { echo 'checked="checked"'; } echo '> Skill8
+								</label>
+								<label class="checkbox col-md-4">
+								  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill9"'; if(in_array('Skill9',$skill)) { echo 'checked="checked"'; } echo '> Skill9
+								</label>
+								<label class="checkbox col-md-4">
+								  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill10"'; if(in_array('Skill10',$skill)) { echo 'checked="checked"'; } echo '> Skill10
+								</label>
+								<label class="checkbox col-md-4">
+								  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill11"'; if(in_array('Skill11',$skill)) { echo 'checked="checked"'; } echo '> Skill11
+								</label>
+								<label class="checkbox col-md-4">
+								  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill12"'; if(in_array('Skill12',$skill)) { echo 'checked="checked"'; } echo '> Skill12
+								</label>
+							</div>
+							<div class="signup-form-error" id="err_pro_skill"></div>
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Hourly Rate<span class="man_field">**</span></label>
+						<div class="col-md-3">
+						  <input type="text" class="form-control pp_form_textbox" name="hourly_rate" id="pro_hour" value="'.$user[0]['hourly_rate'].'">
+						  <div class="signup-form-error" id="err_pro_hour"></div>
+						</div>
+						<label class="col-md-3">in $/hr</label>
+					  </div>
+					  <div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Your Terms</label>
+						<div class="col-md-8">
+						  <textarea rows="3" class="form-control pp_form_textarea" name="terms">'.$user[0]['terms'].'</textarea>
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Availability<span class="man_field">**</span></label>
+						<div class="col-md-8">
+						  <select class="form-control pp_form_selectbox" name="availability">
+							<option value="Full Time"'; if($user[0]['availability'] == 'Full Time') { echo 'selected="selected"'; } echo '>Full Time</option>
+							<option value="Part Time"'; if($user[0]['availability'] == 'Part Time') { echo 'selected="selected"'; } echo '>Part Time</option>
+						</select>
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Certifications</label>
+						<div class="col-md-5">
+						  <input type="text" class="form-control pp_form_textbox" name="certi" value="'.$user[0]['no_certificates'].'">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Interested Topics</label>
+						<div class="col-md-8">
+						  <input type="text" class="form-control pp_form_textbox" name="int_topic" value="'.$user[0]['interested_topic'].'">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Profile Description<span class="man_field">**</span></label>
+						<div class="col-md-8">
+						  <textarea rows="6" class="form-control pp_form_textarea" name="description" id="pro_des">'.$user[0]['description'].'</textarea>
+						  <div class="signup-form-error" id="err_pro_des"></div>
+						</div>
+					  </div>';
+			}
+		}
+		
+		/*
+		- method for getting total skill list
+		- Auth: Dipanjan
+		*/
+		function getAllSkillListSelected($userSkills)
+		{
+			/*//checking the values of skills selected
+			if(!empty($userSkills))
+			{
+				$skill = explode(',',$userSkills);
+			}
+			else
+			{
+				$skill = array();
+			}
+			
+			echo '<label class="checkbox col-md-4">
+					  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill1"'; if(in_array('Skill1',$skill)) { echo 'selected="selected"'; } echo '> Skill1
+					</label>
+					<label class="checkbox col-md-4">
+					  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill2"'; if(in_array('Skill2',$skill)) { echo 'selected="selected"'; } echo '> Skill2
+					</label>
+					<label class="checkbox col-md-4">
+					  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill3"'; if(in_array('Skill3',$skill)) { echo 'selected="selected"'; } echo '> Skill3
+					</label>
+					<label class="checkbox col-md-4">
+					  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill4"'; if(in_array('Skill4',$skill)) { echo 'selected="selected"'; } echo '> Skill4
+					</label>
+					<label class="checkbox col-md-4">
+					  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill5"'; if(in_array('Skill5',$skill)) { echo 'selected="selected"'; } echo '> Skill5
+					</label>
+					<label class="checkbox col-md-4">
+					  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill6"'; if(in_array('Skill6',$skill)) { echo 'selected="selected"'; } echo '> Skill6
+					</label>
+					<label class="checkbox col-md-4">
+					  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill7"'; if(in_array('Skill7',$skill)) { echo 'selected="selected"'; } echo '> Skill7
+					</label>
+					<label class="checkbox col-md-4">
+					  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill8"'; if(in_array('Skill8',$skill)) { echo 'selected="selected"'; } echo '> Skill8
+					</label>
+					<label class="checkbox col-md-4">
+					  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill9"'; if(in_array('Skill9',$skill)) { echo 'selected="selected"'; } echo '> Skill9
+					</label>
+					<label class="checkbox col-md-4">
+					  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill10"'; if(in_array('Skill10',$skill)) { echo 'selected="selected"'; } echo '> Skill10
+					</label>
+					<label class="checkbox col-md-4">
+					  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill11"'; if(in_array('Skill11',$skill)) { echo 'selected="selected"'; } echo '> Skill11
+					</label>
+					<label class="checkbox col-md-4">
+					  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill12"'; if(in_array('Skill12',$skill)) { echo 'selected="selected"'; } echo '> Skill12
+					</label>';*/
+					
+					echo '<div class="form-group">
+						<div class="col-md-offset-3 col-md-8"><div class="form-control pp_form_textbox scrollable-content"><label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill1"> Skill1
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill2"> Skill2
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill3"> Skill3
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill4"> Skill4
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill5"> Skill5
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill6"> Skill6
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill7"> Skill7
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill8"> Skill8
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill9"> Skill9
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill10"> Skill10
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill11"> Skill11
+                                            </label>
+                                            <label class="checkbox col-md-4">
+                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill12"> Skill12
+                                            </label></div></div>
+					  </div>';
+		}
+		
+		/*
+		- method for getting user portfolio info
+		- Auth: Dipanjan
+		*/
+		function getUserPortInfo($port_id)
+		{
+			//get values from database
+			$port_details = $this->manage_content->getValue_where("user_portfolio","*","id",$port_id);
+			if(!empty($port_details[0]))
+			{
+				echo '<div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">File</label>
+						<div class="col-md-8">
+						  <input type="file" name="file" class="form-control pp_form_textbox pp_form_file_upload">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Skills Required</label>
+						<div class="col-md-8">
+						  <input type="text" name="skills" class="form-control pp_form_textbox" value="'.$port_details[0]['skills'].'">
+						</div>
+					  </div>
+					<div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Description</label>
+						<div class="col-md-8">
+						  <textarea class="form-control pp_form_textbox pp_text_area" name="des">'.$port_details[0]['description'].'</textarea>
+						</div>
+					</div>';
+			}
+		}
+		
+		/*
+		- method for getting user employment info
+		- Auth: Dipanjan
+		*/
+		function getUserEmpInfo($emp_id)
+		{
+			//get values from database
+			$emp_details = $this->manage_content->getValue_where("user_employment","*","id",$emp_id);
+			if(!empty($emp_details[0]))
+			{
+				echo '<div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Company Name</label>
+						<div class="col-md-8">
+						  <input type="text" class="form-control pp_form_textbox" name="comp" value="'.$emp_details[0]['com_name'].'">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Position</label>
+						<div class="col-md-8">
+						  <input type="text" class="form-control pp_form_textbox" name="pos" value="'.$emp_details[0]['position'].'">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Start Date</label>
+						<div class="col-md-4">
+							<input type="text" class="form-control pp_form_textbox date_range" name="start" value="'.$emp_details[0]['start_date'].'">
+						</div>
+					</div>
+					<div class="form-group">
+					   <label class="col-md-3 pp_form_label control-label">End Date</label>
+						<div class="col-md-4">
+							<input type="text" class="form-control pp_form_textbox date_range" name="end" value="'.$emp_details[0]['end_date'].'">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Descrition</label>
+						<div class="col-md-8">
+						  <textarea class="form-control pp_form_textbox pp_text_area" name="des">'.$emp_details[0]['description'].'</textarea>
+						</div>
+					</div>';
+			}
+		}
+		
+		/*
+		- method for getting user education info
+		- Auth: Dipanjan
+		*/
+		function getUserEduInfo($edu_id)
+		{
+			//get values from database
+			$edu_details = $this->manage_content->getValue_where("user_education","*","id",$edu_id);
+			if(!empty($edu_details[0]))
+			{
+				echo '<div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Institution Name</label>
+						<div class="col-md-8">
+						  <input type="text" class="form-control pp_form_textbox" name="inst" value="'.$edu_details[0]['inst_name'].'">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Degree</label>
+						<div class="col-md-8">
+						  <input type="text" class="form-control pp_form_textbox" name="deg" value="'.$edu_details[0]['degree'].'">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Start Date</label>
+						<div class="col-md-4">
+							<input type="text" class="form-control pp_form_textbox date_range" name="start" value="'.$edu_details[0]['start_date'].'">
+						</div>
+					</div>
+					<div class="form-group">
+					   <label class="col-md-3 pp_form_label control-label">End Date</label>
+						<div class="col-md-4">
+							<input type="text" class="form-control pp_form_textbox date_range" name="end" value="'.$edu_details[0]['end_date'].'">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 pp_form_label control-label">Descrition</label>
+						<div class="col-md-8">
+						  <textarea class="form-control pp_form_textbox pp_text_area" name="des">'.$edu_details[0]['description'].'</textarea>
+						</div>
+					</div>';
+			}
+		}
+		
+		/*
+		- method for getting project details
+		- Auth: Dipanjan
+		*/
+		function getEditProjectDetails($pid)
+		{
+			//getting project details
+			$proDetails = $this->manage_content->getValue_where('project_info','*','project_id',$pid);
+			if(!empty($proDetails[0]))
+			{
+				//getting sub category of selected category
+				$sub_cat = array('Sub Category 1','Sub Category 2','Sub Category 3','Sub Category 4','Sub Category 5');
+				//getting project skills
+				//checking the values of skills selected
+				if(!empty($proDetails[0]['skills']))
+				{
+					$skill = explode(',',$proDetails[0]['skills']);
+				}
+				else
+				{
+					$skill = array();
+				}
+				//getting preferred location
+				if($proDetails[0]['preferred_locations'] == 'Any Where')
+				{
+					$pre_loc = '';
+				}
+				else
+				{
+					$pre_loc = $proDetails[0]['preferred_locations'];
+				}
+				//calculate project duration time
+				/*$datetime1 = new DateTime($proDetails[0]['date']);
+				$datetime2 = new DateTime($proDetails[0]['ending_date']);
+				$interval = $datetime1->diff($datetime2);
+				$int_day =  $interval->format('%a');*/
+				
+				echo '<div class="form-group pp_form_group">
+						<label class="pp_form_label">Project Title</label>
+						<input type="text" class="form-control col-md-6 pp_form_textbox" name="pp_title" value="'.$proDetails[0]['title'].'"/>
+						<div class="clearfix"></div>
+					</div>
+					<div class="form-group pp_form_group">
+						<label class="pp_form_label">Describe It</label>
+						<textarea rows="6" class="form-control pp_form_textarea" name="pp_des">'.$proDetails[0]['description'].'</textarea>
+						<div class="clearfix"></div>
+					</div>
+					<div class="form-group pp_form_group">
+						<label class="pp_form_label">Select the category</label>
+						<div>
+							<select class="form-control pp_form_selectbox pull-left" id="pro_category" name="pro_category">
+								<option value="Category1"'; if($proDetails[0]['category'] == 'Category1') { echo 'selected="selected"'; } echo'>Category 1</option>
+								<option value="Category2"'; if($proDetails[0]['category'] == 'Category2') { echo 'selected="selected"'; } echo'>Category 2</option>
+								<option value="Category3"'; if($proDetails[0]['category'] == 'Category3') { echo 'selected="selected"'; } echo'>Category 3</option>
+								<option value="Category4"'; if($proDetails[0]['category'] == 'Category4') { echo 'selected="selected"'; } echo'>Category 4</option>
+								<option value="Category5"'; if($proDetails[0]['category'] == 'Category5') { echo 'selected="selected"'; } echo'>Category 5</option>
+							</select>
+							<select class="form-control pp_form_selectbox pull-left" id="pro_sub_category" name="pro_sub_category" style="display: block;">';
+							foreach($sub_cat as $key=>$value)
+							{
+								echo '<option value="'.$value.'"'; if($proDetails[0]['sub_category'] == $value) { echo 'selected="selected"'; } echo'>'.$value.'</option>';
+							}
+								
+						echo '</select>
+							<div class="clearfix"></div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="form-group pp_form_group">
+						<label class="pp_form_label">Upload File</label>
+						<input type="file" name="file" />
+						<div class="clearfix"></div>
+					</div>
+					<div class="form-group pp_form_group">
+						<label class="pp_form_label">Request specific skills or groups</label>
+						
+						<div class="myskills_details ep_skills_list col-md-12" id="skills_list_value">';
+						if(!empty($skill))
+						{
+							foreach($skill as $key=>$value)
+							{
+								echo '<div class="myskills_box pull-left">'.$value.'</div>';
+							}
+						}
+					echo '</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="form-group pp_form_group">
+						<div class="form-control pp_form_textbox scrollable-content col-md-12">
+							<label class="checkbox col-md-4">
+							  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 1"'; if(in_array('Skills 1',$skill)) { echo 'checked="checked"'; } echo '> Skill1
+							</label>
+							<label class="checkbox col-md-4">
+							  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 2"'; if(in_array('Skills 2',$skill)) { echo 'checked="checked"'; } echo '> Skill2
+							</label>
+							<label class="checkbox col-md-4">
+							  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 3"'; if(in_array('Skills 3',$skill)) { echo 'checked="checked"'; } echo '> Skill3
+							</label>
+							<label class="checkbox col-md-4">
+							  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 4"'; if(in_array('Skills 4',$skill)) { echo 'checked="checked"'; } echo '> Skill4
+							</label>
+							<label class="checkbox col-md-4">
+							  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 5"'; if(in_array('Skills 5',$skill)) { echo 'checked="checked"'; } echo '> Skill5
+							</label>
+							<label class="checkbox col-md-4">
+							  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 6"'; if(in_array('Skills 6',$skill)) { echo 'checked="checked"'; } echo '> Skill6
+							</label>
+							<label class="checkbox col-md-4">
+							  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 7"'; if(in_array('Skills 7',$skill)) { echo 'checked="checked"'; } echo '> Skill7
+							</label>
+							<label class="checkbox col-md-4">
+							  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 8"'; if(in_array('Skills 8',$skill)) { echo 'checked="checked"'; } echo '> Skill8
+							</label>
+							<label class="checkbox col-md-4">
+							  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 9"'; if(in_array('Skills 9',$skill)) { echo 'checked="checked"'; } echo '> Skill9
+							</label>
+							<label class="checkbox col-md-4">
+							  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 10"'; if(in_array('Skills 10',$skill)) { echo 'checked="checked"'; } echo '> Skill10
+							</label>
+							<label class="checkbox col-md-4">
+							  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 11"'; if(in_array('Skills 11',$skill)) { echo 'checked="checked"'; } echo '> Skill11
+							</label>
+							<label class="checkbox col-md-4">
+							  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 12"'; if(in_array('Skills 12',$skill)) { echo 'checked="checked"'; } echo '> Skill12
+							</label>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="form-group pp_form_group">
+						<label class="pp_form_label">Preferred Location</label>
+						<input type="text" class="form-control col-md-6 pp_form_textbox" name="pp_prefer_loc" value="'.$pre_loc.'"/>
+						<div class="clearfix"></div>
+					</div>
+					<div class="form-group pp_form_group">
+						<label class="pp_form_label">Job will close on</label>
+						<input type="text" class="form-control pp_form_multiple_selectbox extend_date" name="pp_project_validity" value="'.$proDetails[0]['ending_date'].'"/>
+						<div class="clearfix"></div>
+					</div>';
+			}
+		}
+		
+		/*
+		- method for getting faq page content
+		- Auth: Dipanjan
+		*/
+		function getFaqContent($page,$search_value)
+		{
+			if(!empty($search_value))
+			{
+				//get values from database
+				$faqDetails = $this->manage_content->getValue_likely('faq_info','*','question',$search_value);
+				//setting pagination page url
+				$pageUrl = 'faq.php?search_value='.$search_value.'&';
+			}
+			else
+			{
+				//get values from database
+				$faqDetails = $this->manage_content->getValue_where('faq_info','*','status',1);
+				//setting pagination page url
+				$pageUrl = 'faq.php?';
+			}
+			if(!empty($faqDetails[0]))
+			{
+				//initialize a variable
+				$faqCount = 0;
+				//setting max no of index
+				$max_index = 5;
+				$limit = 10;
+				//calculate the rows number to be shown in this page
+				$startNo = $page*$limit;
+				$endNo = ($page + 1)*$limit;
+				//count total result
+				$total = count($faqDetails);
+				
+				echo '<div class="faq_qusetions_outline">';
+				foreach($faqDetails as $faqDetail)
+				{
+					if($faqCount >= $startNo && $faqCount < $endNo)
+					{
+						echo '<div class="accordion-group faq_qusetions_part">
+                        	<h5 class="accordion-heading faq_qusetions_text">
+                            	'.($faqCount + 1).'. <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse'.($faqCount + 1).'">'.$faqDetail['question'].'</a>
+                            </h5>
+                            <p class="faq_qusetions_para">'.$faqDetail['date'].' | '.$faqDetail['time'].'</p>
+                            
+                            <div id="collapse'.($faqCount + 1).'" class="accordion-body collapse">
+                            	<p class="faq_answer_outline">'.$faqDetail['answer'].'</p>
+                            </div>
+                        </div>';
+					}
+					//increment the counter
+					$faqCount++;
+				}
+				echo '</div>';
+				//calling pagination
+				$this->pagination2($page,$total,$pageUrl,$max_index,$limit);
+			}
+		}
+		
+		/*
+		- method for getting dynamic page content
+		- Auth: Dipanjan
+		*/
+		function getDynamicPageContent($page_id)
+		{
+			//get values from database
+			$getValues = $this->manage_content->getValue_where('mypage','*','page_id',$page_id);
+			if(!empty($getValues[0]))
+			{
+				echo '<h2 class="post_project_top_heading">'.$getValues[0]['page_name'].'</h2>
+						<div class="hiring_freelancer_text_outline text_page_bg">'.$getValues[0]['page_content'].'</div>';
+			}
+		}
+		
+		/*
+		- method for getting faq link in contact page
+		- Auth: Dipanjan
+		*/
+		function getFaqLinkInContactPage()
+		{
+			//get all values in descending order
+			$faqDetails = $this->manage_content->getValue_descendingLimit('faq_info','*',10);
+			if(!empty($faqDetails[0]))
+			{
+				foreach($faqDetails as $faqDetail)
+				{
+					echo '<a href="faq.php"><p>'.$faqDetail['question'].'</p></a>';
+				}
+			}
+		}
+		
+		/*
+		- method for getting user running project list
+		- Auth: Dipanjan
+		*/
+		function getRunningProjectList($user_id)
+		{
+			//get values from database
+			$running_projects = $this->manage_content->getValueOrMultipleCondtn('workroom_info','*',array('emp_user_id','con_user_id'),array($user_id,$user_id));
+			if(!empty($running_projects[0]))
+			{
+				foreach($running_projects as $pro)
+				{
+					//getting project name
+					$pro_details = $this->manage_content->getValue_where('project_info','*','project_id',$pro['project_id']);
+					echo '<li><a href="message.php?wid='.$pro['workroom_id'].'">'.substr($pro_details[0]['title'],0,30).'</a></li>';
+				}
+			}
+			else
+			{
+				echo '<li>No Running Project List</li>';
+			}
+		}
+		
+		/*
+		- method for getting user info
+		- Auth: Dipanjan
+		*/
+		function getUserInfoRow($user_id)
+		{
+			$infoRow = $this->manage_content->getValue_where("user_info","*","user_id",$user_id);
+			if(!empty($infoRow[0]))
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		
+		/*
+		- method for getting user id of portfolio id
+		- Auth: Dipanjan
+		*/
+		function getUserIdOfPortid($port_id)
+		{
+			$portRow = $this->manage_content->getValue_where("user_portfolio","*","id",$port_id);
+			return $portRow[0]['user_id'];
+		}
+		
+		/*
+		- method for getting user id of employment id
+		- Auth: Dipanjan
+		*/
+		function getUserIdOfEmpid($emp_id)
+		{
+			$portRow = $this->manage_content->getValue_where("user_employment","*","id",$emp_id);
+			return $portRow[0]['user_id'];
+		}
+		
+		/*
+		- method for getting user id of education id
+		- Auth: Dipanjan
+		*/
+		function getUserIdOfEduid($edu_id)
+		{
+			$portRow = $this->manage_content->getValue_where("user_education","*","id",$edu_id);
+			return $portRow[0]['user_id'];
+		}
+		
+		/*
+		- method for getting user id of this bid's project
+		- Auth: Dipanjan
+		*/
+		function getUserIdOfBidid($bid_id)
+		{
+			$bidRow = $this->manage_content->getValue_where("bid_info","*","bid_id",$bid_id);
+			//getting user id of this project id
+			$project_info = $this->manage_content->getValue_where("project_info","*","project_id",$bidRow[0]['project_id']);
+			return array($project_info[0]['user_id'],$bidRow[0]['project_id']);
+		}
+		
+		/*
+		- method for getting project status
+		- Auth: Dipanjan
+		*/
+		function getProjectStatus($pro_id)
+		{
+			$proDetails = $this->manage_content->getValue_where("project_info","*","project_id",$pro_id);
+			return $proDetails[0];
+		}
+		
+		/*
 		- method for getting project id
 		- Auth: Dipanjan
 		*/
@@ -954,6 +2313,43 @@
 		{
 			$bidRow = $this->manage_content->getValue_where("bid_info","*","bid_id",$bid_id);
 			return $bidRow[0]['project_id'];
+		}
+		
+		/*
+		- method for getting user id from project id
+		- Auth: Dipanjan
+		*/
+		function getUserIdFromPro($pid)
+		{
+			$proRow = $this->manage_content->getValue_where("project_info","*","project_id",$pid);
+			return $proRow[0]['user_id'];
+		}
+		
+		/*
+		- method for getting user id from bid id
+		- Auth: Dipanjan
+		*/
+		function getUserIdFromBid($bid)
+		{
+			$proRow = $this->manage_content->getValue_where("bid_info","*","bid_id",$bid);
+			return $proRow[0]['user_id'];
+		}
+		
+		/*
+		- method for getting user id verify
+		- Auth: Dipanjan
+		*/
+		function getUserIdChecking($user_id)
+		{
+			$userRow = $this->manage_content->getValue_where("user_credentials","*","user_id",$user_id);
+			if(!empty($userRow[0]))
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
 		}
 		
 		/*

@@ -9,7 +9,7 @@
 			?>
                 <div class="collapse navbar-collapse" id="profile_header_nav">
                     <ul class="nav navbar-nav header_nav_outline">
-                        <li class="header_nav"><a href="cygna.php">Cygna</a></li>
+                        <li class="header_nav"><a href="cygna.php?op=pro">Cygna</a></li>
                         <li class="header_nav"><a href="profile.php">Profile</a></li>
                         <li class="header_nav"><a href="post_project.php">Post a Job</a></li>
                         <li class="header_nav"><a href="project_list.php">Find Job</a></li>

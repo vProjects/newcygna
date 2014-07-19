@@ -3,9 +3,13 @@
 	$pageTitle = 'SignUp';
 	if(isset($GLOBALS['_COOKIE']['uid']) || isset($_SESSION['user_id']))
 	{
-		header("Location: cygna.php");
+		header("Location: cygna.php?op=pro");
 	}
 	include ('v-templates/header.php');
+?>
+<?php
+	//including post header to this page
+	include ("v-templates/post-header.php");
 ?>
 
 <!-- body starts here -->

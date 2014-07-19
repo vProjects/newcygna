@@ -3,6 +3,20 @@
 	$pageTitle = 'Survey';
 	include ("v-templates/header.php");
 ?>
+<?php
+	if(isset($_SESSION['user_id']))
+	{
+		$user_id = $_SESSION['user_id'];
+	}
+	else
+	{
+		$user_id = 'guest';
+	}
+?>
+<?php
+	//including post header to this page
+	include ("v-templates/post-header.php");
+?>
 
 <!-- body starts here -->
 
@@ -29,16 +43,17 @@
 
 				<div class="login-box">
                 	<?php
-						$survey_stat = $manageContent->getSurveySet($_SESSION['user_id']);
-						if($survey_stat[0] == 0)
+						$survey_stat = $manageContent->getSurveySet($user_id);
+						if($survey_stat[0] == 0 || $user_id == 'guest')
 						{
 					?>
                     
                     <form action="v-includes/class.formData.php" method="post" role="form" class="survey_form">
 						 <?php
-                            $manageContent->getSurveyQusetions($_SESSION['user_id'],$survey_stat[1],'insert');
+                            $manageContent->getSurveyQusetions($user_id,$survey_stat[1],'insert');
                          ?>
                          <div class="col-sm-12">
+                         	<input type="hidden" name="user_id" value="<?php echo $user_id; ?>" />
                          	<input type="hidden" name="fn" value="<?php echo md5('survey_report'); ?>" />
                             <input type="submit" class="btn btn-primary btn-lg center-block" value="SUBMIT" />
                          </div>
@@ -49,13 +64,13 @@
 						}
 						else
 						{
-							$manageContent->getSurveyQusetions($_SESSION['user_id'],$survey_stat[1],'update');
+							$manageContent->getSurveyQusetions($user_id,$survey_stat[1],'update');
 						}
 					?>
                     
                     <?php
-						$userSurveyReport = $manageContent->getSurveyFeedback($_SESSION['user_id'],$survey_stat[1]);
-						if($userSurveyReport == 0)
+						$userSurveyReport = $manageContent->getSurveyFeedback($user_id,$survey_stat[1]);
+						if($userSurveyReport == 0 || $user_id == 'guest')
 						{
 					?>
 					<div class="col-sm-12">
@@ -94,7 +109,14 @@
 <!-- body ends here -->
 
 <?php
-	include 'v-templates/footer.php';
+	if(isset($GLOBALS['_COOKIE']['uid']) || isset($_SESSION['user_id']))
+	{
+		include 'v-templates/post-footer.php';
+	}
+	else
+	{
+		include 'v-templates/footer.php';
+	}
 ?>
 
 

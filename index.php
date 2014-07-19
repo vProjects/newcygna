@@ -1,3 +1,19 @@
+<?php
+	session_start();
+	//including the bll get data class
+	include 'v-includes/BLL.getData.php';
+	$manageContent = new BLL_manageData();
+	
+	if(isset($GLOBALS['_COOKIE']['uid']) && !isset($_SESSION['user_id']))
+	{
+		$_SESSION['user_id'] = $GLOBALS['_COOKIE']['uid'];
+	}
+	else if(!isset($GLOBALS['_COOKIE']['uid']) && isset($_SESSION['user_id']))
+	{
+		//setting cookie value
+		$manageContent->createUserCookie($_SESSION['user_id']);
+	}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -14,6 +30,16 @@
 </head>
 
 <body id="home_body">
+<!-- facebook like box script -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 <!-- header starts here -->
 <div class="navbar navbar-fixed-top" id="header_navigation" role="navigation">
 	<div class="container">
@@ -32,6 +58,19 @@
                 <div class="collapse navbar-collapse navbar-right" id="header_nav">
                     <div id="login_section_outline">
                         <div class="login_box_outline">
+                        	<?php
+								//checking cookie value and session value
+								if(isset($GLOBALS['_COOKIE']['uid']) || isset($_SESSION['user_id'])){
+							?>
+                            <div class="login_box pull-left" id="signup_outline">
+                                <span class="login_text"><a href="cygna.php?op=pro">Cygna</a></span>
+                            </div>
+                            <div class="login_box pull-left" id="signup_outline">
+                                <span class="login_text"><a href="v-modules/logout.php">Log Out</a></span>
+                            </div>
+                            <?php
+								} else {
+							?>
                             <div class="login_box pull-left">
                                 <span class="login_text" data-toggle="modal" data-target="#myModal"><a href="#">Login</a></span>
                             </div>
@@ -39,6 +78,7 @@
                                 <!--<img src="img/login_icon.png" alt="login" />-->
                                 <span class="login_text"><a href="sign_up.php">Signup</a></span>
                             </div>
+                            <?php } ?>
                             <div class="clearfix"></div>
                         </div>
                         <!--<div class="input-group search_input_group">
@@ -57,9 +97,37 @@
 	<div class="container">
     	<!-- slider row starts here -->
     	<div class="row body_slider_row">
-        	<div class="col-sm-6">
-            	<div class="body_slider_outline"><img src="img/body_slider.png" /></div>
-            </div>
+        	
+            	<div id="carousel-example-generic" class="carousel slide col-sm-12" data-ride="carousel">
+                  <!-- Indicators -->
+                  <ol class="carousel-indicators">
+                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                  </ol>
+                
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner">
+                    <div class="item active">
+                      <img src="http://placehold.it/1280x500" alt="img1">
+                    </div>
+                    <div class="item">
+                      <img src="http://placehold.it/1280x500" alt="img2">
+                    </div>
+                    <div class="item">
+                      <img src="http://placehold.it/1280x500" alt="img3">
+                    </div>
+                  </div>
+                
+                  <!-- Controls -->
+                  <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                  </a>
+                  <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                  </a>
+                </div>
+            
         </div>
         <!-- slider row ends here -->
         <!-- body details starts here -->
@@ -143,10 +211,10 @@
                 </ul>
             </div>
             <div class="col-md-4">
-            	<h2 class="footer_part_heading"><span class="footer_part_heading_text1">Secured</span><span class="footer_part_heading_text2">Network</span></h2>
-                <img src="img/sequred_network_icon.png" class="footer_part_icon"/>
-                <h2 class="footer_part_heading"><span class="footer_part_heading_text1">Payment</span><span class="footer_part_heading_text2">Methods</span></h2>
-                <img src="img/payment_method_icon.png" class="footer_part_icon"/>
+            	<h2 class="footer_part_heading"><span class="footer_part_heading_text1">LIKE</span><span class="footer_part_heading_text2">Us</span></h2>
+                <!-- facebook like box code -->
+                <div class="fb-like-box" data-href="https://www.facebook.com/FacebookDevelopers" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="false" data-show-border="true"></div>
+                <!-- end here -->
             </div>
             <div class="col-md-4">
             	<h2 class="footer_part_heading"><span class="footer_part_heading_text2">How it works?</span></h2>
@@ -229,32 +297,32 @@
       <div class="modal-body">
 			<div class="col-md-12">
 			<div class="modal-box">
-					<div class="col-md-10">
+					<div class="col-md-12">
 						<form action="v-includes/class.formData.php" class="form-horizontal" role="form" method="post">
 						  <div class="form-group">
-							<label for="inputEmail3" class="col-sm-2 control-label custom-chk">Email</label>
-							<div class="col-sm-10">
-							  <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+							<label for="inputEmail3" class="col-sm-3 control-label custom-chk">Email/Username</label>
+							<div class="col-sm-9">
+							  <input type="text" class="form-control" name="username" placeholder="Email or Username">
 							</div>
 						  </div>
 						  <div class="form-group">
-							<label for="inputPassword3" class="col-sm-2 control-label custom-chk">Password </label>
-							<div class="col-sm-10">
-							  <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+							<label for="inputPassword3" class="col-sm-3 control-label custom-chk">Password </label>
+							<div class="col-sm-9">
+							  <input type="password" class="form-control" name="password" placeholder="Password">
 							</div>
 						  </div>
 						  <div class="form-group">
-							<div class="col-sm-offset-2 col-sm-5">
+							<div class="col-sm-offset-3 col-sm-5">
 							  <div class="checkbox custom-chk">
 								<label>
-								  <input type="checkbox"> login for 2 weeks
+								 <input type="checkbox" name="loggedin_time"> login for 2 weeks
 								</label>
 								</div>
 							</div>
-							<div class="col-sm-5 f-psd"><a href="forget_password.php">forgot password?</div></a>
+							<div class="col-sm-4 f-psd"><a href="forget_password.php">forgot password?</div></a>
 						  </div>
 						  <div class="form-group">
-							<div class="col-sm-offset-2 col-sm-10">
+							<div class="col-sm-offset-3 col-sm-9">
 							  	<input type="hidden" name="fn" value="<?php echo md5('login');?>" />
 								<input type="submit" class="btn btn-default btn-custom" value="Sign In"/>
 							</div>
@@ -270,8 +338,7 @@
 					
       </div>
       <div class="modal-footer custom-hmodal">
-<a href="sign_up.php"><button type="button" name="sign-up" class="btn btn-default btn-log" data-dismiss="modal">SIGN UP</button></a>
-			</div>
+	  </div>
       </div>
     </div>
   </div>

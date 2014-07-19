@@ -921,6 +921,11 @@ a:hover{
 .post_bid_smltext{
 	width:50%;
 }
+.pro_status{
+	color:#F00;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:1.2em;
+}
 /* post project page css */
 .post_project_body_outline{
 	padding:0 0.8em;
@@ -937,6 +942,8 @@ a:hover{
 }
 .pp_form_group{
 	margin-bottom:1.2em;
+	margin-left:0px !important;
+	margin-right:0px !important;
 }
 .pp_form_label{
 	font-size:1.2em;
@@ -1041,6 +1048,9 @@ a:hover{
 .faq_answer_outline {
 	padding: 0.8em 0;
 }
+.new_pagination{
+	margin:0px 0px 10px;
+}
 
 /* hiring freelancer page css */
 .hiring_freelancer_text_outline{
@@ -1055,6 +1065,10 @@ a:hover{
 	margin-bottom:0.9em;
 	text-align:justify;
 	font-size:1.1em;
+}
+.text_page_bg{
+	border: 1px solid #cdcdcd;
+	background-color:#FFF;
 }
 
 /* finding job page css */
@@ -1335,7 +1349,7 @@ a:hover{
 	color: darkblue;
 	text-decoration: none;
 	font-size: 14px;
-	text-align: center;
+	text-align: left;
 }
 .panel-txt{
 	font-size: 15px;
@@ -1512,7 +1526,33 @@ border-top-right-radius: 5px;
 	text-align:right;
 	cursor: pointer;
 }
+.man_field{
+	color:#F00;
+}
 
+/* user project details page */
+.pro_details_outline{
+	margin-bottom:1em;
+}
+.full_bid_outline{
+	background-color: #ffffff;
+	color: #878282;
+	padding: 0.5em 0 1em;
+	border:1px solid #cdcdcd;
+	margin-bottom:0.8em;
+	font-family:PTSans;
+	font-size:1.4em;
+}
+.previous_page_link{
+	color:#0173FE;
+	text-transform:capitalize;
+	font-size:1em;
+	font-family:Arial, Helvetica, sans-serif;
+}
+.awarded_logo_right{
+	padding-left: 30px;
+	padding-right: 0px;
+}
 
 
 /* media query*/

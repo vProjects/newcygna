@@ -8,6 +8,33 @@
 	include ("v-templates/header.php");
 	
 ?>
+<?php
+	//defining an array for the options of edit profile depending on userInfo value
+	//getting user info value
+	$userInfo = $manageContent->getUserInfoRow($_SESSION['user_id']);
+	if($userInfo == 0)
+	{
+		$op = array('per');
+	}
+	else
+	{
+		$op = array('per','img','pro','port','emp','edu');
+	}
+	
+	if(isset($GLOBALS['_GET']['op']) && in_array($GLOBALS['_GET']['op'],$op))
+	{
+		$operation = $GLOBALS['_GET']['op'];
+		
+	}
+	else
+	{
+		header("Location: profile.php");
+	}
+?>
+<?php
+	//including post header to this page
+	include ("v-templates/post-header.php");
+?>
 <!-- body starts here -->
 <div id="profile_body_outline">
 	
@@ -29,50 +56,66 @@
                 	<!-- form panel -->
                 		
                 		<div class="panel-group" id="accordion">
+                        <?php
+							//checking for personal info option
+							if(isset($op[0]) && $operation == $op[0])
+							{
+						?>
                           <div class="panel panel-default">
                             <div class="panel-heading">
                               <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="text-head-link">
                                     PERSONAL INFORMATION
                               </h4>
                             </div>
-                            <div id="collapseOne" class="panel-collapse collapse">
+                            <div id="collapseOne" class="panel-collapse collapse in">
                               <div class="panel-body">    
-                                <form action="v-includes/class.formData.php" class="form-horizontal" role="form" method="post">
+                              <?php
+							  	//checking that user info is present or not
+								if($userInfo == 0)
+								{
+								
+							  ?>
+                                <form action="v-includes/class.formData.php" class="form-horizontal" role="form" method="post" id="user_personal">
                                       <div class="form-group">
-                                        <label class="col-md-3 pp_form_label control-label">First Name</label>
+                                        <label class="col-md-3 pp_form_label control-label">First Name<span class="man_field">**</span></label>
                                         <div class="col-md-8">
-                                          <input type="text" class="form-control pp_form_textbox" placeholder="First Name" name="f_name">
+                                          <input type="text" class="form-control pp_form_textbox" placeholder="First Name" name="f_name" id="per_fname">
+                                          <div class="signup-form-error" id="err_per_fname"></div>
                                         </div>
                                       </div>
                                       <div class="form-group">
-                                        <label class="col-md-3 pp_form_label control-label">Last Name</label>
+                                        <label class="col-md-3 pp_form_label control-label">Last Name<span class="man_field">**</span></label>
                                         <div class="col-md-8">
-                                          <input type="text" class="form-control pp_form_textbox" placeholder="Last Name" name="l_name">
+                                          <input type="text" class="form-control pp_form_textbox" placeholder="Last Name" name="l_name" id="per_lname">
+                                          <div class="signup-form-error" id="err_per_lname"></div>
                                         </div>
                                       </div>
                                       <div class="form-group">
-                                        <label class="col-md-3 pp_form_label control-label">Gender</label>
+                                        <label class="col-md-3 pp_form_label control-label">Gender<span class="man_field">**</span></label>
                                         <div class="col-md-8">
-                                          <div class="col-md-2"><input type="radio"  name="gender" value="male">Male</div>
+                                          <div class="col-md-2"><input type="radio"  name="gender" value="male" checked="checked">Male</div>
                                           <div class="col-md-2"><input type="radio"  name="gender" value="female">Female</div>
                                         </div>
                                       </div>
                                       <div class="form-group">
-                                        <label class="col-md-3 pp_form_label control-label">Date of Birth</label>
+                                        <label class="col-md-3 pp_form_label control-label">Date of Birth<span class="man_field">**</span></label>
                                         <div class="col-md-4">
-                                          <input type="date" class="form-control pp_form_textbox" name="dob" placeholder="Date of Birth in yyyy-mm-dd">
+                                          <input type="text" class="form-control pp_form_textbox" name="dob" id="per_date">
+                                          <div class="signup-form-error" id="err_per_dob"></div>
                                         </div>
                                       </div>
                                       <div class="form-group">
-                                        <label class="col-md-3 pp_form_label control-label">Contact No.</label>
+                                        <label class="col-md-3 pp_form_label control-label">Contact No.<span class="man_field">**</span></label>
                                         <div class="col-md-4">
-                                          <input type="text" class="form-control pp_form_textbox" name="contact" placeholder="Contact No.">
+                                          <input type="text" class="form-control pp_form_textbox" name="contact" placeholder="Contact No." id="per_con">
+                                          <div class="signup-form-error" id="err_per_con"></div>
                                         </div>
                                       </div>
                                       <div class="form-group">
-                                        <label class="col-md-3 pp_form_label control-label">Address Line 1</label>
+                                        <label class="col-md-3 pp_form_label control-label">Address Line 1<span class="man_field">**</span></label>
                                         <div class="col-md-8">
-                                          <input type="text" class="form-control pp_form_textbox" name="add1" placeholder="Address Line 1">
+                                          <input type="text" class="form-control pp_form_textbox" name="add1" placeholder="Address Line 1" id="per_addr1">
+                                          <div class="signup-form-error" id="err_per_addr1"></div>
                                         </div>
                                       </div>
                                       <div class="form-group">
@@ -82,36 +125,66 @@
                                         </div>
                                       </div>
                                       <div class="form-group">
-                                        <label class="col-md-3 pp_form_label control-label">Pincode</label>
+                                        <label class="col-md-3 pp_form_label control-label">Pincode<span class="man_field">**</span></label>
                                         <div class="col-md-3">
-                                          <input type="text" class="form-control pp_form_textbox" name="pin" placeholder="Pincode">
+                                          <input type="text" class="form-control pp_form_textbox" name="pin" placeholder="Pincode" id="per_pin">
+                                          <div class="signup-form-error" id="err_per_pin"></div>
                                         </div>
-                                        <label class="col-md-2 pp_form_label control-label">City</label>
+                                        <label class="col-md-2 pp_form_label control-label">City<span class="man_field">**</span></label>
                                         <div class="col-md-3">
-                                          <input type="text" class="form-control pp_form_textbox" name="city" placeholder="City">
+                                          <input type="text" class="form-control pp_form_textbox" name="city" placeholder="City" id="per_city">
+                                          <div class="signup-form-error" id="err_per_city"></div>
                                         </div>
                                       </div>
                                       <div class="form-group">
-                                        <label class="col-md-3 pp_form_label control-label">State</label>
+                                        <label class="col-md-3 pp_form_label control-label">State<span class="man_field">**</span></label>
                                         <div class="col-md-3">
-                                          <input type="text" class="form-control pp_form_textbox" name="state" placeholder="State">
+                                          <input type="text" class="form-control pp_form_textbox" name="state" placeholder="State" id="per_state">
+                                          <div class="signup-form-error" id="err_per_state"></div>
                                         </div>
-                                        <label class="col-md-2 pp_form_label control-label">Country</label>
+                                        <label class="col-md-2 pp_form_label control-label">Country<span class="man_field">**</span></label>
                                         <div class="col-md-3">
-                                          <input type="text" class="form-control pp_form_textbox" name="country" placeholder="Country">
+                                          <input type="text" class="form-control pp_form_textbox" name="country" placeholder="Country" id="per_country">
+                                          <div class="signup-form-error" id="err_per_country"></div>
                                         </div>
                                       </div>
                                       <div class="form-group">
                                         <div class="col-md-offset-3 col-md-8">
                                         	<input type="hidden" name="fn" value="<?php echo md5('personal_info'); ?>" />
-                                          <button type="submit" class="btn btn-success ">SAVE</button>
+                                          <button type="button" class="btn btn-success" id="user_per_info">SAVE</button>
                                         </div>
                                       </div>
                                 </form>
-                                    
+							  <?php
+                                } else if($userInfo == 1)
+								{
+							   ?>
+                                
+                                <form action="v-includes/class.formData.php" class="form-horizontal" role="form" method="post">
+                                <?php 
+									//getting user personal info
+									$manageContent->getUserPersonalInfo($_SESSION['user_id']);
+								?>
+                                  <div class="form-group">
+                                    <div class="col-md-offset-3 col-md-8">
+                                        <input type="hidden" name="fn" value="<?php echo md5('per_info_update'); ?>" />
+                                      <button type="submit" class="btn btn-success ">UPDATE</button>
+                                    </div>
+                                  </div>
+                                </form>
+                                
+                              <?php } ?>  
                               </div>
                             </div>
                           </div>
+                          
+                          <?php  } //end of personal info section   ?>
+                          
+                          <?php
+						  	//checking for user images option
+							if(isset($op[1]) && $operation == $op[1])
+							{
+						  ?>
                           <div class="panel panel-default">
                             <div class="panel-heading">
                               <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="text-head-link">
@@ -170,104 +243,33 @@
                               </div>
                             </div>
                           </div>
+                          <?php } //end of user images option ?>
+                          
+                          <?php
+						  	//checking for profile info option
+							if(isset($op[2]) && $operation == $op[2])
+							{
+						  ?>
                           <div class="panel panel-default">
                             <div class="panel-heading">
                               <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="text-head-link">
                                     PROFILE INFO
                               </h4>
                             </div>
-                            <div id="collapseThree" class="panel-collapse collapse">
+                            <div id="collapseThree" class="panel-collapse collapse in">
                               <div class="panel-body">
                                     
-                                <form action="v-includes/class.formData.php" class="form-horizontal" role="form" method="post">
-                                  <div class="form-group">
-                                    <label class="col-md-3 pp_form_label control-label">Skills</label>
-                                    <div class="col-md-8">
-                                      <div class="myskills_details ep_skills_list col-md-12" id="skills_list_value">
-                                        
-                                    </div>
-                                    </div>
-                                  </div>
-                                  <div class="form-group">
-                                    <div class="col-md-offset-3 col-md-8">
-                                        <div class="form-control pp_form_textbox scrollable-content">
-                                            <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill1"> Skill1
-                                            </label>
-                                            <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill2"> Skill2
-                                            </label>
-                                            <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill3"> Skill3
-                                            </label>
-                                            <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill4"> Skill4
-                                            </label>
-                                            <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill5"> Skill5
-                                            </label>
-                                            <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill6"> Skill6
-                                            </label>
-                                            <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill7"> Skill7
-                                            </label>
-                                            <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill8"> Skill8
-                                            </label>
-                                            <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill9"> Skill9
-                                            </label>
-                                            <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill10"> Skill10
-                                            </label>
-                                            <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill11"> Skill11
-                                            </label>
-                                            <label class="checkbox col-md-4">
-                                              <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill12"> Skill12
-                                            </label>
-                                        </div>
-                                    </div>
-                                  </div>
-                                  <div class="form-group">
-                                    <label class="col-md-3 pp_form_label control-label">Hourly Rate</label>
-                                    <div class="col-md-3">
-                                      <input type="text" class="form-control pp_form_textbox" name="hourly_rate">
-                                    </div>
-                                    <label class="col-md-3">in $/hr</label>
-                                  </div>
-                                  <div class="form-group">
-                                    <label class="col-md-3 pp_form_label control-label">Your Terms</label>
-                                    <div class="col-md-8">
-                                      <textarea rows="3" class="form-control pp_form_textarea" name="terms"></textarea>
-                                    </div>
-                                  </div>
-                                  <div class="form-group">
-                                    <label class="col-md-3 pp_form_label control-label">Availability</label>
-                                    <div class="col-md-8">
-                                      <select class="form-control pp_form_selectbox" name="availability">
-                                        <option value="Full Time">Full Time</option>
-                                        <option value="Part Time">Part Time</option>
-                                    </select>
-                                    </div>
-                                  </div>
-                                  <div class="form-group">
-                                    <label class="col-md-3 pp_form_label control-label">Interested Topics</label>
-                                    <div class="col-md-8">
-                                      <input type="text" class="form-control pp_form_textbox" name="int_topic">
-                                    </div>
-                                  </div>
-                                  <div class="form-group">
-                                    <label class="col-md-3 pp_form_label control-label">Profile Description</label>
-                                    <div class="col-md-8">
-                                      <textarea rows="6" class="form-control pp_form_textarea" name="description"></textarea>
-                                    </div>
-                                  </div>
+                                <form action="v-includes/class.formData.php" class="form-horizontal" role="form" method="post" id="user_profile">
+                                  	<?php 
+										//getting user personal info
+										$manageContent->getUserProfileInfo($_SESSION['user_id']);
+									?>
+                                  
+                                  
                                   <div class="form-group">
                                     <div class="col-md-offset-3 col-md-8">
                                     	<input type="hidden" name="fn" value="<?php echo md5('profile_info'); ?>" />
-                                      <input type="submit" class="btn btn-success" value="SAVE" />
+                                      <input type="button" id="user_pro_info" class="btn btn-success" value="SAVE" />
                                     </div>
                                   </div>
                                 </form>
@@ -275,14 +277,26 @@
                               </div>
                             </div>
                           </div>
+                          <?php } //end of profile info option ?>
+                          
+                          <?php
+						  	//checking for portfolio option
+							if(isset($op[3]) && $operation == $op[3])
+							{
+						  ?>
                           <div class="panel panel-default">
                             <div class="panel-heading">
                               <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapsefour" class="text-head-link">
                                     PORTFOLIO
                               </h4>
                             </div>
-                            <div id="collapsefour" class="panel-collapse collapse">
+                            <div id="collapsefour" class="panel-collapse collapse in">
                               <div class="panel-body">
+                              <?php
+							  	//checking that portfolio id iset or not
+								if(!isset($GLOBALS['_GET']['port_id']))
+								{
+							  ?>
                                 <form action="v-includes/class.formData.php" method="post" id="user_port" class="form-horizontal" role="form" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label class="col-md-3 pp_form_label control-label">File</label>
@@ -313,18 +327,63 @@
                                         </div>
                                    </div>
                                 </form>
+                                <?php
+									} else
+									{
+										//checking that selecting id is for session user id or not
+										$id = $manageContent->getUserIdOfPortid($GLOBALS['_GET']['port_id']);
+										if($id == $_SESSION['user_id'])
+										{
+								?>
+                                
+                                <form action="v-includes/class.formData.php" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
+                                    <?php
+										//getting values of portfolio
+										$manageContent->getUserPortInfo($GLOBALS['_GET']['port_id']);
+									?>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-md-offset-3 col-md-8">
+                                        	<input type="hidden" name="fn" value="<?php echo md5('user_portfolio_edit'); ?>" />
+                                            <input type="hidden" name="portid" value="<?php echo $GLOBALS['_GET']['port_id'] ?>" />
+                                          <input type="submit" class="btn btn-success" value="UPDATE" />
+                                          
+                                        </div>
+                                   </div>
+                                </form>
+                                
+                                <?php
+										}
+										else
+										{
+											echo '<div class="portfolio_part_heading">No Information Found</div>';
+										}
+									}
+								?>
                               </div>
                             </div>
                           </div>
+                          <?php } //end of portfolio option ?>
+                          
+                          <?php
+						  	//checking for employment option
+							if(isset($op[4]) && $operation == $op[4])
+							{
+						  ?>
                           <div class="panel panel-default">
                             <div class="panel-heading">
                               <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapsefive" class="text-head-link">
                                     EMPLOYMENT
                               </h4>
                             </div>
-                            <div id="collapsefive" class="panel-collapse collapse">
+                            <div id="collapsefive" class="panel-collapse collapse in">
                               <div class="panel-body">
-                                <form action="v-includes/class.formData.php" method="post" id="user_emp" class="form-horizontal" role="form" enctype="multipart/form-data">
+                              <?php
+							  	//checking that portfolio id iset or not
+								if(!isset($GLOBALS['_GET']['emp_id']))
+								{
+							  ?>
+                                <form action="v-includes/class.formData.php" method="post" id="user_emp" class="form-horizontal" role="form">
                                     <div class="form-group">
                                         <label class="col-md-3 pp_form_label control-label">Company Name</label>
                                         <div class="col-md-8">
@@ -340,13 +399,13 @@
                                     <div class="form-group">
                                         <label class="col-md-3 pp_form_label control-label">Start Date</label>
                                         <div class="col-md-4">
-                                            <input type="date" class="form-control pp_form_textbox" name="start1">
+                                            <input type="text" class="form-control pp_form_textbox date_range" name="start1">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                        <label class="col-md-3 pp_form_label control-label">End Date</label>
                                         <div class="col-md-4">
-                                            <input type="date" class="form-control pp_form_textbox" name="end1">
+                                            <input type="text" class="form-control pp_form_textbox date_range" name="end1">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -366,18 +425,63 @@
                                         </div>
                                    </div>
                                 </form>
+                                <?php
+									} else
+									{
+										//checking that selecting id is for session user id or not
+										$id = $manageContent->getUserIdOfEmpid($GLOBALS['_GET']['emp_id']);
+										if($id == $_SESSION['user_id'])
+										{
+								?>
+                                
+                                <form action="v-includes/class.formData.php" method="post" class="form-horizontal" role="form">
+                                    <?php
+										//getting values of employment
+										$manageContent->getUserEmpInfo($GLOBALS['_GET']['emp_id']);
+										
+									?>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-md-offset-3 col-md-8">
+                                            <input type="hidden" name="fn" value="<?php echo md5('user_employment_edit'); ?>" />
+                                            <input type="hidden" name="empid" value="<?php echo $GLOBALS['_GET']['emp_id'] ?>" />
+                                          <input type="submit" class="btn btn-success" value="UPDATE" />
+                                          
+                                        </div>
+                                   </div>
+                                </form>
+                                
+                                <?php
+										}
+										else
+										{
+											echo '<div class="portfolio_part_heading">No Information Found</div>';
+										}
+									}
+								?>
                               </div>
                             </div>
                           </div>
+                          <?php } //end of employment option ?>
                           
+                          <?php
+						  	//checking for education option
+							if(isset($op[5]) && $operation == $op[5])
+							{
+						  ?>
                           <div class="panel panel-default">
                             <div class="panel-heading">
                               <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseseven" class="text-head-link">
                                     EDUCATION
                               </h4>
                             </div>
-                            <div id="collapseseven" class="panel-collapse collapse">
+                            <div id="collapseseven" class="panel-collapse collapse in">
                               <div class="panel-body">
+                               <?php
+							  	//checking that portfolio id iset or not
+								if(!isset($GLOBALS['_GET']['edu_id']))
+								{
+							  ?>
                                 <form action="v-includes/class.formData.php" method="post" id="user_edu" class="form-horizontal" role="form" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label class="col-md-3 pp_form_label control-label">Institution Name</label>
@@ -394,13 +498,13 @@
                                     <div class="form-group">
                                         <label class="col-md-3 pp_form_label control-label">Start Date</label>
                                         <div class="col-md-4">
-                                            <input type="date" class="form-control pp_form_textbox" name="start1">
+                                            <input type="text" class="form-control pp_form_textbox date_range" name="start1">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                        <label class="col-md-3 pp_form_label control-label">End Date</label>
                                         <div class="col-md-4">
-                                            <input type="date" class="form-control pp_form_textbox" name="end1">
+                                            <input type="text" class="form-control pp_form_textbox date_range" name="end1">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -420,10 +524,48 @@
                                     </div>
                                   </div>
                                 </form>
+                                
+								<?php
+									} else
+									{
+										//checking that selecting id is for session user id or not
+										$id = $manageContent->getUserIdOfEduid($GLOBALS['_GET']['edu_id']);
+										if($id == $_SESSION['user_id'])
+										{
+								?>
+                                
+                                <form action="v-includes/class.formData.php" method="post" class="form-horizontal" role="form">
+                                   
+                                   <?php
+										//getting values of employment
+										$manageContent->getUserEduInfo($GLOBALS['_GET']['edu_id']);
+										
+									?>
+                                    
+                                    <div class="form-group">
+                                      <div class="col-md-offset-3 col-md-8">
+                                    	<input type="hidden" name="fn" value="<?php echo md5('user_education_edit'); ?>" />
+                                      <input type="hidden" name="eduid" value="<?php echo $GLOBALS['_GET']['edu_id'] ?>" />
+                                      <input type="submit" class="btn btn-success" value="UPDATE" />
+                                      
+                                    </div>
+                                  </div>
+                                </form>
+                                
+                                 <?php
+										}
+										else
+										{
+											echo '<div class="portfolio_part_heading">No Information Found</div>';
+										}
+									}
+								?>
+                                
+                                
                               </div>
                             </div>
                           </div>
-											  
+						<?php }//end of education option ?>				  
 						</div>
                 		
                 	<!-- form panel ends -->
@@ -444,5 +586,5 @@
 </div>
 <!-- body ends here -->
 <?php
-	include 'v-templates/footer.php';
+	include 'v-templates/post-footer.php';
 ?>

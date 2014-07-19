@@ -7,6 +7,10 @@
 	}
 	include ("v-templates/header.php");
 ?>
+<?php
+	//including post header to this page
+	include ("v-templates/post-header.php");
+?>
 <!-- body starts here -->
 <div id="profile_body_outline">
 	
@@ -149,14 +153,9 @@
     </div>
 </div>
 <!-- body ends here -->
-<!-- footer starts here -->
-<div id="profile_footer_outline">
-	<div class="container">
-    	<div class="row profile_footer_row">
-        </div>
-    </div>
-</div>
-<!-- footer ends here -->
+<?php
+	include 'v-templates/post-footer.php';
+?>
 <!-- modal starts here -->
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">

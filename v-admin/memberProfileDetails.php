@@ -63,6 +63,9 @@
 								
                         ?>
                     <!-- /.panel -->
+                    <!-- previous page link -->
+                   <p class="previous_page_link"><a href="user-list.php?uid=<?php echo $uid; ?>">back to previous page</a></p>
+                   
                 </div>
                 <!-- /.col-lg-8 -->
                 

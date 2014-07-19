@@ -7,6 +7,20 @@
 	}
 	include ("v-templates/header.php");
 ?>
+<?php
+	if(isset($GLOBALS['_GET']['wid']))
+	{
+		$wid = $GLOBALS['_GET']['wid'];
+	}
+	/*else
+	{
+		header("Location: cygna.php?op=pro");
+	}*/
+?>
+<?php
+	//including post header to this page
+	include ("v-templates/post-header.php");
+?>
 <!-- body starts here -->
 <div id="profile_body_outline">
 	
@@ -20,26 +34,12 @@
     	<div class="row profile_body_row">
         	<!-- body left section starts here -->
         	<div class="col-md-3 profile_left_part_outline">
-                <div class="profile_box_outline project_list_leftbar_outline">
-                	<div class="profile_box_heading">WORKROOM</div>
-                    <ul class="profile_overview">
-                    	<li><a href="message.php">Message</a></li>
-                        <li><a href="milestone.php">Milestones</a></li>
-                        <li><a href="#">Files</a></li>
-                        <li><a href="#">My Proposal</a></li>
-                        <li><a href="#">Billings & Invoice</a></li>
-                    </ul>
-                </div>
-                <div class="profile_box_outline">
-                	<div class="profile_box_heading">RUNNING PROJECTS</div>
-                    <ul class="profile_overview">
-                    	<li><a href="#">Lorem Ipsum</a></li>
-                        <li><a href="#">Lorem Ipsum</a></li>
-                        <li><a href="#">Lorem Ipsum</a></li>
-                        <li><a href="#">Lorem Ipsum</a></li>
-                        <li><a href="#">Lorem Ipsum</a></li>
-                    </ul>
-                </div>
+                <?php
+					include 'v-modules/workroom.php';
+				?>
+                <?php
+					include 'v-modules/user-running-projects.php';
+				?>
             </div>
             <!-- body left section ends here -->
             <!-- body middle section starts here -->
@@ -106,6 +106,6 @@
 </div>
 <!-- body ends here -->
 <?php
-	include 'v-templates/footer.php';
+	include 'v-templates/post-footer.php';
 ?>
 

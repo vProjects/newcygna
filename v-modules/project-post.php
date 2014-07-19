@@ -1,7 +1,7 @@
 <div class="post_project_body_outline">
     <h2 class="post_project_top_heading">Post Your Job</h2>
     <p class="post_project_top_para">Describe the job or list the skills you're looking for.</p>
-    <form action="v-includes/class.formData.php" method="post" role="form" enctype="multipart/form-data">
+    <form action="v-includes/class.formData.php" method="post" role="form" enctype="multipart/form-data" class="form-horizontal">
         <div class="form-group pp_form_group">
             <label class="pp_form_label">Project Title</label>
             <input type="text" class="form-control col-md-6 pp_form_textbox" name="pp_title"/>
@@ -37,20 +37,50 @@
         <div class="form-group pp_form_group">
             <label class="pp_form_label">Request specific skills or groups</label>
             
-            <select class="form-control pp_form_multiple_selectbox" name="skills[]" multiple="multiple">
-                <option value="Skills 1">Skills 1</option>
-                <option value="Skills 2">Skills 2</option>
-                <option value="Skills 3">Skills 3</option>
-                <option value="Skills 4">Skills 4</option>
-                <option value="Skills 5">Skills 5</option>
-                <option value="Skills 6">Skills 6</option>
-                <option value="Skills 7">Skills 7</option>
-                <option value="Skills 8">Skills 8</option>
-                <option value="Skills 9">Skills 9</option>
-                <option value="Skills 10">Skills 10</option>
-                <option value="Skills 11">Skills 11</option>
-                <option value="Skills 12">Skills 12</option>
-            </select>
+            <div class="myskills_details ep_skills_list col-md-12" id="skills_list_value"></div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="form-group pp_form_group">
+            <div class="form-control pp_form_textbox scrollable-content col-md-12">
+            	<label class="checkbox col-md-4">
+                  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 1"> Skill1
+                </label>
+                <label class="checkbox col-md-4">
+                  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 2"> Skill2
+                </label>
+                <label class="checkbox col-md-4">
+                  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 3"> Skill3
+                </label>
+                <label class="checkbox col-md-4">
+                  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 4"> Skill4
+                </label>
+                <label class="checkbox col-md-4">
+                  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skill 5"> Skill5
+                </label>
+                <label class="checkbox col-md-4">
+                  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 6"> Skill6
+                </label>
+                <label class="checkbox col-md-4">
+                  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 7"> Skill7
+                </label>
+                <label class="checkbox col-md-4">
+                  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 8"> Skill8
+                </label>
+                <label class="checkbox col-md-4">
+                  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 9"> Skill9
+                </label>
+                <label class="checkbox col-md-4">
+                  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 10"> Skill10
+                </label>
+                <label class="checkbox col-md-4">
+                  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 11"> Skill11
+                </label>
+                <label class="checkbox col-md-4">
+                  <input type="checkbox" name="skills[]" class="skills_checkbox" value="Skills 12"> Skill12
+                </label>
+            </div>
+            
+            
             <div class="clearfix"></div>
         </div>
         <div class="form-group pp_form_group">

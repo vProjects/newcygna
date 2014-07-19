@@ -199,6 +199,53 @@
 		}
 		
 		/*
+		- method for getting member list of user id
+		- Auth : Dipanjan
+		*/
+		function getMemberListFromUserId($user_id)
+		{
+			//get values of this user
+			$user_cred = $this->manage_content->getValue_where('user_credentials','*','user_id',$user_id);
+			$user_info = $this->manage_content->getValue_where('user_info','*','user_id',$user_id);
+			if(!empty($user_cred[0]))
+			{
+				//checking for status
+				if($user_cred[0]['status'] == 1)
+				{
+					$action_button = '<a href="user-list.php?uid='.$user_id.'&action=0"><button class="btn btn-danger">Disable</button></a>';
+				}
+				else
+				{
+					$action_button = '<a href="user-list.php?uid='.$user_id.'&action=1"><button class="btn btn-success">Enable</button></a>';
+				}
+				
+				echo '<table class="table table-bordered table-hover">
+                        	<thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email Id</th>
+                                    <th>Project Posted</th>
+                                    <th>Bid On Job</th>
+                                    <th>Profile</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+								<tr>
+									<td>'.$user_info[0]['name'].'</td>
+									<td>'.$user_cred[0]['email_id'].'</td>
+									<td><a href="memberProjectList.php?uid='.$user_id.'"><button class="btn btn-primary">Project Details</button></a></td>
+									<td><a href="memberBidList.php?uid='.$user_id.'"><button class="btn btn-primary">Bid Details</button></a></td>
+									<td><a href="memberProfileDetails.php?uid='.$user_id.'"><button class="btn btn-warning">Profile Details</button></a></td>
+									<td>'.$action_button.'</td>
+								</tr>
+							</tbody>
+                      </table>';
+				
+			}
+		}
+		
+		/*
 		- method for taking member action
 		- Auth : Dipanjan
 		*/
@@ -213,7 +260,7 @@
 						<div class="panel panel-default">
 							<div class="panel-heading">Select The Reason For Deactivating The User</div>
 							<div class="panel-body">
-								<form action="v-includes/functions/memberUpgradation.php" role="form" method="post">
+								<form action="v-includes/class.formData.php" role="form" method="post">
 									<div class="form-group">
 										<label class="control-label col-sm-3">Select Reason</label>
 										<div class="col-sm-8">
@@ -229,6 +276,7 @@
 										<div class="col-sm-8 col-sm-offset-3">
 											<input type="hidden" name="action" value="'.$userData['action'].'"/>
 											<input type="hidden" name="uid" value="'.$userData['uid'].'"/>
+											<input type="hidden" name="fn" value="'.md5('member_action').'"/>
 											<input type="submit" value="Taking Action" class="btn btn-danger"/>
 										</div>
 										<div class="clearfix"></div>
@@ -244,7 +292,7 @@
 						<div class="panel panel-default">
 							<div class="panel-heading">Select The Reason For Activating The User</div>
 							<div class="panel-body">
-								<form action="v-includes/functions/memberUpgradation.php" role="form" method="post">
+								<form action="v-includes/class.formData.php" role="form" method="post">
 									<div class="form-group">
 										<label class="control-label col-sm-3">Select Reason</label>
 										<div class="col-sm-8">
@@ -258,6 +306,7 @@
 										<div class="col-sm-8 col-sm-offset-3">
 											<input type="hidden" name="action" value="'.$userData['action'].'"/>
 											<input type="hidden" name="uid" value="'.$userData['uid'].'"/>
+											<input type="hidden" name="fn" value="'.md5('member_action').'"/>
 											<input type="submit" value="Taking Action" class="btn btn-success"/>
 										</div>
 										<div class="clearfix"></div>
@@ -327,7 +376,7 @@
 		function getMemberBidDetails($user_id)
 		{
 			//getting bid list of a member
-			$bidList = $this->manage_content->getValue_where("bid_info","*","user_id",$user_id);
+			$bidList = $this->manage_content->getValueWhere_descending("bid_info","*","user_id",$user_id);
 			if(!empty($bidList[0]))
 			{
 				echo '<div class="list-group list_item">';
@@ -800,14 +849,48 @@
 				{
 					$time_remaining = 'Job Is Closed';
 				}
+				//checking project is awarded or not
+				if(!empty($project_details[0]['award_bid_id']))
+				{
+					//getting bid info of this bid
+					$bid_info = $this->manage_content->getValue_where('bid_info','*','bid_id',$project_details[0]['award_bid_id']);
+					if($bid_info[0]['awarded'] == 2)
+					{
+						$award_text = 'Job Is Awarded';
+						$time_remaining = 'Job Is Closed';
+					}
+					else if($bid_info[0]['awarded'] == 1)
+					{
+						$award_text = 'Job Is Awarded But Not Yet Accepted';
+					}
+					else
+					{
+						$award_text = 'Job Is Not Awarded';
+					}
+				}
+				else
+				{
+					$award_text = 'Job Is Not Awarded';
+				}
+				//getting project status
+				if($project_details[0]['status'] == 1)
+				{
+					$action_text = '<a class="list-group-item" href="project_details.php?pid='.$project_id.'&action=0"><button class="btn btn-danger">Terminate This Project</button></a>';
+				}
+				else if($project_details[0]['status'] == 0)
+				{
+					$action_text = '<a class="list-group-item" href="project_details.php?pid='.$project_id.'&action=1"><button class="btn btn-success">Activate This Project</button></a>';
+				}
+				
 				
 				echo '<div class="list-group list_item">
 						<a class="list-group-item">Total Bids: '.$totalBid.'</a>
 						<a class="list-group-item">'.$time_remaining.'</a>
-						<a class="list-group-item">Job Is Not Awarded</a>
+						<a class="list-group-item">'.$award_text.'</a>
 						<a class="list-group-item">'.$project_details[0]['skills'].'</a>
 						<a class="list-group-item">'.$project_details[0]['price_range'].'</a>
-						<a class="list-group-item"><button class="btn btn-danger">Terminate This Project</button></a>
+						<a class="list-group-item">Posted On: '.$project_details[0]['date'].' '.$project_details[0]['time'].'</a>
+						'.$action_text.'
 					</div>';
 			}
 			else
@@ -826,12 +909,44 @@
 			$bid_details = $this->manage_content->getValue_where("bid_info","*","bid_id",$bid_id);
 			if(!empty($bid_details[0]))
 			{
+				//getting project details
+				$project_details = $this->manage_content->getValue_where('project_info','*','project_id',$bid_details[0]['project_id']);
+				//checking bid is awarded or not
+				if(!empty($project_details[0]['award_bid_id']))
+				{
+					if($bid_details[0]['awarded'] == 2)
+					{
+						$award_text = 'Bid Is Awarded';
+					}
+					else if($bid_details[0]['awarded'] == 1)
+					{
+						$award_text = 'Bid Is Awarded But Not Yet Accepted';
+					}
+					else
+					{
+						$award_text = 'Bid Is Not Awarded';
+					}
+				}
+				else
+				{
+					$award_text = 'Bid Is Not Awarded';
+				}
+				//getting bid status
+				if($bid_details[0]['status'] == 1)
+				{
+					$action_text = '<a class="list-group-item" href="bid_details.php?bid='.$bid_id.'&action=0"><button class="btn btn-danger">Terminate This Bid</button></a>';
+				}
+				else if($bid_details[0]['status'] == 0)
+				{
+					$action_text = '<a class="list-group-item" href="bid_details.php?bid='.$bid_id.'&action=1"><button class="btn btn-success">Activate This Bid</button></a>';
+				}
+				
 				echo '<div class="list-group list_item">
 						<a class="list-group-item">Price: '.$bid_details[0]['currency'].$bid_details[0]['amount'].'</a>
 						<a class="list-group-item">Time: '.$bid_details[0]['time_range'].'</a>
-						<a class="list-group-item">Bid Is Not Awarded</a>
-						<a class="list-group-item">'.$bid_details[0]['date'].' '.$bid_details[0]['time'].'</a>
-						<a class="list-group-item"><button class="btn btn-danger">Terminate This Bid</button></a>
+						<a class="list-group-item">'.$award_text.'</a>
+						<a class="list-group-item">Posted On: '.$bid_details[0]['date'].' '.$bid_details[0]['time'].'</a>
+						'.$action_text.'
 					</div>';
 			}
 			else
@@ -900,6 +1015,710 @@
 			else
 			{
 				echo '<h3 class="project_list_heading">No Result Found</h3>';
+			}
+		}
+		
+		/*
+		- method for getting project details of project id
+		- Auth: Dipanjan
+		*/
+		function getProjectDetailsOfProjectId($project_id)
+		{
+			//get values of project id
+			$pro_details = $this->manage_content->getValue_where('project_info','*','project_id',$project_id);
+			return $pro_details;
+		}
+		
+		/*
+		- method for getting bid details of bid id
+		- Auth: Dipanjan
+		*/
+		function getBidDetailsOfBidId($bid_id)
+		{
+			//get values of project id
+			$bid_details = $this->manage_content->getValue_where('bid_info','*','bid_id',$bid_id);
+			return $bid_details;
+		}
+		
+		/*
+		- method for getting new poll number
+		- Auth: Dipanjan
+		*/
+		function getNewPollNumber()
+		{
+			//get last value of poll number
+			$poll = $this->manage_content->getValue_descendingLimit('polling_info','*',1);
+			$poll_nmbr = $poll[0]['set_no'];
+			$nmbr_count = substr($poll_nmbr,5);
+			$new_nmbr = intval($nmbr_count) + 1;
+			$new_poll = 'poll_'.$new_nmbr;
+			return $new_poll;
+		}
+		
+		/*
+		- method for getting new survey number
+		- Auth: Dipanjan
+		*/
+		function getNewSurveyNumber()
+		{
+			//get last value of poll number
+			$survey = $this->manage_content->getValue_descendingLimit('survey_info','*',1);
+			$survey_nmbr = $survey[0]['set_no'];
+			$nmbr_count = substr($survey_nmbr,7);
+			$new_nmbr = intval($nmbr_count) + 1;
+			$new_survey = 'survey_'.$new_nmbr;
+			return $new_survey;
+		}
+		
+		/*
+		- method for getting polling result
+		- Auth: Dipanjan
+		*/
+		function getPollingResult($set_no)
+		{
+			//get data from database
+			$poll_data = $this->manage_content->getValue_where('polling_info','*','set_no',$set_no);
+			if(!empty($poll_data[0]))
+			{
+				//calculating polling percentage
+				//declaring an initial variable
+				$total_vote = 0;
+				foreach($poll_data as $poll)
+				{
+					if(!empty($poll['user_id']))
+					{
+						$total_vote = $total_vote + count(explode(',',$poll['user_id']));
+					}
+				}
+				echo '<div class="panel-heading"><i class="fa fa-list fa-fw"></i> Polling Details Info</div>
+                        <div class="panel-body">
+                        	<div class="mem_info_outline">
+								<div class="mem_info_topic col-sm-3">Set No:</div>
+								<div class="mem_info_text col-sm-8">'.$poll_data[0]['set_no'].'</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="mem_info_outline">
+								<div class="mem_info_topic col-sm-3">Question:</div>
+								<div class="mem_info_text col-sm-8">'.$poll_data[0]['question'].'</div>
+								<div class="clearfix"></div>
+							</div>';
+				 foreach($poll_data as $poll_ans)
+				 {
+					 //getting percentage of vote
+					 if(!empty($poll_ans['user_id']))
+					 {
+						 $vote = count(explode(',',$poll_ans['user_id']));
+					 }
+					 else
+					 {
+						 $vote = 0;
+					 }
+					 if($total_vote == 0 || $vote == 0)
+					 {
+						 $per = 0;
+					 }
+					 else
+					 {
+						 $per = ($vote/$total_vote)*100;
+					 }
+					 
+					 //styling the vote percenage
+					 if($per>=0 && $per<=25)
+					 {
+						 $pr_bar = 'progress-bar-danger';
+					 }
+					 else if($per>25 && $per<=50)
+					 {
+						 $pr_bar = 'progress-bar-warning';
+					 }
+					 else if($per>50 && $per<=75)
+					 {
+						 $pr_bar = 'progress-bar-info';
+					 }
+					 else if($per>75 && $per<=100)
+					 {
+						 $pr_bar = 'progress-bar-success';
+					 }
+					 
+					 echo '<div class="mem_info_outline">
+								<div class="mem_info_topic col-sm-3">Answer'.$poll_ans['answer_no'].':</div>
+								<div class="mem_info_text col-sm-8">'.$poll_ans['answer'].'</div>
+								<div class="col-sm-8 col-sm-offset-3">
+									<div class="progress">
+									  <div class="progress-bar '.$pr_bar.'" style="width: '.$per.'%" title="'.$per.'%">
+									  </div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>';
+				 }
+				 
+                 echo '</div>';
+			}
+		}
+		
+		/*
+		- method for getting survey result
+		- Auth: Dipanjan
+		*/
+		function getSurveyResult($set_no)
+		{
+			//get values from database
+			$survey_details = $this->manage_content->getValue_where('survey_info','*','set_no',$set_no);
+			if(!empty($survey_details[0]))
+			{
+				echo '<div class="panel panel-default">
+						<div class="panel-heading"><i class="fa fa-plus-circle fa-fw"></i> Survey Details</div>
+						<div class="panel-body">
+							<div class="mem_info_outline">
+								<div class="mem_info_topic col-sm-3">Set No:</div>
+								<div class="mem_info_text col-sm-8">'.$set_no.'</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+					</div>
+					<div class="panel-group" id="accordion">';
+				//initialize an empty array
+				$question = array();
+				foreach($survey_details as $survey_ques)
+				{
+					if(!in_array($survey_ques['question_no'],$question))
+					{
+						array_push($question,$survey_ques['question_no']);
+					}
+				}
+				//getting answer and result
+				foreach($question as $key=>$value)
+				{
+					//getting values from database
+					$ansDetails = $this->manage_content->getValueMultipleCondtn('survey_info','*',array('set_no','question_no'),array($set_no,$value));
+					//calculate total vote
+					$total_vote = 0;
+					foreach($ansDetails as $votes)
+					{
+						if(!empty($votes['user_id']))
+						{
+							$total_vote = $total_vote + count(explode(',',$votes['user_id']));
+						}
+					}
+					//showing the question
+					echo '<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapse'.$value.'"><i class="fa fa-question-circle fa-fw"></i> Question No '.$value.'</h4>
+							</div>
+							<div id="collapse'.$value.'" class="panel-collapse collapse">
+								<div class="panel-body">
+									<div class="mem_info_outline">
+										<div class="mem_info_topic col-sm-3">Question:</div>
+										<div class="mem_info_text col-sm-8">'.$ansDetails[0]['question'].'</div>
+										<div class="clearfix"></div>
+									</div>';
+					
+					foreach($ansDetails as $ans)
+					{
+						if(!empty($ans['user_id']))
+						{
+							$vote = count(explode(',',$ans['user_id']));
+						}
+						else
+						{
+							$vote = 0;
+						}
+						if($total_vote == 0 || $vote == 0)
+						{
+							$per = 0;
+						}
+						else
+						{
+							$per = ($vote/$total_vote)*100;
+						}
+						
+						//styling the vote percenage
+						 if($per>=0 && $per<=25)
+						 {
+							 $pr_bar = 'progress-bar-danger';
+						 }
+						 else if($per>25 && $per<=50)
+						 {
+							 $pr_bar = 'progress-bar-warning';
+						 }
+						 else if($per>50 && $per<=75)
+						 {
+							 $pr_bar = 'progress-bar-info';
+						 }
+						 else if($per>75 && $per<=100)
+						 {
+							 $pr_bar = 'progress-bar-success';
+						 }
+						 
+						 echo '<div class="mem_info_outline">
+									<div class="mem_info_topic col-sm-3">Answer No '.$ans['answer_no'].':</div>
+									<div class="mem_info_text col-sm-8">'.$ansDetails[0]['question'].'</div>
+									<div class="col-sm-8 col-sm-offset-3">
+										<div class="progress">
+										  <div class="progress-bar '.$pr_bar.'" style="width: '.$per.'%" title="'.$per.'%">
+										  </div>
+										</div>
+									</div>
+									<div class="clearfix"></div>
+								</div>';
+					}
+					
+					echo	'</div>
+							</div>
+						</div>';
+				}
+				
+				echo '</div>';
+			}
+		}
+		
+		/*
+		- method for getting polling list
+		- Auth: Dipanjan
+		*/
+		function getPollingList()
+		{
+			//get values from database
+			$polls = $this->manage_content->getValue('polling_info','*');
+			//declare an empty array
+			$set_no = array();
+			//getting an array in which list of set no is stored
+			foreach($polls as $poll)
+			{
+				if(!in_array($poll['set_no'],$set_no))
+				{
+					array_push($set_no,$poll['set_no']);
+				}
+			}
+			if(!empty($set_no))
+			{
+				foreach($set_no as $key=>$value)
+				{
+					//getting details of this set
+					$setDetails = $this->manage_content->getValue_where('polling_info','*','set_no',$value);
+					//getting the status of set
+					if($setDetails[0]['status'] == 1)
+					{
+						$cur_status = '<button class="btn btn-success">Activated</button>';
+						$action = '<input type="hidden" name="set_no" value="'.$value.'" />
+									<input type="hidden" name="action" value="0" />
+									<input type="submit" class="btn btn-danger" value="Deactivate" />';
+					}
+					else
+					{
+						$cur_status = '<button class="btn btn-danger">Deactivated</button>';
+						$action = '<input type="hidden" name="set_no" value="'.$value.'" />
+									<input type="hidden" name="action" value="1" />
+									<input type="submit" class="btn btn-success" value="Activate" />';
+					}
+					echo '<tr>
+							<td>'.$setDetails[0]['set_no'].'</td>
+							<td>'.$setDetails[0]['question'].'</td>
+							<td><a href="pollDetails.php?set_no='.$setDetails[0]['set_no'].'&action=details"><button class="btn btn-primary">Poll Details</button></a></td>
+							<td><a href="pollDetails.php?set_no='.$setDetails[0]['set_no'].'&action=edit"><button class="btn btn-info">Edit Info</button></a></td>
+							<td>'.$cur_status.'</td>
+							<td>
+								<form action="v-includes/class.formData.php" method="post">
+									<input type="hidden" name="fn" value="'.md5('action_poll').'" />
+									'.$action.'
+								</form>
+							</td>
+						</tr>';
+				}
+			}
+		}
+		
+		/*
+		- method for getting survey list
+		- Auth: Dipanjan
+		*/
+		function getSurveyList()
+		{
+			//get values from database
+			$surveyDetails = $this->manage_content->getValue('survey_info','*');
+			//declare an empty array
+			$set_no = array();
+			//getting an array in which set no is stored
+			foreach($surveyDetails as $survey)
+			{
+				if(!in_array($survey['set_no'],$set_no))
+				{
+					array_push($set_no,$survey['set_no']);
+				}
+			}
+			if(!empty($set_no))
+			{
+				foreach($set_no as $key=>$value)
+				{
+					//getting details of this set
+					$setDetails = $this->manage_content->getValue_where('survey_info','*','set_no',$value);
+					//getting the status of the set
+					if($setDetails[0]['status'] == 1)
+					{
+						$cur_status = '<button class="btn btn-success">Activated</button>';
+						$action = '<input type="hidden" name="set_no" value="'.$value.'" />
+									<input type="hidden" name="action" value="0" />
+									<input type="submit" class="btn btn-danger" value="Deactivate" />';
+					}
+					else
+					{
+						$cur_status = '<button class="btn btn-danger">Deactivated</button>';
+						$action = '<input type="hidden" name="set_no" value="'.$value.'" />
+									<input type="hidden" name="action" value="1" />
+									<input type="submit" class="btn btn-success" value="Activate" />';
+					}
+					echo '<tr>
+							<td>'.$setDetails[0]['set_no'].'</td>
+							<td><a href="surveyDetails.php?set_no='.$setDetails[0]['set_no'].'&action=details"><button class="btn btn-primary">Survey Details</button></a></td>
+							<td><a href="surveyDetails.php?set_no='.$setDetails[0]['set_no'].'&action=edit"><button class="btn btn-info">Edit Info</button></a></td>
+							<td>'.$cur_status.'</td>
+							<td>
+								<form action="v-includes/class.formData.php" method="post">
+									<input type="hidden" name="fn" value="'.md5('action_survey').'" />
+									'.$action.'
+								</form>
+							</td>
+						</tr>';
+				}
+			}
+		}
+		
+		/*
+		- method for getting polling editing list
+		- Auth: Dipanjan
+		*/
+		function getPollEdit($set_no)
+		{
+			//getting poll details
+			$pollDetails = $this->manage_content->getValue_where('polling_info','*','set_no',$set_no);
+			if(!empty($pollDetails[0]))
+			{
+				echo '<div class="panel-heading"><i class="fa fa-edit fa-fw"></i> Edit Polling Details</div>
+                        <div class="panel-body">
+                        	<form action="v-includes/class.formData.php" role="form" method="post">
+                                <div class="form-group">
+                                    <label class="control-label p_label col-sm-3">Polling Set No</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="set_no" readonly="readonly" value="'.$pollDetails[0]['set_no'].'"/>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label p_label col-sm-3">Poll Question</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="ques" value="'.$pollDetails[0]['question'].'"/>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>';
+					
+					foreach($pollDetails as $pollDetail)
+					{
+						echo '<div class="form-group">
+                                    <label class="control-label p_label col-sm-3">Answer'.$pollDetail['answer_no'].'</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="ans['.$pollDetail['answer_no'].']" value="'.$pollDetail['answer'].'"/>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>';
+					}
+                                
+                     echo      '<div class="form-group">
+                                    <label class="control-label p_label col-sm-3">Status</label>
+                                    <div class="col-sm-4">
+                                        <select name="status" class="form-control">
+                                        	<option value="1"'; if($pollDetails[0]['status'] == 1) { echo 'selected="selected"'; } echo '>Active</option>
+                                            <option value="0"'; if($pollDetails[0]['status'] == 0) { echo 'selected="selected"'; } echo '>Deactive</option>
+                                        </select>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-7 col-sm-offset-3">
+                                    	<input type="hidden" name="fn" value="'.md5('edit_poll').'" />
+                                        <input type="submit" class="btn btn-success btn-lg" value="UPDATE" />
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </form>
+                        </div>';
+			}
+		}
+		
+		/*
+		- method for getting polling editing list
+		- Auth: Dipanjan
+		*/
+		function getSurveyEdit($set_no)
+		{
+			//getting survey details
+			$surveyDetails = $this->manage_content->getValue_where('survey_info','*','set_no',$set_no);
+			if(!empty($surveyDetails[0]))
+			{
+				echo '<form action="v-includes/class.formData.php" role="form" method="post">
+						<div class="panel panel-default">
+							<div class="panel-heading"><i class="fa fa-edit fa-fw"></i> Survey Details</div>
+							<div class="panel-body">
+								<div class="form-group">
+									<label class="control-label p_label col-sm-3">Survey Set No</label>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" name="set_no" readonly="readonly" value="'.$set_no.'"/>
+									</div>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-group" id="accordion">';
+				
+				//initialize an empty array
+				$question = array();
+				foreach($surveyDetails as $survey_ques)
+				{
+					if(!in_array($survey_ques['question_no'],$question))
+					{
+						array_push($question,$survey_ques['question_no']);
+					}
+				}
+				//showing the question details
+				foreach($question as $key=>$value)
+				{
+					
+					//get values
+					$ques = $this->manage_content->getValueMultipleCondtn('survey_info','*',array('set_no','question_no'),array($set_no,$value));
+					
+					echo '<div class="panel panel-default">
+                            	<div class="panel-heading">
+                                	<h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapse'.$value.'"><i class="fa fa-question-circle fa-fw"></i> Question No '.$value.'</h4>
+                                </div>
+                                <div id="collapse'.$value.'" class="panel-collapse collapse">
+                                	<div class="panel-body">
+                                    	<div class="form-group">
+                                            <label class="control-label p_label col-sm-3">Survey Question '.$value.'</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control" name="ques'.$value.'" value="'.$ques[0]['question'].'"/>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>';
+                      
+					 foreach($ques as $ans)
+					 {
+						 echo '<div class="form-group">
+									<label class="control-label p_label col-sm-3">Answer'.$ans['answer_no'].'</label>
+									<div class="col-sm-7">
+										<input type="text" class="form-control" name="ans'.$value.'['.$ans['answer_no'].']" value="'.$ans['answer'].'"/>
+									</div>
+									<div class="clearfix"></div>
+								</div>';
+					 }
+					 //printing the update button
+					 if($value == count($question))
+					 {
+						 echo '<div class="form-group">
+									<div class="col-sm-7 col-sm-offset-3">
+										<input type="hidden" name="fn" value="'.md5('edit_survey').'" />
+										<input type="submit" class="btn btn-success btn-lg" value="UPDATE" />
+									</div>
+									<div class="clearfix"></div>
+								</div>';
+					 }
+					 
+					                    
+                     echo       '</div>
+                                </div>
+                            </div>';
+					
+				}
+				
+				echo '</div>
+					</form>';
+			}
+		}
+		
+		/*
+		- method for getting faq list
+		- Auth: Dipanjan
+		*/
+		function getFaqList()
+		{
+			//get values from database
+			$faqList = $this->manage_content->getValue('faq_info','*');
+			if(!empty($faqList[0]))
+			{
+				foreach($faqList as $faq)
+				{
+					//getting status
+					if($faq['status'] == 1)
+					{
+						$cur_status = '<button class="btn btn-success">Activated</button>';
+						$form_Action = '<input type="hidden" name="id" value="'.$faq['id'].'" />
+										<input type="hidden" name="action" value="0" />
+										<input type="submit" class="btn btn-danger" value="Deactivate" />';
+					}
+					else
+					{
+						$cur_status = '<button class="btn btn-danger">Deactivated</button>';
+						$form_Action = '<input type="hidden" name="id" value="'.$faq['id'].'" />
+										<input type="hidden" name="action" value="1" />
+										<input type="submit" class="btn btn-success" value="Activate" />';
+					}
+					//showing the result
+					echo '<tr>
+							<td>'.$faq['question'].'</td>
+							<td>'.$faq['answer'].'</td>
+							<td><a href="faqDetails.php?id='.$faq['id'].'&action=edit"><button class="btn btn-info">Edit Details</button></a></td>
+							<td>'.$cur_status.'</td>
+							<td>
+								<form action="v-includes/class.formData.php" method="post">
+									<input type="hidden" name="fn" value="'.md5('action_faq').'" />
+									'.$form_Action.'
+								</form>
+							</td>
+						</tr>';
+				}
+			}
+		}
+		
+		/*
+		- method for getting faq edit details
+		- Auth: Dipanjan
+		*/
+		function getFaqEditDetails($id)
+		{
+			//get values from database
+			$faqDetails = $this->manage_content->getValue_where('faq_info','*','id',$id);
+			if(!empty($faqDetails[0]))
+			{
+				echo '<div class="panel-heading"><i class="fa fa-plus-circle fa-fw"></i> Add Faq Details</div>
+                        <div class="panel-body">
+                        	<form action="v-includes/class.formData.php" role="form" method="post">
+                                <div class="form-group">
+                                    <label class="control-label p_label col-sm-3">Faq Question</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="ques" value="'.$faqDetails[0]['question'].'"/>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label p_label col-sm-3">Answer</label>
+                                    <div class="col-sm-7">
+                                        <textarea rows="6" class="form-control" name="ans">'.$faqDetails[0]['answer'].'</textarea>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label p_label col-sm-3">Status</label>
+                                    <div class="col-sm-4">
+                                        <select name="status" class="form-control">
+                                        	<option value="1"'; if($faqDetails[0]['status'] == 1) { echo 'selected="selected"'; } echo '>Active</option>
+                                            <option value="0"'; if($faqDetails[0]['status'] == 0) { echo 'selected="selected"'; } echo '>Deactive</option>
+                                        </select>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-7 col-sm-offset-3">
+                                    	<input type="hidden" name="id" value="'.$faqDetails[0]['id'].'" />
+										<input type="hidden" name="fn" value="'.md5('edit_faq').'" />
+                                        <input type="submit" class="btn btn-success btn-lg" value="UPDATE" />
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </form>
+                        </div>';
+			}
+		}
+		
+		/*
+		- method for getting mypage list
+		- Auth: Dipanjan
+		*/
+		function getMypageList()
+		{
+			//get values from database
+			$pageList = $this->manage_content->getValue('mypage','*');
+			if(!empty($pageList[0]))
+			{
+				foreach($pageList as $page)
+				{
+					//getting status
+					if($page['status'] == 1)
+					{
+						$cur_status = '<button class="btn btn-success">Activated</button>';
+						$form_Action = '<input type="hidden" name="id" value="'.$page['page_id'].'" />
+										<input type="hidden" name="action" value="0" />
+										<input type="submit" class="btn btn-danger" value="Deactivate" />';
+					}
+					else
+					{
+						$cur_status = '<button class="btn btn-danger">Deactivated</button>';
+						$form_Action = '<input type="hidden" name="id" value="'.$page['page_id'].'" />
+										<input type="hidden" name="action" value="1" />
+										<input type="submit" class="btn btn-success" value="Activate" />';
+					}
+					//showing the result
+					echo '<tr>
+							<td>'.$page['page_id'].'</td>
+							<td>'.$page['page_name'].'</td>
+							<td><a href="addPage.php?id='.$page['page_id'].'&action=edit"><button class="btn btn-info">Edit Details</button></a></td>
+							<td>'.$cur_status.'</td>
+							<td>
+								<form action="v-includes/class.formData.php" method="post">
+									<input type="hidden" name="fn" value="'.md5('action_page').'" />
+									'.$form_Action.'
+								</form>
+							</td>
+						</tr>';
+				}
+			}
+		}
+		
+		/*
+		- method for getting mypage details
+		- Auth: Dipanjan
+		*/
+		function getMyPageDetails($id)
+		{
+			//get values from database
+			$pageValue = $this->manage_content->getValue_where('mypage','*','page_id',$id);
+			if(!empty($pageValue[0]))
+			{
+				echo '<div class="panel-heading"><i class="fa fa-edit fa-fw"></i> Edit MyPage Details</div>
+                        <div class="panel-body">
+                        	<form action="v-includes/class.formData.php" role="form" method="post">
+                                <div class="form-group">
+                                    <label class="control-label p_label col-sm-3">Page Title</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="name" value="'.$pageValue[0]['page_name'].'"/>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label p_label col-sm-3">Page Description</label>
+                                    <div class="col-sm-9">
+                                        <textarea class="form-control" name="des" id="editor1">'.$pageValue[0]['page_content'].'</textarea>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label p_label col-sm-3">Status</label>
+                                    <div class="col-sm-4">
+                                        <select name="status" class="form-control">
+                                        	<option value="1"'; if($pageValue[0]['status'] == 1) { echo 'selected="selected"'; } echo '>Active</option>
+                                            <option value="0"'; if($pageValue[0]['status'] == 0) { echo 'selected="selected"'; } echo '>Deactive</option>
+                                        </select>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-7 col-sm-offset-3">
+                                    	<input type="hidden" name="id" value="'.$pageValue[0]['page_id'].'" />
+										<input type="hidden" name="fn" value="'.md5('edit_page').'" />
+                                        <input type="submit" class="btn btn-success btn-lg" value="UPDATE" />
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </form>
+                        </div>';
 			}
 		}
 		

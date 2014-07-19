@@ -7,6 +7,10 @@
 	}
 	include ("v-templates/header.php");
 ?>
+<?php
+	//including post header to this page
+	include ("v-templates/post-header.php");
+?>
 <!-- body starts here -->
 <div id="profile_body_outline">
 	
@@ -37,7 +41,9 @@
             <!-- body left section ends here -->
             <!-- body middle section starts here -->
             <div class="col-md-7 profile_middle_part_outline">
-            	<?php include 'v-modules/project-post.php'; ?>
+				<?php
+				 	include 'v-modules/project-post.php';
+				?>
             </div>
             <!-- body middle section ends here -->
             <!-- body right section starts here -->
@@ -51,5 +57,5 @@
 </div>
 <!-- body ends here -->
 <?php
-	include 'v-templates/footer.php';
+	include 'v-templates/post-footer.php';
 ?>

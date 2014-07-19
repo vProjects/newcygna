@@ -243,81 +243,45 @@ $(document).ready(function(e) {
 		}
     });
 	
-	//getting project according to category selected
-	/*$(document).on('click', '.pro_cat', function(e) {
-        //getting the category value
-		var cate = $(this).children('a').html();
-		//getting the selected li section
-		var selected_part = $(this);
-		sendingData = 'category='+cate+'&refData=projectCategory';
-		
-		//calling ajax function
-		$.ajax({
-			type: "POST",
-			url:"v-includes/class.fetchData.php",
-			data: sendingData,
-			beforeSend:function(){
-				// this is where we append a loading image
-				$('').html('');
-			  },
-			success:function(result){
-				//replacing the li text with output
-				if(result != null)
-				{
-					if($('#select_category').children('ul').html() != null)
-					{
-						$('#select_category').children('ul').remove();
-					}
-					$(selected_part).replaceWith(result);
-				}
-				return false;
-		}});
-    });*/
+	//awarding bid for a project
+	$('#award_bid').click(function(e) {
+       //get page url
+	   var pageurl = window.location.href;
+	   //calculating last occurance of '/' character
+	   var lastsl = pageurl.lastIndexOf("/");
+	   var lastqu = pageurl.lastIndexOf("?");
+	   var pagename = pageurl.substring((lastsl+1),lastqu);
+	   //console.log(pagename);
+	   //checking the page name
+	   if(pagename == 'userProjectFullBidDetails.php')
+	   {
+		   //getting the bid id
+		   var lasteq = pageurl.lastIndexOf("=");
+		   var bid_id = pageurl.substring((lasteq+1));
+		   
+		   sendingData = 'bid_id='+bid_id+'&refData=awardBid';
+			//calling ajax function
+			$.ajax({
+				type: "POST",
+				url:"v-includes/class.fetchData.php",
+				data: sendingData,
+				beforeSend:function(){
+					// this is where we append a loading image
+					$('').html('');
+				  },
+				success:function(result){
+					location.reload();
+					return false;
+			}});
+	   }
+    });
 	
-	//getting project list according to category selected
-	/*$(document).on('click', '.pro_cat', function(e) {
-        //getting the category value
-		var cate = $(this).children('a').html();
-		sendingData = 'category='+cate+'&refData=getProjectOfCatgory';
-		
-		//calling ajax function
-		$.ajax({
-			type: "POST",
-			url:"v-includes/class.fetchData.php",
-			data: sendingData,
-			beforeSend:function(){
-				// this is where we append a loading image
-				$('').html('');
-			  },
-			success:function(result){
-				//console.log(result);
-				$('#list_of_projects').html(result);
-				return false;
-		}});
-    });*/
+	//searching faq answer
+	$('#faq_search_btn').click(function(e) {
+        var faq_value = $('#faq_search_value').val();
+		//sending the page to faq page
+		window.location.href = 'faq.php?search_value='+faq_value;
+    });
 	
-	//getting project list of selected sub category
-	/*$(document).on('click', '.profile_1st_child_nav li', function() {
-		//getting the sub category value
-		var sub_cate = $(this).children('a').html();
-		//getting the category name
-		var cate = $('.profile_1st_child_nav').prev('.pro_cat').text();
-		sendingData = 'category='+cate+'&sub_category='+sub_cate+'&refData=getProjectOfSubCatgory';
-		
-		//calling ajax function
-		$.ajax({
-			type: "POST",
-			url:"v-includes/class.fetchData.php",
-			data: sendingData,
-			beforeSend:function(){
-				// this is where we append a loading image
-				$('').html('');
-			  },
-			success:function(result){
-				//console.log(result);
-				$('#list_of_projects').html(result);
-				return false;
-		}});
-	});*/
 	
 });

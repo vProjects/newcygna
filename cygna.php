@@ -7,6 +7,10 @@
 	}
 	include ("v-templates/header.php");
 ?>
+<?php
+	//including post header to this page
+	include ("v-templates/post-header.php");
+?>
 <!-- body starts here -->
 <div id="profile_body_outline">
 	
@@ -31,8 +35,6 @@
                     	<li><a href="cygna.php?op=job">JobList</a></li>
                         <li><a href="cygna.php?op=pro">ProjectList</a></li>
                         <li><a href="message.php">Message</a></li>
-                        <!--<li><a href="post_bid.php">My Proposal</a></li>
-                        <li><a href="#">Billings & Invoice</a></li>-->
                     </ul>
                 </div>
                 <?php
@@ -51,7 +53,6 @@
 					{
 						echo '<div class="project_list_heading_bar">
 								<span class="pull-left">Job List</span>
-								<span class="pull-right">Total awards: <b>5</b></span>
 								<div class="clearfix"></div>
 							</div>';
 						
@@ -81,112 +82,6 @@
 					}
 				?>
            
-           
-           
-                
-                <!--<div class="project_details_outline post_bid_proposal_list">
-                	<div class="col-md-2 post_bid_proposal_image_outline">
-                    	<img src="img/dummy_profile.jpg" class="center-block" />
-                    </div>
-                    <div class="col-md-10 post_bid_proposal_outline">
-                    	<div class="project_title_text post_bid_bidder_name"><a href="escrow.php">Job Name</a></div>
-                        <p class="project_part_description">I have a website with new domain. I want responsive design for my site. I will discuss the details of work after I choose the right person for it. Place your bids according to the requirement. You can freely ask your doubts.I have a website with new domain. I want responsive design for my site. I will discuss the details of work after I choose the right person for it. Place your bids according to the requirement. You can freely ask your doubts.</p>
-                        <p class="post_bid_info_outline"><span class="post_bid_info_topic">Skills:</span> PHP, ASP.NET</p>
-                        <p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> $500</p>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="project_details_outline post_bid_proposal_list">
-                	<div class="col-md-2 post_bid_proposal_image_outline">
-                    	<img src="img/dummy_profile.jpg" class="center-block" />
-                    </div>
-                    <div class="col-md-10 post_bid_proposal_outline">
-                    	<div class="project_title_text post_bid_bidder_name"><a href="escrow.php">Job Name</a></div>
-                        <p class="project_part_description">I have a website with new domain. I want responsive design for my site. I will discuss the details of work after I choose the right person for it. Place your bids according to the requirement. You can freely ask your doubts.I have a website with new domain. I want responsive design for my site. I will discuss the details of work after I choose the right person for it. Place your bids according to the requirement. You can freely ask your doubts.</p>
-                        <p class="post_bid_info_outline"><span class="post_bid_info_topic">Skills:</span> PHP, ASP.NET</p>
-                        <p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> $500</p>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="project_details_outline post_bid_proposal_list">
-                	<div class="col-md-2 post_bid_proposal_image_outline">
-                    	<img src="img/dummy_profile.jpg" class="center-block" />
-                    </div>
-                    <div class="col-md-10 post_bid_proposal_outline">
-                    	<div class="project_title_text post_bid_bidder_name"><a href="escrow.php">Job Name</a></div>
-                        <p class="project_part_description">I have a website with new domain. I want responsive design for my site. I will discuss the details of work after I choose the right person for it. Place your bids according to the requirement. You can freely ask your doubts.I have a website with new domain. I want responsive design for my site. I will discuss the details of work after I choose the right person for it. Place your bids according to the requirement. You can freely ask your doubts.</p>
-                        <p class="post_bid_info_outline"><span class="post_bid_info_topic">Skills:</span> PHP, ASP.NET</p>
-                        <p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> $500</p>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="project_details_outline post_bid_proposal_list">
-                	<div class="col-md-2 post_bid_proposal_image_outline">
-                    	<img src="img/dummy_profile.jpg" class="center-block" />
-                    </div>
-                    <div class="col-md-10 post_bid_proposal_outline">
-                    	<div class="project_title_text post_bid_bidder_name"><a href="escrow.php">Job Name</a></div>
-                        <p class="project_part_description">I have a website with new domain. I want responsive design for my site. I will discuss the details of work after I choose the right person for it. Place your bids according to the requirement. You can freely ask your doubts.I have a website with new domain. I want responsive design for my site. I will discuss the details of work after I choose the right person for it. Place your bids according to the requirement. You can freely ask your doubts.</p>
-                        <p class="post_bid_info_outline"><span class="post_bid_info_topic">Skills:</span> PHP, ASP.NET</p>
-                        <p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> $500</p>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="project_details_outline post_bid_proposal_list">
-                	<div class="col-md-2 post_bid_proposal_image_outline">
-                    	<img src="img/dummy_profile.jpg" class="center-block" />
-                    </div>
-                    <div class="col-md-10 post_bid_proposal_outline">
-                    	<div class="project_title_text post_bid_bidder_name"><a href="escrow.php">Job Name</a></div>
-                        <p class="project_part_description">I have a website with new domain. I want responsive design for my site. I will discuss the details of work after I choose the right person for it. Place your bids according to the requirement. You can freely ask your doubts.I have a website with new domain. I want responsive design for my site. I will discuss the details of work after I choose the right person for it. Place your bids according to the requirement. You can freely ask your doubts.</p>
-                        <p class="post_bid_info_outline"><span class="post_bid_info_topic">Skills:</span> PHP, ASP.NET</p>
-                        <p class="post_bid_info_outline"><span class="post_bid_info_topic">Price:</span> $500</p>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>-->
-                
-                
-                <!--<div class="project_list_heading_bar pro_list_myproject">
-                	<span class="pull-left">Project List</span>
-                    
-                    <div class="clearfix"></div>
-                </div>
-                <div class="profile_box_outline">
-                    <div class="portfolio_details">
-                        <div class="portfolio_part_outline">
-                            <div class="col-md-8 col-sm-8 col-xs-8">
-                                <div class="portfolio_part_heading">Website Design <span class="portfolio_part_share">Share</span></div>
-                                <p>This contains heavy graphical artworks..</p>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4"></div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="portfolio_part_outline">
-                            <div class="col-md-8 col-sm-8 col-xs-8">
-                                <div class="portfolio_part_heading">Website Design <span class="portfolio_part_share">Share</span></div>
-                                <p>This contains heavy graphical artworks..</p>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4"></div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="portfolio_part_outline">
-                            <div class="col-md-8 col-sm-8 col-xs-8">
-                                <div class="portfolio_part_heading">Website Design <span class="portfolio_part_share">Share</span></div>
-                                <p>This contains heavy graphical artworks..</p>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4"></div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="portfolio_part_outline borderless_box">
-                            <div class="col-md-8 col-sm-8 col-xs-8">
-                                <div class="portfolio_part_heading">Website Design <span class="portfolio_part_share">Share</span></div>
-                                <p>This contains heavy graphical artworks..</p>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4"><div class="myprojects_more_button pull-right">MORE</div></div>
-                            <div class="clearfix"></div>
-                        </div>
-                   </div>
-                </div>-->
             </div>
             <!-- body right section ends here -->
         </div>
@@ -195,5 +90,5 @@
 </div>
 <!-- body ends here -->
 <?php
-	include 'v-templates/footer.php';
+	include 'v-templates/post-footer.php';
 ?>

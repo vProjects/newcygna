@@ -356,6 +356,23 @@
 		}
 		
 		/*
+		- method for awarding a bid
+		- Auth: Dipanjan
+		*/
+		function awardBidForProject($bid_id)
+		{
+			//checking that bid id is present or not
+			$bid_details = $this->manageContent->getValue_where("bid_info","*","bid_id",$bid_id);
+			if(!empty($bid_details[0]['bid_id']))
+			{
+				//update the award field of table
+				$update = $this->manageContent->updateValueWhere("bid_info","awarded",1,"bid_id",$bid_id);
+				//update award_bid_id field in project info table
+				$upd = $this->manageContent->updateValueWhere("project_info","award_bid_id",$bid_id,"project_id",$bid_details[0]['project_id']);
+			}
+		}
+		
+		/*
 		- method for getting sub string of text with given number of character
 		- Auth: Dipanjan
 		*/
@@ -407,7 +424,15 @@
 		//for inserting the survey feedback
 		case 'insertFeedbackReport':
 		{
-			$insertFeedback = $fetchData->insertSurveyFeedback($_SESSION['user_id'],$GLOBALS['_POST']);
+			if(isset($_SESSION['user_id']))
+			{
+				$user_id = $_SESSION['user_id'];
+			}
+			else
+			{
+				$user_id = 'guest';
+			}
+			$insertFeedback = $fetchData->insertSurveyFeedback($user_id,$GLOBALS['_POST']);
 			break;
 		}
 		//for inserting the polling answer
@@ -432,6 +457,12 @@
 		case 'getProjectOfSubCatgory':
 		{
 			$getProjectlistOfSubCategory = $fetchData->getProjectListOfCategory($_SESSION['user_id'],$GLOBALS['_POST']);
+			break;
+		}
+		//for awarding the bid for that project
+		case 'awardBid':
+		{
+			$awardBid = $fetchData->awardBidForProject($GLOBALS['_POST']['bid_id']);
 			break;
 		}
 		default:

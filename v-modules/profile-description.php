@@ -13,14 +13,12 @@
     <div class="profile_box_outline">
         <div class="profile_box_heading">Profile Overview</div>
         <ul class="profile_overview">
-            <li><a href="#">Full Profile</a></li>
-            <li><a href="message.php">Accounts</a></li>
+            <li><a href="public-profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Public Profile</a></li>
             <li><a href="#">Accounts</a></li>
             <li><a href="#">Resume</a></li>
             <li><a href="#">Portfolio</a></li>
             <li><a href="#">Projects</a></li>
             <li><a href="#">Reviews</a></li>
-            <li><a href="#">Accounts</a></li>
         </ul>
     </div>
     <div class="profile_box_outline">
@@ -36,42 +34,16 @@
 		$manageContent->getUserImage($_SESSION['user_id'],'cp'); 
 	?>
     <div class="profile_box_outline">
-            <?php
-				//getting cover images
-				$manageContent->getUserDescription($_SESSION['user_id']); 
-			?>
-            <div class="profile_info_outline">
-                <div class="profile_info_box pull-left">
-                    <img src="img/expertise_icon.png"  class="profile_info_icon pull-left"/>
-                    <div class="profile_info_text_outline pull-left">
-                        <div class="profile_info_heading">Expertise</div>
-                        <div class="profile_info_text">4 Years | Expert</div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="profile_info_box pull-left">
-                    <img src="img/availability_icon.png"  class="profile_info_icon pull-left" />
-                    <div class="profile_info_text_outline pull-left">
-                        <div class="profile_info_heading">Availability</div>
-                        <div class="profile_info_text">Full Time, Part Time</div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="profile_info_box pull-left">
-                    <img src="img/interested_icon.png"  class="profile_info_icon pull-left" />
-                    <div class="profile_info_text_outline pull-left">
-                        <div class="profile_info_heading">Interested In</div>
-                        <div class="profile_info_text">Paid</div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </div>
+		<?php
+            //getting cover images
+            $manageContent->getUserDescription($_SESSION['user_id']); 
+        ?>
     </div>
     <!-- portfolio part start here -->
     <div class="profile_box_outline">
-        <div class="profile_box_heading">Portfolio</div>
+        <div class="profile_box_heading">Portfolio
+        	<span class="portfolio_part_share pull-right"><a href="edit_profile.php?op=port">Add</a></span>
+        </div>
         <div class="portfolio_details">
            <?php
 				//getting cover images
@@ -82,7 +54,9 @@
     <!-- portfolio part ends here -->
     <!-- my skills part starts here -->
     <div class="profile_box_outline">
-        <div class="profile_box_heading">My Skills</div>
+        <div class="profile_box_heading">My Skills
+        	<span class="portfolio_part_share pull-right"><a href="edit_profile.php?op=pro">Edit</a></span>
+        </div>
         <div class="myskills_details">
              <?php
 				//getting cover images
@@ -92,49 +66,43 @@
         </div>
     </div>
     <!-- my skills part ends here -->
-    <!-- my projects portion starts here -->
+    <!-- employment details starts here -->
     <div class="profile_box_outline">
-        <div class="profile_box_heading">My Projects</div>
+        <div class="profile_box_heading">Employment Details
+        	<span class="portfolio_part_share pull-right"><a href="edit_profile.php?op=emp">Add</a></span>
+        </div>
         <div class="portfolio_details">
-            <?php
-				//getting cover images
-				$manageContent->getUserProject($_SESSION['user_id']); 
-			?>
             
-            <!--<div class="portfolio_part_outline">
-                <div class="col-md-8 col-sm-8 col-xs-8">
-                    <div class="portfolio_part_heading">Website Design <span class="portfolio_part_share">Share</span></div>
-                    <p>This contains heavy graphical artworks..</p>
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-4"></div>
-                <div class="clearfix"></div>
+            <div class="table-responsive">
+            	<table class="table table-bordered table-hover">
+                	<?php
+						//getting cover images
+						$manageContent->getUserEmployementList($_SESSION['user_id']); 
+					?>
+                </table>
             </div>
-            <div class="portfolio_part_outline">
-                <div class="col-md-8 col-sm-8 col-xs-8">
-                    <div class="portfolio_part_heading">Website Design <span class="portfolio_part_share">Share</span></div>
-                    <p>This contains heavy graphical artworks..</p>
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-4"></div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="portfolio_part_outline">
-                <div class="col-md-8 col-sm-8 col-xs-8">
-                    <div class="portfolio_part_heading">Website Design <span class="portfolio_part_share">Share</span></div>
-                    <p>This contains heavy graphical artworks..</p>
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-4"></div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="portfolio_part_outline borderless_box">
-                <div class="col-md-8 col-sm-8 col-xs-8">
-                    <div class="portfolio_part_heading">Website Design <span class="portfolio_part_share">Share</span></div>
-                    <p>This contains heavy graphical artworks..</p>
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-4"><div class="myprojects_more_button pull-right">MORE</div></div>
-                <div class="clearfix"></div>
-            </div>-->
+            
         </div>
     </div>
-    <!-- my projects portion ends here -->
+    <!-- employment details ends here -->
+    <!-- education details starts here -->
+    <div class="profile_box_outline">
+        <div class="profile_box_heading">Education Details
+        	<span class="portfolio_part_share pull-right"><a href="edit_profile.php?op=edu">Add</a></span>
+        </div>
+        <div class="portfolio_details">
+            
+            <div class="table-responsive">
+            	<table class="table table-bordered table-hover">
+                	<?php
+						//getting cover images
+						$manageContent->getUserEducationList($_SESSION['user_id']); 
+					?>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+    <!-- education details ends here -->
 </div>
 <!-- body middle section ends here -->

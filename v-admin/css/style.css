@@ -308,6 +308,19 @@ table.dataTable thead .sorting:after {
 
 
 /* Custom Css */
+#success_msg{
+	font-size:1.0em;
+	display:none;
+	margin-bottom:5px;
+	padding:8px 15px;
+}
+#warning_msg{
+	font-size:1.0em;
+	display:none;
+	margin-bottom:5px;
+	padding:8px 15px;
+}
+
 #admin_index_heading{
 	background-color:#df7229;
 	padding:15px;
@@ -360,4 +373,17 @@ table.dataTable thead .sorting:after {
 }
 .mem_info_text{
 	color:#333;
+}
+.previous_page_link{
+	color:#0173FE;
+	text-transform:capitalize;
+	font-size:1em;
+	font-family:Arial, Helvetica, sans-serif;
+}
+.previous_page_link a {
+	color:inherit;
+}
+/* poll section css */
+.p_label{
+	margin-top:5px;
 }

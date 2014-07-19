@@ -22,6 +22,28 @@ function validateRequiredField(id_name,err_id)
 		result = 1;
 	}
 }
+//function for form validations of empty text
+function validateTextField(id_name,err_id)
+{
+	var x = document.getElementById(id_name).innerHTML;
+	if(x == "")
+	{
+		//make the background color red
+		document.getElementById(id_name).style.backgroundColor = '#F6D3D3';
+		//showing the msg
+		document.getElementById(err_id).innerHTML = '**Please Fill Up The Field';
+		document.getElementById(err_id).style.color = 'red';
+		result = 0;
+		//document.getElementById('btn_submit').disabled = 'true';
+		exit();
+	}
+	else
+	{
+		//make the background color normal if valid
+		document.getElementById(id_name).style.backgroundColor = '#ffffff';
+		result = 1;
+	}
+}
 //function for checking valid email
 function validateEmail(id_name)
 {
@@ -74,6 +96,28 @@ function validiateRadio(radio1,radio2,err_id){
 		document.getElementById(err_id).innerHTML = '**Please Select One Option';
 		document.getElementById(err_id).style.color = 'red';
 		exit();
+	}
+}
+
+//function for validiation of integer value
+function validiateIntegerField(id_name,err_id){
+	var x = document.getElementById(id_name).value;
+	if(isNaN(x) != false || x == "")
+	{
+		//make the background color red
+		document.getElementById(id_name).style.backgroundColor = '#F6D3D3';
+		//showing the msg
+		document.getElementById(err_id).innerHTML = '**Please Fill Up A Number';
+		document.getElementById(err_id).style.color = 'red';
+		result = 0;
+		//document.getElementById('btn_submit').disabled = 'true';
+		exit();
+	}
+	else
+	{
+		//make the background color normal if valid
+		document.getElementById(id_name).style.backgroundColor = '#ffffff';
+		result = 1;
 	}
 }
 
@@ -145,6 +189,56 @@ function validateProjectPostForm(form_name)
 	document.getElementById(form_name).submit();
 }
 
+//validiation of personal info form
+function validiateUserPersonalForm(form_name)
+{
+	validateRequiredField('per_fname','err_per_fname');
+	validateRequiredField('per_lname','err_per_lname');
+	validateRequiredField('per_date','err_per_dob');
+	validateRequiredField('per_con','err_per_con');
+	validateRequiredField('per_addr1','err_per_addr1');
+	validateRequiredField('per_pin','err_per_pin');
+	validateRequiredField('per_city','err_per_city');
+	validateRequiredField('per_state','err_per_state');
+	validateRequiredField('per_country','err_per_country');
+	//submit the contact form
+	document.getElementById(form_name).submit();
+}
+
+//validiation of profile info form
+function validiateUserProfileInfoForm(form_name)
+{
+	validateTextField('skills_list_value','err_pro_skill');
+	validiateIntegerField('pro_hour','err_pro_hour');
+	validateRequiredField('pro_des','err_pro_des');
+	//submit the contact form
+	document.getElementById(form_name).submit();
+}
+
+//validiation of contact us form
+function validiateUserQueryForm(form_name)
+{
+	validateRequiredField('contact_name','err_contact_name');
+	validateRequiredField('contact_phn','err_contact_phn');
+	validateEmail('contact_email');
+	checkResult('err_contact_email');
+	validateRequiredField('contact_title','err_contact_title');
+	validateRequiredField('contact_sub','err_contact_sub');
+	validateRequiredField('contact_msg','err_contact_msg');
+	//submit the contact form
+	document.getElementById(form_name).submit();
+}
+
+//validiation of submit ticket form
+function validiateUserTicketForm(form_name)
+{
+	validateRequiredField('ticket_title','err_ticket_title');
+	validateRequiredField('ticket_sub','err_ticket_sub');
+	validateRequiredField('ticket_msg','err_ticket_msg');
+	//submit the contact form
+	document.getElementById(form_name).submit();
+}
+
 /*
 	method for alert warning message
 	Auth: Dipanjan
@@ -157,10 +251,6 @@ function alertWarning(msg) {
 	body.animate({scrollTop:0}, '500');
 	setInterval('$( "#warning_msg" ).hide()', 3000);
 }
-
-
-
-
 /*
 	method for alert success message
 	Auth: Dipanjan
@@ -173,4 +263,27 @@ function alertSuccess(msg){
 	body.animate({scrollTop:0}, '500');
 	setInterval('$( "#success_msg" ).hide()', 3000);
 }
+
+//jquery event declararion
+$(document).ready(function(e) {
+    $('#user_per_info').click(function(e) {
+        //calling validiation function
+		validiateUserPersonalForm('user_personal');
+    });
+	
+	$('#user_pro_info').click(function(e) {
+        //calling validiation function
+		validiateUserProfileInfoForm('user_profile');
+    });
+	
+	$('#userContactBtn').click(function(e) {
+        //calling validiation function
+		validiateUserQueryForm('userContactForm');
+    });
+	
+	$('#userTicketBtn').click(function(e) {
+        //calling validiation function
+		validiateUserTicketForm('userTicketForm');
+    });
+});
 

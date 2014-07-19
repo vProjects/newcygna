@@ -6,14 +6,32 @@
 
 <link rel="stylesheet" type="text/css" href="dist/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="dist/css/bootstrap-theme.css" />
+<link rel="stylesheet" type="text/css" href="dist/css/jquery.Jcrop.min.css" />
+<link rel="stylesheet" type="text/css" href="dist/css/jquery.datepick.css" />
 <link rel="stylesheet" type="text/css" href="dist/css/style.css" />
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="dist/js/bootstrap.js"></script>
-<title>CYGNATECH | YOUR FACILITITES</title>
+<script src="js/validiation.js"></script>
+<script src="js/asynch-function.js"></script>
+<script src="js/element-effect.js"></script>
+<script src="js/jquery.plugin.js"></script>
+<script src="js/jquery.datepick.js"></script>
+<script src="js/jquery.Jcrop.min.js"></script>
+<title>CYGNATECH | <?php echo $pageTitle; ?></title>
 </head>
 
 <body>
+<!-- facebook like box script -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 <!-- header starts here -->
 <div class="navbar navbar-fixed-top profile_header_outline" role="navigation">
 	<div class="container">
@@ -25,15 +43,16 @@
                         <span class="sr-only">Toggle navigation</span>
                         <span class="glyphicon glyphicon-align-justify"></span>
                     </button>
-                    <a class="navbar-brand profile_header_brand" href="index.html"><img src="img/page_logo.png" alt="logo"/></a>
+                    <a class="navbar-brand profile_header_brand" href="index.php"><img src="img/page_logo.png" alt="logo"/></a>
                 </div>
                 
                 <!-- Collect the nav links, forms, and other content for toggling -->
-                <?php
-				include("post-nav.php")
-				?>
+                <?php //include("nav.php") ?>
             </div>
         </div>
     </div>
+    <?php include("post-nav.php") ?>
 </div>
 <!-- header ends here -->
+
+
